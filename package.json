@@ -3,12 +3,13 @@
   "version": "1.0.0",
   "description": "Desktop entertainment rental software",
   "main": "main.js",
+  "productName": "HireMonkey",
   "scripts": {
     "start": "DEBUG=true electron .",
     "startWin": "electron .",
     "build-mac": "electron-packager . --overwrite --platform=darwin --no-asar --icon=icons/logo.icns --prune=true --out=builds",
-    "build-win": "electron-packager . electron-tutorial-app --overwrite --no-asar --platform=win32 --arch=ia32 --icon=icons/logo.ico --prune=true --out=builds --version-string.CompanyName=CE --version-string.FileDescription=CE --version-string.ProductName=\"Electron Tutorial App\"",
-    "build-linux": "electron-packager . electron-tutorial-app --overwrite --no-asar --platform=linux --arch=x64 --icon=icons/logo.png --prune=true --out=builds",
+    "build-win": "electron-packager . HireMonkey --overwrite --no-asar --platform=win32 --arch=x64 --icon=icons/logo.ico --prune=true --out=builds -\"John Hart\" --version-string.FileDescription=CE --version-string.ProductName=\"HireMonkey\" --set-version-string \"LegalCopyright\" \"Copyright John Hart\"",
+    "build-linux": "electron-packager . HireMonkey --overwrite --no-asar --platform=linux --arch=x64 --icon=icons/logo.png --prune=true --out=builds",
     "dmg-arm64": "electron-installer-dmg builds/hiremonkey-darwin-arm64/hiremonkey.app HireMonkey --out=builds/hiremonkey-darwin-arm64 --overwrite --icon=icons/logo.icns"
   },
   "author": "John Hart",

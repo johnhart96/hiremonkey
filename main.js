@@ -19,7 +19,7 @@ const url = require('url')
 
 app.on('ready', () => {
 //  createWindow() // commented for avoiding double window issue
-  if (process.platform === 'darwin') {
+  if (process.platform) {
     var template = [
       {
         label: 'Monkey',
@@ -113,22 +113,38 @@ app.on('ready', () => {
     }
     var osxMenu = Menu.buildFromTemplate(template);
     Menu.setApplicationMenu(osxMenu);
+  } else {
+
   }
 })
 
 // PHP SERVER CREATION /////
 const PHPServer = require('php-server-manager');
-
-const server = new PHPServer({
+var options;
+if(process.platform == "win32" ) {
+  console.log('windows');
+  options = {
+    port: 5555,
+    directory: __dirname,
+    php: 'php/php.exe',
+    directives: {
+      display_errors: 1,
+      expose_php: 1
+    }
+  }
   
+} else {
+  console.log('macos');
+  options = {
     port: 5555,
     directory: __dirname,
     directives: {
-        display_errors: 1,
-        expose_php: 1
+      display_errors: 1,
+      expose_php: 1
     }
-});
-
+  }
+}
+const server = new PHPServer(options);
 //////////////////////////
 
 // Keep a global reference of the window object, if you don't, the window will

@@ -13,19 +13,22 @@ if( PLATFORM == "macos" ) {
     $home = shell_exec( "echo ~/monkey" );
     define( "usrPath" , preg_replace('/\s+/', '', $home ) );
 } else if( PLATFORM == "windows" ) {
-    define( "usrPath" , "" );
-    die( "NOT READY FOR WINDOWS YET" ); // do this in the future;
+    $home = shell_exec( "echo %USERPROFILE%\monkey" );
+    $home = str_replace( DIRECTORY_SEPARATOR , "/" , $home );
+    define( "usrPath" , dirname($home) . "/monkey" );
 }
 // Check for usr path
 if( ! file_exists( usrPath ) ) {
     if( PLATFORM == "macos" ) {
         shell_exec( "mkdir " . usrPath );
     } else {
-        mkdir( usrPath );
+        shell_exec( 'mkdir "' . usrPath . "'" );
     }
 }
 // Check local DB file
-if( ! file_exists( usrPath . "/monkey.db" ) ) {
+$dbpath = usrPath . "/monkey.db";
+if( ! file_exists( $dbpath ) ) {
+    die("File not found " . $dbpath );
     // Create new file
     $blank = fopen( "inc/default_database.sql" , "r" );
     $blank_db = fread( $blank , filesize( "inc/default_database.sql" ) );
