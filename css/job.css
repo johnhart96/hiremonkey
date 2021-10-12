@@ -1,0 +1,49 @@
+a.line_link {
+    border: solid 1px #CCC;
+    font-size: 10px;
+    padding: 2px;
+    text-decoration: none;
+    color: #999;
+}
+a.line_link:hover {
+    background: yellow;
+}
+.line-selected {
+    text-decoration: underline;
+}
+a.line_select {
+    color: #000;
+    text-decoration: none;
+}
+a.line_select:hover{
+    text-decoration: underline;
+}
+.line-nones {
+    list-style-type: none;
+    list-style: none;
+    list-style-image: none;
+    color: #999;
+}
+.item_list {
+    margin-top: 5px;
+    list-style: none;
+}
+.sub {
+    list-style: none;
+}
+.sub .line {
+    border: solid 1px #CCC;
+}
+.line {
+    border: solid 1px #000;
+    list-style: none;
+    padding: 5px;
+    margin: 5px;
+}
+.costbox {
+    width: 100%;
+    height: 100%;
+}
+.status {
+    color: #888;
+}
