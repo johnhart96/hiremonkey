@@ -1,77 +1,61 @@
-const electron = require('electron')
-// Module to control application life.
-const app = electron.app
-// Module for mennu
-const Menu = electron.Menu
-// Module to create native browser window.
-const BrowserWindow = electron.BrowserWindow
-const fs = require('fs');
-const os = require('os');
-const ipc = electron.ipcMain;
-const path = require('path');
-const shell = electron.shell;
-const url = require('url')
+// Includes
+const electron = require('electron');
+const app = electron.app;
+const Menu = electron.Menu;
+const BrowserWindow = electron.BrowserWindow;
 
-/////////////////////////////
-
-///////////////////////////////
-// Copy paste fixed by this 
-
+// Define App Menu
 app.on('ready', () => {
-//  createWindow() // commented for avoiding double window issue
-  if (process.platform) {
-    var template = [
-      {
-        label: 'Monkey',
-        submenu: [
-          {
-            label: "Dashboard",
-            click: function() { navigate( "index.php" ) },
-            accelerator: 'CmdOrCtrl+D'
-          },
-          {
-            label: 'Settings',
-            click: function() { navigate( "index.php?l=settings" ) }
-          },
-          {
-            label: 'Quit',
-            accelerator: 'CmdOrCtrl+Q',
-            click: function() { app.quit(); }
-          }
-        ]
-      },{
-        label: 'Edit',
-        submenu: [
-          {
+  const template = [
+    {
+      label: 'Monkey',
+      submenu: [
+        {
+          label: "Dashboard",
+          click: function() { navigate( "index.php" ) },
+          accelerator: 'CmdOrCtrl+D'
+        },{
+          label: 'Settings',
+          click: function() { navigate( "index.php?l=settings" ) }
+        },{
+          label: 'Quit',
+          accelerator: 'CmdOrCtrl+Q',
+          click: function() { app.quit(); }
+        }
+      ]
+    },{
+      label: "Edit",
+      submenu: [
+        {
           label: 'Undo',
           accelerator: 'CmdOrCtrl+Z',
           selector: 'undo:'
-          }, {
-            label: 'Redo',
-            accelerator: 'Shift+CmdOrCtrl+Z',
-            selector: 'redo:'
-          }, {
-            type: 'separator'
-          }, {
-            label: 'Cut',
-            accelerator: 'CmdOrCtrl+X',
-            selector: 'cut:'
-          }, {
-            label: 'Copy',
-            accelerator: 'CmdOrCtrl+C',
-            selector: 'copy:'
-          }, {
-            label: 'Paste',
-            accelerator: 'CmdOrCtrl+V',
-            selector: 'paste:'
-          }, {
-            label: 'Select All',
-            accelerator: 'CmdOrCtrl+A',
-            selector: 'selectAll:'
-          }
-        ]
-      },{
-        label: "View",
+        },{
+          label: 'Redo',
+          accelerator: 'Shift+CmdOrCtrl+Z',
+          selector: 'redo:'
+        },{
+          type: 'separator'
+        },{
+          label: 'Cut',
+          accelerator: 'CmdOrCtrl+X',
+          selector: 'cut:'
+        },{
+          label: 'Copy',
+          accelerator: 'CmdOrCtrl+C',
+          selector: 'copy:'
+        },{
+          label: 'Paste',
+          accelerator: 'CmdOrCtrl+V',
+          selector: 'paste:'
+        },{
+          label: 'Select All',
+          accelerator: 'CmdOrCtrl+A',
+          selector: 'selectAll:'
+        }
+      ]
+    },{
+      label: "View",
         submenu: [
           {
             role: 'resetZoom'
@@ -83,48 +67,47 @@ app.on('ready', () => {
             role: 'zoom'
           }
         ]
-      },{
-        label: "Help",
-        submenu: [
-          {
-            label: "About",
+    },{
+      label: "Help",
+      submenu: [
+        {
+          label: "About",
             click: function() { navigate( "index.php?l=about" ) }
           }
-        ]
-      }
-    ];
-    // Debug
-    if (process.env.DEBUG) {
-      template.push({
-        label: 'Debugging',
-        submenu: [
-          {
-            label: 'Dev Tools',
-            role: 'toggleDevTools'
-          },
-
-          { type: 'separator' },
-          {
-            role: 'reload',
-            accelerator: 'Alt+R'
-          }
-        ]
-      });
+      ]
     }
-    var osxMenu = Menu.buildFromTemplate(template);
-    Menu.setApplicationMenu(osxMenu);
-  } else {
+];
+if( process.env.DEBUG ) {
+  template.push({
+    label: 'Debugging',
+    submenu: [
+      {
+        label: 'Dev Tools',
+        role: 'toggleDevTools'
+      },
 
-  }
-})
+      { type: 'separator' },
+      {
+        role: 'reload',
+        accelerator: 'Alt+R'
+      }
+    ]
+  });
+}
+function navigate( url ) {
+    mainWindow.loadURL('http://'+server.host+':'+server.port+'/'+url);
+}
+  var mainMenu = Menu.buildFromTemplate(template);
+  Menu.setApplicationMenu(mainMenu);
+});
 
-// PHP SERVER CREATION /////
+// PHP Server
 const PHPServer = require('php-server-manager');
 var options;
-if(process.platform == "win32" ) {
-  console.log('windows');
+if( process.platform == "win32" ) {
   options = {
     port: 5555,
+    host: "127.0.0.1",
     directory: __dirname,
     php: 'php/php.exe',
     directives: {
@@ -132,11 +115,10 @@ if(process.platform == "win32" ) {
       expose_php: 1
     }
   }
-  
 } else {
-  console.log('macos');
   options = {
     port: 5555,
+    host: "127.0.0.1",
     directory: __dirname,
     directives: {
       display_errors: 1,
@@ -145,16 +127,11 @@ if(process.platform == "win32" ) {
   }
 }
 const server = new PHPServer(options);
-//////////////////////////
 
-// Keep a global reference of the window object, if you don't, the window will
-// be closed automatically when the JavaScript object is garbage collected.
+// Main Window
 let mainWindow
-
-function createWindow () {
-
+function createWindow() {
   server.run();
-  // Create the browser window.
   mainWindow = new BrowserWindow({
     width: 1024,
     height: 768,
@@ -169,76 +146,34 @@ function createWindow () {
     minWidth: 1024,
     minHeight: 768
   });
-
-  // and load the index.html of the app.
   mainWindow.loadURL('http://'+server.host+':'+server.port+'/')
-
-/*
-mainWindow.loadURL(url.format({
-  pathname: path.join(__dirname, 'index.php'),
-  protocol: 'file:',
-  slashes: true
-}))
-*/
- const {shell} = require('electron')
- shell.showItemInFolder('fullPath')
-
-  // Open the DevTools.
-  // mainWindow.webContents.openDevTools()
-
-  // Emitted when the window is closed.
+  const {shell} = require('electron')
+  shell.showItemInFolder('fullPath');
   mainWindow.on('closed', function () {
-    // Dereference the window object, usually you would store windows
-    // in an array if your app supports multi windows, this is the time
-    // when you should delete the corresponding element.
-    // PHP SERVER QUIT
     server.close();
     app.quit();
     mainWindow = null;
-  })
+  });
 }
 
-// This method will be called when Electron has finished
-// initialization and is ready to create browser windows.
-// Some APIs can only be used after this event occurs.
-app.on('ready', createWindow) // <== this is extra so commented, enabling this can show 2 windows..
+// Init main window on win32
+app.on('ready', createWindow)
 
-// Quit when all windows are closed.
+// Window closed
 app.on('window-all-closed', function () {
-  // On OS X it is common for applications and their menu bar
-  // to stay active until the user quits explicitly with Cmd + Q
-  if (process.platform !== 'darwin') {
-    // PHP SERVER QUIT
+  if( process.platform !== 'darwin' ) {
     server.close();
     app.quit();
   }
 })
 
+// Init main window on macOS
 app.on('activate', function () {
-  // On OS X it's common to re-create a window in the app when the
-  // dock icon is clicked and there are no other windows open.
   if (mainWindow === null) {
-    createWindow()
+    createWindow();
   }
 })
 
-function navigate( url ) {
-  mainWindow.loadURL('http://'+server.host+':'+server.port+'/'+url);
-}
-
-ipc.on('print-to-pdf', event => {
-  const pdfPath = path.join(os.tmpdir(),"temppdf.pdf");
-  const win = BrowserWindow.fromWebContents(event.sender);
-
-  win.webContents.printToPDF({}, (error, data) => {
-    if(error) return console.log(error.message);
-    console.log("printing pdf " + pdfPath);
-    fs.writeFile(pdfPath, data, err => {
-      if(err) return console.log(err.message);
-      shell.openExternal('file://' + pdfPath );
-      event.sender.send('wrote-pdf' , pdfPath );
-    });
-  });
-});
+// Disable security warnings
 process.env['ELECTRON_DISABLE_SECURITY_WARNINGS'] = 'true';
 
