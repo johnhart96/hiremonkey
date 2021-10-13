@@ -10,7 +10,7 @@ BEGIN TRANSACTION;
 CREATE TABLE categories (id INTEGER PRIMARY KEY AUTOINCREMENT, name VARCHAR);
 
 -- Table: company
-CREATE TABLE company (id INTEGER PRIMARY KEY AUTOINCREMENT, name VARCHAR, address_line1 VARCHAR, address_line2 VARCHAR, town VARCHAR, postcode VARCHAR, telephone VARCHAR, website VARCHAR, email VARCHAR, currencysymbol VARCHAR (1, 1) DEFAULT £, lastbackup DATETIME, appversion VARCHAR (10));
+CREATE TABLE company (id INTEGER PRIMARY KEY AUTOINCREMENT, name VARCHAR, address_line1 VARCHAR, address_line2 VARCHAR, town VARCHAR, postcode VARCHAR, telephone VARCHAR, website VARCHAR, email VARCHAR, currencysymbol VARCHAR (1, 1) DEFAULT £, lastbackup DATETIME, appversion VARCHAR (10), welcome INTEGER DEFAULT 0);
 
 -- Table: customers
 CREATE TABLE customers (id INTEGER PRIMARY KEY AUTOINCREMENT, name VARCHAR, creationdate DATETIME DEFAULT (CURRENT_TIMESTAMP), notes TEXT, company_number INTEGER, vat_number INTEGER, invoice_terms INTEGER DEFAULT (0), hold INTEGER DEFAULT (0), website VARCHAR);
@@ -48,8 +48,6 @@ CREATE TABLE remote (id INTEGER PRIMARY KEY AUTOINCREMENT, host VARCHAR, usernam
 -- Table: sloc
 CREATE TABLE sloc (id INTEGER PRIMARY KEY AUTOINCREMENT, name VARCHAR, address_line1 VARCHAR, address_line2 VARCHAR, town VARCHAR, postcode VARCHAR);
 
--- Table: venues
-CREATE TABLE venues (id INTEGER PRIMARY KEY AUTOINCREMENT, name VARCHAR, address_line1 VARCHAR, address_line2 VARCHAR, town VARCHAR, postcode VARCHAR, telephone VARCHAR, website VARCHAR, email VARCHAR, notes TEXT);
 
 COMMIT TRANSACTION;
 PRAGMA foreign_keys = on;

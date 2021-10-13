@@ -113,6 +113,18 @@ function entry_count( $object ) {
         $count = 0;
       }
       break;
+      case "sloc":
+        $getSloc = $db->query( "SELECT * FROM `sloc`" );
+        $fetch = $getSloc->fetch( PDO::FETCH_ASSOC );
+        if( isset( $fetch['id'] ) ) {
+          $count = 1;
+          while( $fetch = $getSloc->fetch( PDO::FETCH_ASSOC ) ) {
+            $count ++;
+          }
+        } else {
+          $count = 0;
+        }
+        break;
   }
   return $count;
 }

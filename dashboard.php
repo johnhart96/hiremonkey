@@ -1,3 +1,8 @@
+<?php
+if( isset( $_POST['dismissWelcome'] ) ) {
+    $dismiss = $db->query( "UPDATE `company` SET `welcome` =1 WHERE `id` > 0" );
+}
+?>
 <div class="row">
     <div class="col">
         <h1>Dashboard</h1>
@@ -12,6 +17,115 @@
         ?>
     </div>
 </div>
+<?php if( company( "welcome" ) == 0 ) { ?>
+    <div class="row">
+        <div class="col">
+            <div class="card">
+                <div class="card-header"><strong>Getting started:</strong></div>
+                <div class="card-body">
+                    <div class="alert alert-info">Here is a list of a few tasks to help you get started with HireMonkey</div>
+                    <table class="table table-bordered table-striped">
+                        <tr>
+                            <th>Activate licence</th>
+                            <td width='30%' align='center'>
+                                <?php
+                                if( trial() ) {
+                                    echo "<a href='index.php?l=settings_licence' class='btn btn-info'>Action</a>";
+                                } else {
+                                    echo "Done";
+                                }
+                                ?>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>Add company details</th>
+                            <td width='30%' align='center'>
+                                <?php
+                                if( empty( company( 'address_line1' ) ) ) {
+                                    echo "<a href='index.php?l=settings' class='btn btn-info'>Action</a>";
+                                } else {
+                                    echo "Done";
+                                }
+                                ?>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>Add storage locations</th>
+                            <td width='30%' align='center'>
+                                <?php
+                                if( entry_count( "sloc" ) == 0 ) {
+                                    echo "<a href='index.php?l=settings_sloc' class='btn btn-info'>Action</a>";
+                                } else {
+                                    echo "Done";
+                                }
+                                ?>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>Add categories</th>
+                            <td width='30%' align='center'>
+                                <?php
+                                if( entry_count( "cats" ) == 0 ) {
+                                    echo "<a href='index.php?l=cats' class='btn btn-info'>Action</a>";
+                                } else {
+                                    echo "Done";
+                                }
+                                ?>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>Add equipment</th>
+                            <td width='30%' align='center'>
+                                <?php
+                                if( entry_count( "kit" ) == 0 ) {
+                                    echo "<a href='index.php?l=kit_new' class='btn btn-info'>Action</a>";
+                                } else {
+                                    echo "Done";
+                                }
+                                ?>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>Add customers</th>
+                            <td width='30%' align='center'>
+                                <?php
+                                if( entry_count( "customers" ) == 0 ) {
+                                    echo "<a href='index.php?l=customer_new' class='btn btn-info'>Action</a>";
+                                } else {
+                                    echo "Done";
+                                }
+                                ?>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>Create your first job</th>
+                            <td width='30%' align='center'>
+                                <?php
+                                if( entry_count( "jobs" ) == 0 ) {
+                                    echo "<a href='index.php?l=job_new' class='btn btn-info'>Action</a>";
+                                } else {
+                                    echo "Done";
+                                }
+                                ?>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+                <div class="card-footer">
+                    <?php
+                    modalButton( "dismisswelcome" , "Dismiss" );
+                    $dialog = "
+                        Are you sure you want to dismiss the welcome screen?
+                        <input type='hidden' name='dismissWelcome'>
+                    ";
+                    modal( "dismisswelcome" , "Dismiss?" , $dialog , "Yes No" );
+                    ?>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">&nbsp;</div>
+<?php } ?>
 <div class="row">
     <div class="col">
         <div class="card">
