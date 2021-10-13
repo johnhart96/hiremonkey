@@ -21,42 +21,42 @@
         <a href="index.php?l=backup&backup" class="btn btn-primary">Backup</a>
         <?php
         if( isset( $_GET['backup'] ) ) {
-            // Get real path for our folder
-            $rootPath = realpath( usrPath );
+            // Starting off
+            $backup = array();
 
-            // Initialize archive object
-            $zip = new ZipArchive();
-            $zip->open( usrPath . '/backup_' . date( "YmdHi" ) . ".zip", ZipArchive::CREATE | ZipArchive::OVERWRITE);
-
-            // Create recursive directory iterator
-            /** @var SplFileInfo[] $files */
-            $files = new RecursiveIteratorIterator(
-                new RecursiveDirectoryIterator($rootPath),
-                RecursiveIteratorIterator::LEAVES_ONLY
+            // Tables
+            $tables = array(
+                'categories',
+                'company',
+                'customers',
+                'customers_addresses',
+                'customers_contacts',
+                'jobs',
+                'jobs_cat',
+                'jobs_lines',
+                'kit',
+                'kit_accessories',
+                'kit_stock',
+                'sloc'
+                
             );
 
-            foreach ($files as $name => $file)
-            {
-                // Skip directories (they would be added automatically)
-                if (!$file->isDir())
-                {
-                    // Get real and relative path for current file
-                    $filePath = $file->getRealPath();
-                    $relativePath = substr($filePath, strlen($rootPath) + 1);
-                    $bang = explode( "." , $filePath );
-                    if( $bang[1] !== "zip" ) {
-                        // Add current file to archive
-                        $zip->addFile($filePath, $relativePath);
-                    }
+            // Loop
+            foreach( $tables as $table ) {
+                $backup[$table] = array();
+                $get = $db->query( "SELECT * FROM `$table`" );
+                while( $row = $get->fetch( PDO::FETCH_ASSOC ) ) {
+                    $backup[$table][] = $row;
                 }
             }
-
-            // Zip archive will be created only after closing object
-            $zip->close();
-            $setLastBackup = $db->prepare( "UPDATE `company` SET `lastbackup` =:lastBackup WHERE `id` > 0" );
-            $setLastBackup->execute( [ ':lastBackup' => date( "Y-m-d H:i" ) ] );
-            echo "<div class='alert alert-success'>Backup created, check in " . usrPath . "</div>";
+            // Save the file
+            $filename = usrPath . "/" . company( 'name' ) . "_" . date( "YmdHi" ) . ".json";
+            $save = fopen( $filename , "w" );
+            $json = json_encode( $backup );
+            fwrite( $save , $json );
+            fclose( $save );  
         }
+
         ?>
     </div>
 </div>
