@@ -25,6 +25,7 @@ if( isset( $_POST['preview'] ) ) {
 
     // Custom import
     require $include;
+    unlink( $target_file );
 }
 ?>
 <div class="row">
