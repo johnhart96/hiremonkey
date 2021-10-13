@@ -9,6 +9,7 @@ if( isset( $_POST['submit'] ) ) {
     $weight = filter_var( $_POST['weight'] , FILTER_VALIDATE_FLOAT );
     $notes = filter_var( $_POST['notes'] , FILTER_SANITIZE_STRING );
     $price = filter_var( $_POST['price'] , FILTER_VALIDATE_FLOAT );
+    $cat = filter_var( $_POST['cat'] , FILTER_SANITIZE_NUMBER_INT );
     if( isset( $_POST['accessory'] ) ) {
         $toplevel = 0;
     } else {
@@ -21,8 +22,8 @@ if( isset( $_POST['submit'] ) ) {
     }
 
     $insert = $db->prepare("
-        INSERT INTO `kit` (`name`,`sloc`,`purchasevalue`,`height`,`width`,`length`,`weight`,`notes`,`price`,`active`,`toplevel`)
-        VALUES(:name,:sloc,:purchasevalue,:height,:weight,:length,:weight,:notes,:price,:active,:toplevel)
+        INSERT INTO `kit` (`name`,`sloc`,`purchasevalue`,`height`,`width`,`length`,`weight`,`notes`,`price`,`active`,`toplevel`,`cat`)
+        VALUES(:name,:sloc,:purchasevalue,:height,:weight,:length,:weight,:notes,:price,:active,:toplevel,:cat)
     ");
     $insert->execute([
         ':name' => $name,
@@ -35,7 +36,8 @@ if( isset( $_POST['submit'] ) ) {
         ':notes' => $notes,
         ':price' => $price,
         ':active' => $active,
-        ':toplevel' => $toplevel
+        ':toplevel' => $toplevel,
+        ':cat' => $cat
     ]);
     $getLastEntry = $db->query( "SELECT * FROM `kit` ORDER BY `id` DESC LIMIT 1" );
     $fetch = $getLastEntry->fetch( PDO::FETCH_ASSOC );
@@ -69,7 +71,7 @@ if( isset( $_POST['submit'] ) ) {
         <div class="col">
             <div class="input-group">
                 <div class="input-group-prepend"><span class="input-group-text">Name:</span></div>
-                <input type="text" name="name" class="form-control">
+                <input type="text" name="name" required class="form-control">
             </div>
             <div class="input-group">
                 <div class="input-group-prepend"><span class="input-group-text">Purchase value: <?php echo company( "currencysymbol" ); ?></span></div>
@@ -77,7 +79,7 @@ if( isset( $_POST['submit'] ) ) {
             </div>
             <div class="input-group">
                 <div class="input-group-prepend"><span class="input-group-text">Storage Location:</span></div>
-                <select name="sloc" class="form-control">
+                <select required name="sloc" class="form-control">
                     <?php
                     $getSloc = $db->query( "SELECT * FROM `sloc`" );
                     while( $sloc = $getSloc->fetch( PDO::FETCH_ASSOC ) ) {
@@ -110,6 +112,18 @@ if( isset( $_POST['submit'] ) ) {
                 <div class="input-group-prepend"><span class="input-group-text">Hire Price: <?php echo company( "currencysymbol" ); ?> </span></div>
                 <input type="text" name="price" class="form-control" value="0.00" required>
                 <div class="input-group-append"><span class="input-group-text">/day</span></div>
+            </div>
+            <div class="input-group">
+                <div class="input-group-prepend"><span class="input-group-text">Category:</span></div>
+                <select name="cat" class="form-control" required>
+                    <option selected disabled></option>
+                    <?php
+                    $getCats = $db->query( "SELECT * FROM `categories`" );
+                    while( $cat = $getCats->fetch( PDO::FETCH_ASSOC ) ) {
+                        echo "<option value='" . $cat['id'] . "'>" . $cat['name'] . "</option>";
+                    }
+                    ?>
+                </select>
             </div>
             <div class="form-floating">
                 <textarea class="form-control" name="notes" placeholder="Notes:" id="notes" style="height: 100px"></textarea>
