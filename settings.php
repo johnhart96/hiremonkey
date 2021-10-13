@@ -20,8 +20,7 @@ if( isset( $_POST['submit'] ) ) {
             `telephone` =:telephone,
             `website` =:website,
             `email` =:email,
-            `currencysymbol` =:currencysymbol,
-            `appversion` =:version
+            `currencysymbol` =:currencysymbol
         WHERE `id` =1
     ");
     $update->execute([
@@ -34,7 +33,6 @@ if( isset( $_POST['submit'] ) ) {
         ':website' => $website,
         ':email' => $email,
         ':currencysymbol' => $currencysymbol,
-        ':version' => BUILD
     ]);
     $saved = TRUE;
 }
