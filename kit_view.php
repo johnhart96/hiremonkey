@@ -431,6 +431,7 @@ $kit = $getCurrent->fetch( PDO::FETCH_ASSOC );
                             echo "</tr>";
                             $prefix = "- " . $prefix;
                             getAccessories( $accessoryID , $prefix );
+                            $prefix = "";
                         }
                     }
                     getAccessories( $id );
