@@ -130,7 +130,11 @@ function sloc( $id ) {
   $getSloc = $db->prepare( "SELECT `name` FROM `sloc` WHERE `id` =:id" );
   $getSloc->execute( [ ':id' => $id ] );
   $fetch = $getSloc->fetch( PDO::FETCH_ASSOC );
-  return $fetch['name'];
+  if( empty( $id ) ) {
+    return "<em>None</em>";
+  } else {
+    return $fetch['name'];
+  }
 }
 function price( $price ) {
   if( $price !== 0 ) {
@@ -168,14 +172,22 @@ function customer( $id ) {
   $getCustomer = $db->prepare( "SELECT `name` FROM `customers` WHERE `id` =:id LIMIT 1" );
   $getCustomer->execute( [ ':id' => $id ] );
   $fetch = $getCustomer->fetch( PDO::FETCH_ASSOC );
-  return $fetch['name'];
+  if( empty( $id ) ) {
+    return "<em>None</em>";
+  } else {
+    return $fetch['name'];
+  }
 }
 function cat( $id ) {
   global $db;
   $getCat = $db->prepare( "SELECT `name` FROM `categories` WHERE `id` =:id LIMIT 1" );
   $getCat->execute( [ ':id' => $id ] );
   $fetch = $getCat->fetch( PDO::FETCH_ASSOC );
-  return $fetch['name'];
+  if( empty( $id ) ) {
+    return "<em>None</em>";
+  } else {
+    return $fetch['name'];
+  }
 }
 function avlb( $product , $date1 , $date2 ) {
   global $db;
