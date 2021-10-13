@@ -28,14 +28,13 @@ if( ! file_exists( usrPath ) ) {
 // Check local DB file
 $dbpath = usrPath . "/monkey.db";
 if( ! file_exists( $dbpath ) ) {
-    die("File not found " . $dbpath );
     // Create new file
     $blank = fopen( "inc/default_database.sql" , "r" );
     $blank_db = fread( $blank , filesize( "inc/default_database.sql" ) );
     fclose( $blank );
     $newDB = new SQLite3( usrPath . "/monkey.db" );
     $newDB->query( $blank_db );
-    header( "Location:static/welcome.php" );
+    go( "static/welcome.php" );
     
 } else {
     try {
