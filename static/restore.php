@@ -6,11 +6,6 @@ $target_file = $target_dir . "restore_" . basename( $_FILES['restore']['name'] )
 $uploadOK = TRUE;
 
 
-if( $_FILES['restore']['size'] > 5000 ) {
-    echo "<div class='alert alert-danger'><strong>Error:</strong> File size it too large!</div>";
-    $uploadOK = FALSE;
-}
-
 if( $uploadOK ) {
     if( ! move_uploaded_file( $_FILES['restore']['tmp_name'] , $target_file ) ) {
         echo "<div class='alert alert-danger'><strong>Error:</strong> Unable to open the file!</div>";
@@ -81,7 +76,7 @@ $customers_addresses = $newDB->prepare("
 foreach( $upgrade['customers_addresses'] as $address ) {
     $customers_addresses->execute([
         ':id' => $address['id'],
-        ':customer' => $address['customer'],
+        ':customers_addresses' => $address['customer'],
         ':line1' => $address['line1'],
         ':line2' => $address['line2'],
         ':town' => $address['town'],
@@ -96,8 +91,8 @@ $customers_contacts = $newDB->prepare("
 foreach( $upgrade['customers_contacts'] as $contact ) {
     $customers_contacts->execute([
         ':id' => $contact['id'],
-        ':customer' => $contact['customer'],
-        ':name' => $contact['customer_contact'],
+        ':customers' => $contact['customer'],
+        ':customers_contact' => $contact['customer_contact'],
         ':email' => $contact['email'],
         ':telephone' => $contact['telephone']
     ]);
