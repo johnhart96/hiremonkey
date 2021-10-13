@@ -9,7 +9,7 @@
 
             <p>&nbsp;</p>
             <p>
-                Version <?php echo VERSION; ?> (<?php echo BUILD; ?>) <br />
+                Version <?php echo VERSION; ?> <br />
             </p>
         </center>
     </div>
