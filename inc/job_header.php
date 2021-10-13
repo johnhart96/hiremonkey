@@ -79,6 +79,19 @@
                         <div class="input-group-prepend"><span class="input-group-text">Type:</span></div>
                         <input disabled type="text" name="jobType" class="form-control" value="<?php echo ucfirst( $job['jobType'] ); ?>">
                     </div>
+                    <div class="input-group">
+                        <div class="input-group-prepend"><span class="input-group-text">Total days:</span></div>
+                        <?php
+                        $startDate = strtotime( $job['startdate'] );
+                        $endDate = strtotime( $job['enddate'] );
+                        $diff = $endDate - $startDate;
+                        $years = floor( $diff / (365*60*60*24) );
+                        $months = floor( ( $diff - $years * 365*60*60*24 ) / ( 30*60*60*24 ) ); 
+                        $days = floor( ( $diff - $years * 365*60*60*24 - $months*30*60*60*24 ) / ( 60*60*24 ) ); 
+
+                        ?>
+                        <input disabled type="text" name="totalDays" class="form-control" value="<?php echo $days; ?>">
+                    </div>
                     <p>&nbsp;</p>
                     <button type="submit" name="submitHeader" class="btn btn-success">Save</button>
                 </form>

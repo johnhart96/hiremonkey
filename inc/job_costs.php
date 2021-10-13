@@ -6,8 +6,12 @@
     <?php
     $getJobCats = $db->prepare( "SELECT * FROM `jobs_cat` WHERE `job` =:jobID" );
     $getJobCats->execute( [ ':jobID' => $id ] );
+    $_SESSION['totalCost'] = 0.0;
+    $_SESSION['totalPrice'] = 0.0;
+    $_SESSION['totalProfit'] = 0.0;
     function getItems( $job , $cat , $parent = 0 ) {
         global $db;
+        global $days;
         if( $parent == 0 ) {
             $getItems = $db->prepare( "SELECT * FROM `jobs_lines` WHERE `job` =:jobID AND `cat` =:catID AND `parent` =0" );
             $getItems->execute( [ ':jobID' => $job , ':catID' => $cat ] );
@@ -18,7 +22,7 @@
         while( $item = $getItems->fetch( PDO::FETCH_ASSOC ) ) {
             echo "<tr>";
             // Item name
-            echo "<td>";
+            echo "<td style='text-align:left'>";
             if( $parent == 0 ) {
                 echo "<strong>";
                 echo $item['itemName'];
@@ -32,13 +36,26 @@
             // Cost
             $costName = $item['id'] . "_cost";
             $cost = $item['cost'];
+            $_SESSION['totalCost'] = $_SESSION['totalCost'] + $cost;
             echo "<td><input class='costbox' name='$costName' value='$cost'></td>";
             // Price
             $priceName = $item['id'] . "_price";
             $price = $item['price'];
             echo "<td><input class='costbox' name='$priceName' value='$price'></td>";
+            // Qty
+            echo "<td>";
+            $qty = (int)$item['qty'];
+            echo $qty;
+            echo "</td>";
+            // Line total
+            echo "<td>";
+            $lineTotal = $price * $qty * $days;
+            echo price( $lineTotal );
+            $_SESSION['totalPrice'] = $_SESSION['totalPrice'] + $lineTotal;
+            echo "</td>";
             // Profit
-            $profit = (double)$item['price'] - (double)$item['cost'];
+            $profit = (double)$lineTotal - (double)$item['cost'];
+            $_SESSION['totalProfit'] = $_SESSION['totalProfit'] + $profit;
             if( $profit > 0 ) {
                 echo "<td align='center' style='background: green; color: #FFFFFF'>";
             } else if( $profit == 0.0 ) {
@@ -56,15 +73,41 @@
     }
     while( $cat = $getJobCats->fetch( PDO::FETCH_ASSOC ) ) {
         echo "<h3>" . $cat['cat'] . ":</h3>";
-        echo "<table class='table table-bordered table-stripe'>";
+        echo "<table class='table table-bordered table-stripe' style='text-align:center'>";
         // table head
         echo "<tr>";
-        echo "<th width='60%'>Item</th>";
+        echo "<th width='40%' style='text-align:left'>Item</th>";
         echo "<th width='10%'>Type</th>";
-        echo "<th width='10%'>Cost (" . company( "currencysymbol" )  . ")</th>";
-        echo "<th width='10%'>Price (" . company( "currencysymbol" )  . ")</th>";
-        echo "<th width='10%'>Profit</th>";
+        echo "<th width='10%'>Unit Cost (" . company( "currencysymbol" )  . ")</th>";
+        echo "<th width='10%'>Unit Price (" . company( "currencysymbol" )  . ")</th>";
+        echo "<th width='10%'>Qty</th>";
+        echo "<th width='10%'>Line Total (" . company( "currencysymbol" ) . ")</th>";
+
+
+
+        echo "<th width='10%'>NETT</th>";
         getItems( $id , (int)$cat['id'] , 0 );
+        echo "</tr>";
+        // Totals
+        echo "<tr>";
+        echo "<th>&nbsp;</th>";
+        echo "<th>&nbsp;</th>";
+        // Total cost
+        echo "<th>" . company( "currencysymbol" ) . price( $_SESSION['totalCost'] ) . "</th>";
+        echo "<th>&nbsp;</th>";
+        echo "<th>&nbsp;</th>";
+        // Total price
+        echo "<th>" . company( "currencysymbol" ) . price( $_SESSION['totalPrice'] ) . "</th>";
+        // Total NETT
+        if( $_SESSION['totalProfit'] > 0 ) {
+            echo "<th align='center' style='background: green; color: #FFFFFF'>";
+        } else if( $_SESSION['totalProfit'] < 0 ) {
+            echo "<td align='center'  style='background: red'>";
+        } else {
+            echo "<td align='center'  style='background: orange'>";
+        }
+        echo company( "currencysymbol" ) . price( $_SESSION['totalProfit'] );
+        echo "</th>";
         echo "</tr>";
         echo "</table>";
     }
