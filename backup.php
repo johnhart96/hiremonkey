@@ -37,7 +37,9 @@
             $save = fopen( $filename , "w" );
             $json = json_encode( $backup );
             fwrite( $save , $json );
-            fclose( $save );  
+            fclose( $save );
+            $updateLastBackup = $db->prepare( "UPDATE `company` SET `lastbackup` =:today WHERE `id` > 0 " );
+            $updateLastBackup->execute( [ ':today' => date( "Y-m-d H:i" ) ] );
         }
 
         ?>
