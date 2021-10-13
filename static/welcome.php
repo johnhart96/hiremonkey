@@ -1,39 +1,26 @@
 <?php
-// OS detection
-if (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN') {
-    define( "PLATFORM" , "windows" );
-} else if( strtoupper( PHP_OS ) == "DARWIN" ) {
-    define( "PLATFORM" , "macos" );
-} else {
-    die( "Unknown OS!" );
-}
-// Locate a database file
-if( PLATFORM == "macos" ) {
-    $home = shell_exec( "echo ~/monkey" );
-    define( "usrPath" , preg_replace('/\s+/', '', $home ) );
-} else if( PLATFORM == "windows" ) {
-    define( "usrPath" , "" );
-    die( "NOT READY FOR WINDOWS YET" ); // do this in the future;
-}
-// Check for usr path
-if( ! file_exists( usrPath ) ) {
-    if( PLATFORM == "macos" ) {
-        shell_exec( "mkdir " . usrPath );
-    } else {
-        mkdir( usrPath );
-    }
-}
-// Load the blank database file
-$db = new PDO( "sqlite:" . usrPath . "/monkey.db" );
-$db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+require '../inc/usrPath.php';
+require '../inc/version.php';
 
 if( isset( $_POST['submit'] ) ) {
+    // Load the blank database file
+    $file = usrPath . "/" . date( "YmdHi" ) . ".db";
+    $db = new PDO( "sqlite:" . $file );
+    $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
+    // Load default SQL
+    $default = fopen( "../inc/default_database.sql" , "r" );
+    $sql = fread( $default , filesize( "../inc/default_database.sql" ) );
+    fclose( $default );
+    $newDB = new SQLite3( $file );
+    $newDB->query( $sql );
+
     $name = filter_var( $_POST['name'] , FILTER_SANITIZE_STRING );
     $email = filter_var( $_POST['email'] , FILTER_VALIDATE_EMAIL );
     $licencekey = filter_var( $_POST['licencekey'] , FILTER_SANITIZE_STRING );
 
-    $insertCompany = $db->prepare( "INSERT INTO `company` (`name`,`lastbackup`,`email`) VALUES(:comName,:lastbackup,:email)" );
-    $insertCompany->execute( [ ':comName' => $name , ':lastbackup' => date( "Y-m-d" ) , ':email' => $email ] );
+    $insertCompany = $db->prepare( "INSERT INTO `company` (`name`,`lastbackup`,`email`,`appversion`) VALUES(:comName,:lastbackup,:email,:appversion)" );
+    $insertCompany->execute( [ ':comName' => $name , ':lastbackup' => date( "Y-m-d" ) , ':email' => $email , ':appversion' => FULLBUILD ] );
 
     if( ! empty( $licencekey ) ) {
         $addLicence = $db->prepare( "INSERT INTO `licence` (`licencekey`) VALUES(:licKey)" );
@@ -55,6 +42,8 @@ if( isset( $_POST['submit'] ) ) {
             ]);
         }
     }
+    session_start();
+    $_SESSION['company'] = str_replace( usrPath . "/" , "" , $file );
     header( "Location:../index.php" );
 }
 ?>

@@ -24,23 +24,6 @@
             // Starting off
             $backup = array();
 
-            // Tables
-            $tables = array(
-                'categories',
-                'company',
-                'customers',
-                'customers_addresses',
-                'customers_contacts',
-                'jobs',
-                'jobs_cat',
-                'jobs_lines',
-                'kit',
-                'kit_accessories',
-                'kit_stock',
-                'sloc'
-                
-            );
-
             // Loop
             foreach( $tables as $table ) {
                 $backup[$table] = array();
@@ -50,7 +33,7 @@
                 }
             }
             // Save the file
-            $filename = usrPath . "/" . company( 'name' ) . "_" . date( "YmdHi" ) . ".json";
+            $filename = usrPath . "/" . str_replace( " " , "-" , company( 'name' ) ) . "_" . date( "YmdHi" ) . ".json";
             $save = fopen( $filename , "w" );
             $json = json_encode( $backup );
             fwrite( $save , $json );
@@ -72,7 +55,7 @@
                     $files = scandir( usrPath );
                     foreach( $files as $file ) {
                         $bang = explode( "." , $file );
-                        if( $file !== "." && $file !== ".." && $bang[1] == "zip" ) {
+                        if( $file !== "." && $file !== ".." && $bang[1] == "json" ) {
                             echo "<li>" . $file . "</li>";
                         }
                     }

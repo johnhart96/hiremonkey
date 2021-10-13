@@ -1,44 +1,17 @@
 <?php
-// OS detection
-if (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN') {
-    define( "PLATFORM" , "windows" );
-} else if( strtoupper( PHP_OS ) == "DARWIN" ) {
-    define( "PLATFORM" , "macos" );
-} else {
-    die( "Unknown OS!" );
-}
-
-// Locate a database file
-if( PLATFORM == "macos" ) {
-    $home = shell_exec( "echo ~/monkey" );
-    define( "usrPath" , preg_replace('/\s+/', '', $home ) );
-} else if( PLATFORM == "windows" ) {
-    $home = shell_exec( "echo %USERPROFILE%\monkey" );
-    $home = str_replace( DIRECTORY_SEPARATOR , "/" , $home );
-    define( "usrPath" , dirname($home) . "/monkey" );
-}
-// Check for usr path
-if( ! file_exists( usrPath ) ) {
-    if( PLATFORM == "macos" ) {
-        shell_exec( "mkdir " . usrPath );
-    } else {
-        shell_exec( 'mkdir "' . usrPath . "'" );
-    }
-}
+require 'inc/usrPath.php';
 // Check local DB file
-$dbpath = usrPath . "/monkey.db";
+session_start();
+if( ! isset( $_SESSION['company'] ) ) {
+    header( "Location:static/company_select.php" );
+}
+$dbpath = usrPath . "/" . $_SESSION['company'];
 if( ! file_exists( $dbpath ) ) {
-    // Create new file
-    $blank = fopen( "inc/default_database.sql" , "r" );
-    $blank_db = fread( $blank , filesize( "inc/default_database.sql" ) );
-    fclose( $blank );
-    $newDB = new SQLite3( usrPath . "/monkey.db" );
-    $newDB->query( $blank_db );
-    go( "static/welcome.php" );
-    
+    session_destroy();
+    header( "Location:static/company_select.php" );
 } else {
     try {
-        $db = new PDO( "sqlite:" . usrPath . "/monkey.db" );
+        $db = new PDO( "sqlite:" . $dbpath );
         $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
     } catch( Exception $e ) {
         die( "Unable to open local database file: " . $e->getMessage() );
@@ -68,17 +41,27 @@ require_once 'inc/version.php';
 
 // Licence control
 require_once 'inc/jhactivation.php';
-if( date( "Y-m-d" , strtotime( licence( "nextactivation" ) ) ) < date( "Y-m-d" ) && ! trial() ) {
+if( date( "Y-m-d" , strtotime( licence( "nextactivation" ) ) ) < date( "Y-m-d" ) or empty( licence( "nextactivation" ) )  && ! trial() ) {
     echo "<script>console.log('Starting activation');</script>";
-    $activation = jhl_activate( licence( "licencekey" ) , LICENCEVERSION );
+    $activation = jhl_activate( licence( "licencekey" ) , LICENCEVERSION , $_SESSION['uuid'] );
     $activationSuccessful = FALSE;
     if( isset( $activation->status ) ) {
         if( $activation->status == 200 ) {
             // Successful
             $activationSuccessful = TRUE;
             $nextActivation = filter_var( $activation->nextActivation , FILTER_SANITIZE_STRING );
-            $updateNextActivation = $db->prepare( "UPDATE `licence` SET `nextActivation` =:nextActivation WHERE `id` > 0" );
-            $updateNextActivation->execute( [ ':nextActivation' => $nextActivation ] );
+            $purchaseDate = filter_var( $activation->purchaseDate , FILTER_SANITIZE_STRING );
+            $licenceTo = filter_var( $activation->customer , FILTER_SANITIZE_STRING );
+            $updateNextActivation = $db->prepare("
+                UPDATE `licence` SET
+                    `nextactivation` =:nextActivation,
+                    `lastactivation` =:lastActivation,
+                    `purchasedate` =:purchaseDate,
+                    `licenceto` =:licenceto
+
+                WHERE `id` > 0
+            ");
+            $updateNextActivation->execute( [ ':nextActivation' => $nextActivation , ':lastActivation' => date( "Y-m-d H:i" ) , ':purchaseDate' => $purchaseDate , ':licenceto' => $licenceTo ] );
             echo "<script>console.log('Successful activation');</script>";
         } else {
             jhl_licenceerror();

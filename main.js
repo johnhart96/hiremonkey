@@ -15,6 +15,9 @@ app.on('ready', () => {
           click: function() { navigate( "index.php" ) },
           accelerator: 'CmdOrCtrl+D'
         },{
+          label: "Change",
+          click: function() { navigate( "static/company_select.php" ) }
+        },{
           label: 'Settings',
           click: function() { navigate( "index.php?l=settings" ) }
         },{
@@ -146,7 +149,7 @@ function createWindow() {
     minWidth: 1024,
     minHeight: 768
   });
-  mainWindow.loadURL('http://'+server.host+':'+server.port+'/')
+  mainWindow.loadURL('http://'+server.host+':'+server.port+'/static/company_select.php');
   const {shell} = require('electron')
   shell.showItemInFolder('fullPath');
   mainWindow.on('closed', function () {
