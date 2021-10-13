@@ -6,6 +6,16 @@ require_once '../inc/version.php';
 
 // Start session
 session_start();
+if ( PLATFORM == "windows" ) {
+    $uuid = shell_exec( "wmic path win32_computersystemproduct get uuid" );
+} else if( PLATFORM == "macos" ) {
+    $command = shell_exec( "ioreg -l | grep IOPlatformSerialNumber" );
+    $uuid = str_replace( '"IOPlatformSerialNumber" = "' , "" , $command );
+    $uuid = str_replace( "| " , "" , $uuid );
+    $uuid = str_replace( '"' , "" , $uuid );
+    $uuid = str_replace( ' ' , "" , $uuid );
+} 
+$_SESSION['uuid'] = md5( $uuid ) ;
 
 // Submit open
 if( isset( $_POST['submitOpen'] ) ) {

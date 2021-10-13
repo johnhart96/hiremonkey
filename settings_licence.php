@@ -9,7 +9,7 @@ if( isset( $_POST['activate'] ) ) {
     $add->execute( [ ':licencekey' => $key ] );
 
     // Activation
-    $activate = jhl_activate( licence( "licencekey" ) , LICENCEVERSION );
+    $activate = jhl_activate( licence( "licencekey" ) , LICENCEVERSION , $_SESSION['uuid'] );
     if( isset( $activate->status ) ) {
         // Got a valid response
         if( $activate->status !== 200 ) {

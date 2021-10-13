@@ -41,17 +41,27 @@ require_once 'inc/version.php';
 
 // Licence control
 require_once 'inc/jhactivation.php';
-if( date( "Y-m-d" , strtotime( licence( "nextactivation" ) ) ) < date( "Y-m-d" ) && ! trial() ) {
+if( date( "Y-m-d" , strtotime( licence( "nextactivation" ) ) ) < date( "Y-m-d" ) or empty( licence( "nextactivation" ) )  && ! trial() ) {
     echo "<script>console.log('Starting activation');</script>";
-    $activation = jhl_activate( licence( "licencekey" ) , LICENCEVERSION );
+    $activation = jhl_activate( licence( "licencekey" ) , LICENCEVERSION , $_SESSION['uuid'] );
     $activationSuccessful = FALSE;
     if( isset( $activation->status ) ) {
         if( $activation->status == 200 ) {
             // Successful
             $activationSuccessful = TRUE;
             $nextActivation = filter_var( $activation->nextActivation , FILTER_SANITIZE_STRING );
-            $updateNextActivation = $db->prepare( "UPDATE `licence` SET `nextActivation` =:nextActivation WHERE `id` > 0" );
-            $updateNextActivation->execute( [ ':nextActivation' => $nextActivation ] );
+            $purchaseDate = filter_var( $activation->purchaseDate , FILTER_SANITIZE_STRING );
+            $licenceTo = filter_var( $activation->customer , FILTER_SANITIZE_STRING );
+            $updateNextActivation = $db->prepare("
+                UPDATE `licence` SET
+                    `nextactivation` =:nextActivation,
+                    `lastactivation` =:lastActivation,
+                    `purchasedate` =:purchaseDate,
+                    `licenceto` =:licenceto
+
+                WHERE `id` > 0
+            ");
+            $updateNextActivation->execute( [ ':nextActivation' => $nextActivation , ':lastActivation' => date( "Y-m-d H:i" ) , ':purchaseDate' => $purchaseDate , ':licenceto' => $licenceTo ] );
             echo "<script>console.log('Successful activation');</script>";
         } else {
             jhl_licenceerror();
