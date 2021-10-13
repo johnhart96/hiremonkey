@@ -1,44 +1,17 @@
 <?php
-// OS detection
-if (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN') {
-    define( "PLATFORM" , "windows" );
-} else if( strtoupper( PHP_OS ) == "DARWIN" ) {
-    define( "PLATFORM" , "macos" );
-} else {
-    die( "Unknown OS!" );
-}
-
-// Locate a database file
-if( PLATFORM == "macos" ) {
-    $home = shell_exec( "echo ~/monkey" );
-    define( "usrPath" , preg_replace('/\s+/', '', $home ) );
-} else if( PLATFORM == "windows" ) {
-    $home = shell_exec( "echo %USERPROFILE%\monkey" );
-    $home = str_replace( DIRECTORY_SEPARATOR , "/" , $home );
-    define( "usrPath" , dirname($home) . "/monkey" );
-}
-// Check for usr path
-if( ! file_exists( usrPath ) ) {
-    if( PLATFORM == "macos" ) {
-        shell_exec( "mkdir " . usrPath );
-    } else {
-        shell_exec( 'mkdir "' . usrPath . "'" );
-    }
-}
+require 'inc/usrPath.php';
 // Check local DB file
-$dbpath = usrPath . "/monkey.db";
+session_start();
+if( ! isset( $_SESSION['company'] ) ) {
+    header( "Location:static/company_select.php" );
+}
+$dbpath = usrPath . "/" . $_SESSION['company'];
 if( ! file_exists( $dbpath ) ) {
-    // Create new file
-    $blank = fopen( "inc/default_database.sql" , "r" );
-    $blank_db = fread( $blank , filesize( "inc/default_database.sql" ) );
-    fclose( $blank );
-    $newDB = new SQLite3( usrPath . "/monkey.db" );
-    $newDB->query( $blank_db );
-    go( "static/welcome.php" );
-    
+    session_destroy();
+    header( "Location:static/company_select.php" );
 } else {
     try {
-        $db = new PDO( "sqlite:" . usrPath . "/monkey.db" );
+        $db = new PDO( "sqlite:" . $dbpath );
         $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
     } catch( Exception $e ) {
         die( "Unable to open local database file: " . $e->getMessage() );

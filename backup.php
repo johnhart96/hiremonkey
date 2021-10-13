@@ -24,22 +24,6 @@
             // Starting off
             $backup = array();
 
-            // Tables
-            $tables = array(
-                'categories',
-                'company',
-                'customers',
-                'customers_addresses',
-                'customers_contacts',
-                'jobs',
-                'jobs_cat',
-                'jobs_lines',
-                'kit',
-                'kit_accessories',
-                'kit_stock',
-                'sloc'
-            );
-
             // Loop
             foreach( $tables as $table ) {
                 $backup[$table] = array();

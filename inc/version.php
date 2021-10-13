@@ -15,4 +15,21 @@ if( file_exists( "package.json" ) ) {
 }
 define( "BUILD_STATUS" , "alpha" ); 
 define( "LICENCEVERSION" , 1 ); 
+define( "FULLBUILD" , "1.0.0.12" );
+
+// Important table list
+$tables = array(
+    'categories',
+    'company',
+    'customers',
+    'customers_addresses',
+    'customers_contacts',
+    'jobs',
+    'jobs_cat',
+    'jobs_lines',
+    'kit',
+    'kit_accessories',
+    'kit_stock',
+    'sloc'
+);
 ?>
