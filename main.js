@@ -27,6 +27,15 @@ app.on('ready', () => {
         }
       ]
     },{
+      label: "File",
+      submenu: [
+        {
+          label: "Print",
+          click: function() { print(); },
+          accelerator: 'CmdOrCtrl+P'
+        }
+      ]
+    },{
       label: "Edit",
       submenu: [
         {
@@ -180,3 +189,14 @@ app.on('activate', function () {
 // Disable security warnings
 process.env['ELECTRON_DISABLE_SECURITY_WARNINGS'] = 'true';
 
+// Printing
+function print() {
+  let win = BrowserWindow.getFocusedWindow();
+	// let win = BrowserWindow.getAllWindows()[0];
+
+	win.webContents.print(options, (success, failureReason) => {
+		if (!success) console.log(failureReason);
+
+		console.log('Print Initiated');
+	});
+}
