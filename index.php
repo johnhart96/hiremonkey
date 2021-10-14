@@ -1,9 +1,12 @@
+<?php 
+session_start();
+require_once 'inc/functions.php';
+?>
 <html>
   <head>
     <title>HireMonkey</title>
     
     <?php
-    require_once 'inc/functions.php';
     require_once 'inc/header.php';
     ?>
   </head>

@@ -1,9 +1,8 @@
 <?php
 require 'inc/usrPath.php';
 // Check local DB file
-session_start();
 if( ! isset( $_SESSION['company'] ) ) {
-    header( "Location:static/company_select.php" );
+    go( "static/company_select.php" );
 }
 $dbpath = usrPath . "/" . $_SESSION['company'];
 if( ! file_exists( $dbpath ) ) {
