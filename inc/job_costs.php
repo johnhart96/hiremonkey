@@ -6,9 +6,6 @@
     <?php
     $getJobCats = $db->prepare( "SELECT * FROM `jobs_cat` WHERE `job` =:jobID" );
     $getJobCats->execute( [ ':jobID' => $id ] );
-    $_SESSION['totalCost'] = 0.0;
-    $_SESSION['totalPrice'] = 0.0;
-    $_SESSION['totalProfit'] = 0.0;
     function getItems( $job , $cat , $parent = 0 ) {
         global $db;
         global $days;
@@ -71,7 +68,11 @@
             getItems( $job , $cat , $parent );
         }
     }
+    $_SESSION['grandTotal'] = 0.0;
     while( $cat = $getJobCats->fetch( PDO::FETCH_ASSOC ) ) {
+        $_SESSION['totalCost'] = 0.0;
+        $_SESSION['totalPrice'] = 0.0;
+        $_SESSION['totalProfit'] = 0.0;
         echo "<h3>" . $cat['cat'] . ":</h3>";
         echo "<table class='table table-bordered table-stripe' style='text-align:center'>";
         // table head
@@ -110,6 +111,14 @@
         echo "</th>";
         echo "</tr>";
         echo "</table>";
+        $_SESSION['grandTotal'] = $_SESSION['grandTotal'] + $_SESSION['totalPrice'];
     }
     ?>
+    <table class='table table-bordered'>
+        <tr>
+            <td width='80%' colspan='5'><strong>Total Price:</td>
+            <td width='10%' style='text-align:center;'><strong><?php echo company( 'currencysymbol' ) . $_SESSION['grandTotal']; ?></strong></td>
+            <td width='10%'></td>
+        <tr>
+    </table>
 </form>
