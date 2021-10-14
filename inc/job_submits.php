@@ -63,15 +63,26 @@ if( isset( $_POST['submitLineEdit'] ) ) {
     $cat = filter_var( $_POST['cat'] , FILTER_SANITIZE_NUMBER_INT );
     $price = filter_var( $_POST['price'] , FILTER_VALIDATE_FLOAT );
     $notes = filter_var( $_POST['notes'] , FILTER_SANITIZE_STRING );
-    if( isset( $_POST['qty'] ) ) {
+    $lineType = filter_var( $_POST['lineType'] , FILTER_SANITIZE_STRING );
+    if( ! empty( $_POST['qty'] ) ) {
         $qty = filter_var( $_POST['qty'] , FILTER_SANITIZE_NUMBER_INT );
+    } else {
+        $qty = 1;
+    }
+    if( $lineType !== "hire" ) {
+        $stockEffect = $qty *-1;
+    } else {
+        $stockEffect = 0;
+    }
+    if( isset( $_POST['qty'] ) ) {
         $update = $db->prepare("
             UPDATE `jobs_lines` SET
                 `cat` =:cat,
                 `price` =:price,
                 `qty` =:qty,
                 `stockeffect` =:stockEffect,
-                `notes` =:notes
+                `notes` =:notes,
+                `lineType` =:lineType
             WHERE `id` =:lineID AND `job` =:jobID
         ");
         $update->execute([
@@ -81,7 +92,8 @@ if( isset( $_POST['submitLineEdit'] ) ) {
             ':qty' => $qty,
             ':jobID' => $id,
             ':notes' => $notes,
-            ':stockEffect' => $qty * -1
+            ':stockEffect' => $stockEffect,
+            ':lineType' => $lineType
         ]);
     } else {
         $update = $db->prepare("

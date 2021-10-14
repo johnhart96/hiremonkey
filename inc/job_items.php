@@ -33,7 +33,10 @@
             if( $line['dispatch'] == 0 ) {
                 echo "<a class='line_select' href='index.php?l=job_view&id=$id&editline=" . $line['id'] . "'>";
             }
-            if( $avlb < -1 ) {
+            if( $line['linetype'] !== "hire" ) {
+                $avlb = 1000000000000000000000;
+            }
+            if( $avlb < 1 ) {
                 echo "<span style='color:red' data-bs-toggle='tooltip' data-bs-placement='top' title='Stock shortage'>";
                 echo $line['itemName'];
                 echo "</span>";

@@ -128,6 +128,21 @@
                         $getSelectedLine->execute( [ ':jobID' => $id , ':lineID' => $selectedLine ] );
                         $line = $getSelectedLine->fetch( PDO::FETCH_ASSOC );
 
+                        // Line type
+                        echo "<div class='input-group'>";
+                        echo "<div class='input-group-prepend'><span class='input-group-text'>Type:</span></div>";
+                        echo "<select name='lineType' class='form-control'>";
+                        $types = array( 'hire', 'text', 'subhire' );
+                        foreach( $types as $try ) {
+                            if( $try == $line['linetype'] ) {
+                                echo "<option value='$try' selected>" . ucfirst( $try ) . "</option>";
+                            } else {
+                                echo "<option value='$try'>" . ucfirst( $try ) . "</option>";
+                            }
+                        }
+                        echo "</select>";
+                        echo "</div>";
+                    
                         // Cat
                         echo "<div class='input-group'>";
                         echo "<div class='input-group-prepend'><span class='input-group-text'>Category:</span></div>";

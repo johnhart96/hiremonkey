@@ -39,7 +39,7 @@
             echo "<td>" . ucfirst( $item['linetype']  ). "</td>";
             // Storage Location
             echo "<td>";
-            if( $item['linetype'] == "hire" ) {
+            if( $item['linetype'] !== "text" ) {
                 $getKit->execute( [ ':kitID' => $item['kit'] ] );
                 $kit = $getKit->fetch( PDO::FETCH_ASSOC );
                 $weight = (double)$kit['weight'];
