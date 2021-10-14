@@ -26,6 +26,8 @@ if( isset( $_POST['submitOpen'] ) ) {
     $fetch = $getVersion->fetch( PDO::FETCH_ASSOC );
     $companyName = $fetch['name'];
     $companyVersion = $fetch['appversion'];
+
+    /*****                      Does an upgrade need to be done?                            *****/
     if( $companyVersion !== FULLBUILD ) {
         // Upgrade required
         $upgrade = array();
@@ -56,11 +58,16 @@ if( isset( $_POST['submitOpen'] ) ) {
         }
 
         $company = $newDB->prepare("
-            INSERT INTO `company` (`id`,`name`,`address_line1`,`address_line2`,`town`,`postcode`,`telephone`,`website`,`email`,`currencysymbol`,`lastbackup`,`appversion`)
-            VALUES(:id,:company,:address_line1,:address_line2,:town,:postcode,:telephone,:website,:email,:currencysymbol,:lastbackup,:appversion)
+            INSERT INTO `company` (`id`,`name`,`address_line1`,`address_line2`,`town`,`postcode`,`telephone`,`website`,`email`,`currencysymbol`,`lastbackup`,`appversion`,`welcome`)
+            VALUES(:id,:company,:address_line1,:address_line2,:town,:postcode,:telephone,:website,:email,:currencysymbol,:lastbackup,:appversion,:welcome)
         ");
         require '../inc/version.php';
         foreach( $upgrade['company'] as $com ) {
+            if( isset( $com['welcome'] ) ) {
+                $welcome = $com['welcome'];
+            } else {
+                $welcome = 1;
+            }
             $company->execute([
                 ':id' => $com['id'],
                 ':company' => $com['name'],
@@ -73,7 +80,8 @@ if( isset( $_POST['submitOpen'] ) ) {
                 ':email' => $com['email'],
                 ':currencysymbol' => $com['currencysymbol'],
                 ':lastbackup' => $com['lastbackup'],
-                ':appversion' => FULLBUILD
+                ':appversion' => FULLBUILD,
+                ':welcome' => $welcome
             ]);
         } 
 

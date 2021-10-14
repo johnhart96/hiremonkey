@@ -31,10 +31,15 @@ foreach( $upgrade['categories'] as $cat ) {
 }
 
 $company = $newDB->prepare("
-    INSERT INTO `company` (`id`,`name`,`address_line1`,`address_line2`,`town`,`postcode`,`telephone`,`website`,`email`,`currencysymbol`,`lastbackup`,`appversion`)
-    VALUES(:id,:company,:address_line1,:address_line2,:town,:postcode,:telephone,:website,:email,:currencysymbol,:lastbackup,:appversion)
+    INSERT INTO `company` (`id`,`name`,`address_line1`,`address_line2`,`town`,`postcode`,`telephone`,`website`,`email`,`currencysymbol`,`lastbackup`,`appversion`,`welcome`)
+    VALUES(:id,:company,:address_line1,:address_line2,:town,:postcode,:telephone,:website,:email,:currencysymbol,:lastbackup,:appversion,:welcome)
 ");
 foreach( $upgrade['company'] as $com ) {
+    if( isset( $com['welcome'] ) ) {
+        $welcome = $com['welcome'];
+    } else {
+        $welcome = 1;
+    }
     $company->execute([
         ':id' => $com['id'],
         ':company' => $com['name'],
@@ -47,7 +52,8 @@ foreach( $upgrade['company'] as $com ) {
         ':email' => $com['email'],
         ':currencysymbol' => $com['currencysymbol'],
         ':lastbackup' => $com['lastbackup'],
-        ':appversion' => FULLBUILD
+        ':appversion' => FULLBUILD,
+        ':welcome' => $welcome
     ]);
 } 
 
@@ -70,7 +76,7 @@ foreach( $upgrade['customers'] as $cus ) {
 }
 
 $customers_addresses = $newDB->prepare("
-    INSERT INTO `customers_addresses` (`id`,`customer`,`line1`,`line2`,`town`,`postcode`)
+    INSERT INTO `customers_addresses` (`id`,`customer`,`line1`,`line2`,`town`,`postcode`,)
     VALUES(:id,:customers_addresses,:line1,:line2,:town,:postcode)
 ");
 foreach( $upgrade['customers_addresses'] as $address ) {
