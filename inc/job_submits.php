@@ -204,7 +204,7 @@ if( isset( $_POST['submitNewItem'] ) ) {
                     $f = $getAccessory->fetch( PDO::FETCH_ASSOC );
                     $accName = $f['name'];
                     echo "<script>console.log('$accName');</script>";
-                    $error = newLine( $accName , (int)$acc['qty'] , TRUE , $parent , $mandatory , $acc['type'] , $acc['price'] );
+                    $error = newLine( $accName , (int)$acc['qty'] * $qty , TRUE , $parent , $mandatory , $acc['type'] , $acc['price'] );
                 } 
             }
         } else {
@@ -224,7 +224,7 @@ if( isset( $_POST['submitNewItem'] ) ) {
             return $error;
         }
     }
-    $error = newLine( $new , $qty , FALSE , 0 );
+    $error = newLine( $new , $qty , TRUE , 0 );
 }
 // Cancel the job
 if( isset( $_POST['cancelJob'] ) ) {

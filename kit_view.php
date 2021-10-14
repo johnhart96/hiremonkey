@@ -63,8 +63,9 @@ if( isset( $_POST['submitNewAccessory'] ) ) {
     $type = filter_var( $_POST['type'] , FILTER_SANITIZE_STRING );
     $price = filter_var( $_POST['price'] , FILTER_VALIDATE_FLOAT );
     $mandatory = filter_var( $_POST['mandatory'] , FILTER_SANITIZE_NUMBER_INT );
-    $insert = $db->prepare( "INSERT INTO `kit_accessories` (`accessory`,`type`,`price`,`kit`,`mandatory`) VALUES(:accessory,:accType,:price,:kit,:mandatory)" );
-    $insert->execute( [ ':accessory' => $accessory , ':accType' => $type , ':price' => $price , ':kit' => $id , ':mandatory' => $mandatory ] );
+    $qty = filter_var( $_POST['qty'] , FILTER_SANITIZE_NUMBER_INT );
+    $insert = $db->prepare( "INSERT INTO `kit_accessories` (`accessory`,`type`,`price`,`kit`,`mandatory`,`qty`) VALUES(:accessory,:accType,:price,:kit,:mandatory,:qty)" );
+    $insert->execute( [ ':accessory' => $accessory , ':accType' => $type , ':price' => $price , ':kit' => $id , ':mandatory' => $mandatory , ':qty' => $qty ] );
     $saved = true;
 }
 
@@ -387,6 +388,7 @@ $kit = $getCurrent->fetch( PDO::FETCH_ASSOC );
                         <th>Type</th>
                         <th>Mandatory</th>
                         <th>Price</th>
+                        <th>Qty</th>
                         <th colspan="2"></th>
                     </tr>
                     <?php
@@ -428,7 +430,8 @@ $kit = $getCurrent->fetch( PDO::FETCH_ASSOC );
                             echo "</td>";
                             // Price
                             echo "<td>" . company( "currencysymbol" ) .  price( $accessory['price'] ) . "</td>";
-                            
+                            // Qty
+                            echo "<td>" . $accessory['qty'] . "</td>";
                             // Delete
                             echo "<td width='1'>";
                             $modal = "deleteaccessory_" . $accessory['id'];
@@ -450,7 +453,7 @@ $kit = $getCurrent->fetch( PDO::FETCH_ASSOC );
                     getAccessories( $id );
                     ?>
                     <tr>
-                        <td colspan="5" align="center">
+                        <td colspan="6" align="center">
                             <?php
                             modalButton_green( "new" , "New" );
                             $dialog = "
@@ -465,6 +468,10 @@ $kit = $getCurrent->fetch( PDO::FETCH_ASSOC );
                             }
                             $dialog .= "
                                     </select>
+                                </div>
+                                <div class='input-group'>
+                                    <div class='input-group-prepend'><span class='input-group-text'>Qty:</span></div>
+                                    <input type='text' name='qty' class='form-control' value='1'>
                                 </div>
                                 <div class='input-group'>
                                     <div class='input-group-prepend'><span class='input-group-text'>Type:</span></div>
