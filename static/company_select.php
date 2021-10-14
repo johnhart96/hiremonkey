@@ -165,10 +165,20 @@ if( isset( $_POST['submitOpen'] ) ) {
         }
 
         $jobs_lines = $newDB->prepare("
-            INSERT INTO `jobs_lines` (`id`,`job`,`linetype`,`stockEntry`,`stockEffect`,`price`,`cat`,`qty`,`itemName`,`parent`,`kit`,`cost`,`notes`,`dispatch`,`dispatch_date`,`return`,`return_date`)
-            VALUES(:id,:job,:linetype,:stockEntry,:stockEffect,:price,:cat,:qty,:itemName,:parent,:kit,:cost,:notes,:dispatch,:dispatch_date,:retrun,:return_date)
+            INSERT INTO `jobs_lines` (`id`,`job`,`linetype`,`stockEntry`,`stockEffect`,`price`,`cat`,`qty`,`itemName`,`parent`,`kit`,`cost`,`notes`,`dispatch`,`dispatch_date`,`return`,`return_date`,`mandatory`,`accType`)
+            VALUES(:id,:job,:linetype,:stockEntry,:stockEffect,:price,:cat,:qty,:itemName,:parent,:kit,:cost,:notes,:dispatch,:dispatch_date,:retrun,:return_date,:mandatory,:accType)
         ");
         foreach( $upgrade['jobs_lines'] as $line ) {
+            if( isset( $line['mandatory'] ) ) {
+                $mandatory = $line['mandatory'];
+            } else {
+                $mandatory = 0;
+            }
+            if( isset( $line['accType'] ) ) {
+                $accType = $line['accType'];
+            } else {
+                $accType = NULL;
+            }
             $job_lines->execute([
                 ':id' => $line['id'],
                 ':job' => $line['job'],
@@ -186,7 +196,9 @@ if( isset( $_POST['submitOpen'] ) ) {
                 ':dispatch' => $line['dispatch'],
                 ':dispatch_date' => $line['dispatch_date'],
                 ':return' => $line['return'],
-                ':return_date' => $line['return_date']
+                ':return_date' => $line['return_date'],
+                ':mandatory' => $mandatory,
+                ':accType' => $accType
             ]);
         }
 
@@ -213,16 +225,22 @@ if( isset( $_POST['submitOpen'] ) ) {
         }
 
         $kit_accessories = $newDB->prepare("
-            INSERT INTO `kit_accessories` (`id`,`accessory`,`type`,`price`,`kit`,`qty`) VALUES(:id,:accessory,:type,:price,:kit,:qty)
+            INSERT INTO `kit_accessories` (`id`,`accessory`,`type`,`price`,`kit`,`qty`,`mandatory`) VALUES(:id,:accessory,:type,:price,:kit,:qty,:mandatory)
         ");
         foreach( $upgrade['kit_accessories'] as $accessory ) {
+            if( isset( $accessory['mandatory'] ) ) {
+                $mandatory = $accessory['mandatory'];
+            } else {
+                $mandatory = 0;
+            }
             $kit_accessories->execute([
                 ':id' => $accessory['id'],
                 ':accessory' => $accessory['accessory'],
                 ':type' => $accessory['type'],
                 ':price' => $accessory['price'],
                 ':kit' => $accessory['kit'],
-                ':qty' => $accessory['qty']
+                ':qty' => $accessory['qty'],
+                ':mandatory' => $mandatory
             ]);
         }
 

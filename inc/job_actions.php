@@ -154,7 +154,12 @@
                         // Qty
                         echo "<div class='input-group'>";
                         echo "<div class='input-group-prepend'><span class='input-group-text'>Qty:</span></div>";
-                        echo "<input type='text' name='qty' class='form-control' value='" . $line['qty'] . "'>";
+                        if( $line['mandatory'] == 1 ) {
+                            $disabled = "disabled";
+                        } else {
+                            $disabled = "";
+                        }
+                        echo "<input " . $disabled . " type='text' name='qty' class='form-control' value='" . $line['qty'] . "'>";
                         echo "</div>";
 
                         // Notes

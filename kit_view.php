@@ -62,9 +62,9 @@ if( isset( $_POST['submitNewAccessory'] ) ) {
     $accessory = filter_var( $_POST['accessory'] , FILTER_SANITIZE_NUMBER_INT );
     $type = filter_var( $_POST['type'] , FILTER_SANITIZE_STRING );
     $price = filter_var( $_POST['price'] , FILTER_VALIDATE_FLOAT );
-
-    $insert = $db->prepare( "INSERT INTO `kit_accessories` (`accessory`,`type`,`price`,`kit`) VALUES(:accessory,:accType,:price,:kit)" );
-    $insert->execute( [ ':accessory' => $accessory , ':accType' => $type , ':price' => $price , ':kit' => $id ] );
+    $mandatory = filter_var( $_POST['mandatory'] , FILTER_SANITIZE_NUMBER_INT );
+    $insert = $db->prepare( "INSERT INTO `kit_accessories` (`accessory`,`type`,`price`,`kit`,`mandatory`) VALUES(:accessory,:accType,:price,:kit,:mandatory)" );
+    $insert->execute( [ ':accessory' => $accessory , ':accType' => $type , ':price' => $price , ':kit' => $id , ':mandatory' => $mandatory ] );
     $saved = true;
 }
 
@@ -385,6 +385,7 @@ $kit = $getCurrent->fetch( PDO::FETCH_ASSOC );
                     <tr>
                         <th>Accessory</th>
                         <th>Type</th>
+                        <th>Mandatory</th>
                         <th>Price</th>
                         <th colspan="2"></th>
                     </tr>
@@ -414,6 +415,18 @@ $kit = $getCurrent->fetch( PDO::FETCH_ASSOC );
                                     break;
                             }
                             echo "</td>";
+                            // mandatory
+                            echo "<td>";
+                            switch( $accessory['mandatory'] ) {
+                                case 1:
+                                    echo "Yes";
+                                    break;
+                                case 0:
+                                    echo "No";
+                                    break;
+                            }
+                            echo "</td>";
+                            // Price
                             echo "<td>" . company( "currencysymbol" ) .  price( $accessory['price'] ) . "</td>";
                             
                             // Delete
@@ -437,7 +450,7 @@ $kit = $getCurrent->fetch( PDO::FETCH_ASSOC );
                     getAccessories( $id );
                     ?>
                     <tr>
-                        <td colspan="4" align="center">
+                        <td colspan="5" align="center">
                             <?php
                             modalButton_green( "new" , "New" );
                             $dialog = "
@@ -464,6 +477,13 @@ $kit = $getCurrent->fetch( PDO::FETCH_ASSOC );
                                 <div class='input-group'>
                                     <div class='input-group-prepend'><span class='input-group-text'>Price: " . company( "currencysymbol" ) . "</span></div>
                                     <input type='text' name='price' class='form-control' value='0.00'>
+                                </div>
+                                <div class='input-group'>
+                                    <div class='input-group-prepend'><span class='input-group-text'>Mandatory:</span></div>
+                                    <select name='mandatory' class='form-control'>
+                                        <option value='0'>No</option>
+                                        <option value='1'>Yes</option>
+                                    </select>
                                 </div>
                                 <input type='hidden' name='submitNewAccessory'>
                             ";

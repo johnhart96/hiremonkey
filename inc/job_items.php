@@ -46,12 +46,27 @@
             echo $end;
             echo "&nbsp;[" . company( "currencysymbol" ) . price( $line['price'] ) . "]";
             echo "&nbsp;(" . ucfirst( $line['linetype'] ) . ")";
-            if( $line['dispatch'] == 0 ) {
+            // Accessory type
+            if( ! empty( $line['accType'] ) ) {
+                switch( $line['accType'] ) {
+                    case "safety":
+                        $accType = "Safety item";
+                        break;
+                    case "accessory":
+                        $accType = "Accessory";
+                        break;
+                    case "component":
+                        $accType = "Component";
+                        break;
+                }
+                echo "&nbsp; - <em style='color: #CCC;'>" . $accType . "</em>";
+            }
+            if( $line['dispatch'] == 0 && $line['mandatory'] == 0 ) {
                 echo "&nbsp;<a class='line_link' href='index.php?l=job_view&id=$id&deleteline=" . $line['id']  . "'>X</a>";
             } else {
-                if( $line['return'] == 0 ) {
+                if( $line['dispatch'] == 1 && $line['return'] == 0  ) {
                     echo "&nbsp; - <em class='status'>DISPATCHED</em>";
-                } else {
+                } else if( $line['dispatch'] == 1 && $line['return'] == 1 ) {
                     echo "&nbsp; - <em class='status'>RETURNED</em>";
                 }
             }

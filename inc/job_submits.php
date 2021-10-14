@@ -62,26 +62,43 @@ if( isset( $_POST['submitLineEdit'] ) ) {
     $line = filter_var( $_POST['submitLineEdit'] , FILTER_SANITIZE_NUMBER_INT );
     $cat = filter_var( $_POST['cat'] , FILTER_SANITIZE_NUMBER_INT );
     $price = filter_var( $_POST['price'] , FILTER_VALIDATE_FLOAT );
-    $qty = filter_var( $_POST['qty'] , FILTER_SANITIZE_NUMBER_INT );
     $notes = filter_var( $_POST['notes'] , FILTER_SANITIZE_STRING );
-    $update = $db->prepare("
-        UPDATE `jobs_lines` SET
-            `cat` =:cat,
-            `price` =:price,
-            `qty` =:qty,
-            `stockeffect` =:stockEffect,
-            `notes` =:notes
-        WHERE `id` =:lineID AND `job` =:jobID
-    ");
-    $update->execute([
-        ':cat' => $cat,
-        ':price' => $price,
-        ':lineID' => $line,
-        ':qty' => $qty,
-        ':jobID' => $id,
-        ':notes' => $notes,
-        ':stockEffect' => $qty * -1
-    ]);
+    if( isset( $_POST['qty'] ) ) {
+        $qty = filter_var( $_POST['qty'] , FILTER_SANITIZE_NUMBER_INT );
+        $update = $db->prepare("
+            UPDATE `jobs_lines` SET
+                `cat` =:cat,
+                `price` =:price,
+                `qty` =:qty,
+                `stockeffect` =:stockEffect,
+                `notes` =:notes
+            WHERE `id` =:lineID AND `job` =:jobID
+        ");
+        $update->execute([
+            ':cat' => $cat,
+            ':price' => $price,
+            ':lineID' => $line,
+            ':qty' => $qty,
+            ':jobID' => $id,
+            ':notes' => $notes,
+            ':stockEffect' => $qty * -1
+        ]);
+    } else {
+        $update = $db->prepare("
+            UPDATE `jobs_lines` SET
+                `cat` =:cat,
+                `price` =:price,
+                `notes` =:notes
+            WHERE `id` =:lineID AND `job` =:jobID
+        ");
+        $update->execute([
+            ':cat' => $cat,
+            ':price' => $price,
+            ':lineID' => $line,
+            ':jobID' => $id,
+            ':notes' => $notes,
+        ]);
+    }
 }
 
 // Submit line delete
@@ -107,7 +124,7 @@ if( isset( $_POST['submitNewItem'] ) ) {
     $new = filter_var( $_POST['newitem'] , FILTER_SANITIZE_STRING );
     $qty = filter_var( $_POST['qty'] , FILTER_SANITIZE_NUMBER_INT );
 
-    function newLine( $new , $qty , $ignoreStock = FALSE , $parent = 0 ) {
+    function newLine( $new , $qty , $ignoreStock = FALSE , $parent = 0 , $mandatory = 0, $accType = NULL , $price = NULL ) {
         global $db;
         global $id;
         // Find item ID
@@ -128,7 +145,7 @@ if( isset( $_POST['submitNewItem'] ) ) {
                 $error = "<strong>Stock Shortage:</strong> You asked for " . $qty . ", but you only have " . $avlb . " available";
             } else {
                 // Good to add this to the job
-                $insert = $db->prepare( "INSERT INTO `jobs_lines` (`job`,`linetype`,`stockEffect`,`price`,`cat`,`qty`,`kit`,`itemName`,`parent`) VALUES(:jobID,:linetype,:stockeffect,:price,:cat,:qty,:kit,:itemName,:parent)" );
+                $insert = $db->prepare( "INSERT INTO `jobs_lines` (`job`,`linetype`,`stockEffect`,`price`,`cat`,`qty`,`kit`,`itemName`,`parent`,`mandatory`,`accType`) VALUES(:jobID,:linetype,:stockeffect,:price,:cat,:qty,:kit,:itemName,:parent,:mandatory,:accType)" );
                 
                 // Check if the cat already exists on this job
                 $getKitCat = $db->prepare( "SELECT * FROM `categories` WHERE `id` =:catID" );
@@ -151,17 +168,23 @@ if( isset( $_POST['submitNewItem'] ) ) {
                 }
                 $stockEffect = (int)$qty * -1;
 
+                // Price handel
+                if( empty( $price ) ) {
+                    $price = $fetch['price'];
+                }
                 // Add the line into the job
                 $insert->execute([
                     ':jobID' => $id,
                     ':linetype' => 'hire',
                     ':stockeffect' => $stockEffect,
-                    ':price' => $fetch['price'],
+                    ':price' => $price,
                     ':cat' => $catToUse,
                     ':qty' => $qty,
                     ':kit' => $fetch['id'],
                     ':itemName' => $fetch['name'],
-                    ':parent' => $parent
+                    ':parent' => $parent,
+                    ':mandatory' => $mandatory,
+                    ':accType' => $accType
                 ]);
 
                 // Get last entry
@@ -175,12 +198,13 @@ if( isset( $_POST['submitNewItem'] ) ) {
                 while( $acc = $getAccessories->fetch( PDO::FETCH_ASSOC ) ) {
                     echo "<script>console.log('Has accessory');</script>";
                     $accessoryID = $acc['accessory'];
+                    $mandatory = $acc['mandatory'];
                     $getAccessory = $db->prepare( "SELECT * FROM `kit` WHERE `id` =:accID LIMIT 1" );
                     $getAccessory->execute( [ ':accID' => $accessoryID ] );
                     $f = $getAccessory->fetch( PDO::FETCH_ASSOC );
                     $accName = $f['name'];
                     echo "<script>console.log('$accName');</script>";
-                    $error = newLine( $accName , (int)$acc['qty'] , TRUE , $parent );
+                    $error = newLine( $accName , (int)$acc['qty'] , TRUE , $parent , $mandatory , $acc['type'] , $acc['price'] );
                 } 
             }
         } else {
