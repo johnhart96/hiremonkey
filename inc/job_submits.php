@@ -329,4 +329,9 @@ if( isset( $_POST['completeJob'] ) ) {
     $completeJob = $db->prepare( "UPDATE `jobs` SET `complete` =1 WHERE `id` =:jobID" );
     $completeJob->execute( [ ':jobID' => $id ] );
 }
+// Document open
+if( isset( $_POST['submitOpenDoc'] ) ) {
+    $doc = filter_var( $_POST['doc'] , FILTER_SANITIZE_STRING );
+    echo "<script>window.open('static/$doc.php?id=$id');</script>";
+}
 ?>

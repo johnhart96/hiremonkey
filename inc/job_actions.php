@@ -93,6 +93,26 @@
                     }
                     ?>
                 </div>
+                <p>&nbsp;</p>
+                <div class="btn-group">
+                    <?php
+                    modalButton( "doc" , "Documents" );
+                    $dialog = "
+                        <p>Please select the document you want to open</p>
+                        <div class='input-group'>
+                            <select name='doc' class='form-control'>
+                                <option selected disabled></option>
+                                <option value='quote'>Quotation</option>
+                                <option value='order'>Order Confirmation</option>
+                                <option value='dispatch'>Dispatch note</option>
+                                <option value='prep'>Picking list</option>
+                            </select>
+                        </div>
+                        <input type='hidden' name='submitOpenDoc'>
+                    ";
+                    modal( "doc" , "Open document" , $dialog , "Open Cancel" );
+                    ?>
+                </div>
             </center>
         </div>
     </div>
