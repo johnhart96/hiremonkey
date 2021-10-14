@@ -10,6 +10,7 @@
     <?php
     $getJobCats = $db->prepare( "SELECT * FROM `jobs_cat` WHERE `job` =:jobID" );
     $getJobCats->execute( [ ':jobID' => $id ] );
+    $_SESSION['weight'] = 0.0;
     function getItems( $job , $parent = 0 ) {
         global $db;
         if( $parent == 0 ) {
@@ -23,7 +24,7 @@
         while( $item = $getItems->fetch( PDO::FETCH_ASSOC ) ) {
             echo "<tr>";
             // Item name
-            echo "<td>";
+            echo "<td style='text-align: left'>";
             if( (int)$item['parent'] == 0 ) {
                 echo "<strong>";
                 echo $item['itemName'];
@@ -41,12 +42,15 @@
             if( $item['linetype'] == "hire" ) {
                 $getKit->execute( [ ':kitID' => $item['kit'] ] );
                 $kit = $getKit->fetch( PDO::FETCH_ASSOC );
+                $weight = (double)$kit['weight'];
                 echo sloc($kit['sloc'] );
             } else {
                 echo "<em>N/A</em>";
             }
             echo "</td>";
-            
+            // Weight
+            $_SESSION['weight'] = $_SESSION['weight'] + $weight;
+            echo "<td>"  .$weight . "</td>";
             // Dispatch
             echo "<td align='center' width='1'>";
             $checkname = "dispatch_" . $item['id'];
@@ -75,17 +79,27 @@
         }
     }
     ?>
-    <table class="table table-bordered table-striped">
+    <table class="table table-bordered table-striped" style="text-align: center;">
         <tr>
             <th>Item</th>
             <th>Qty</th>
             <th>Type</th>
             <th>Storage Location</th>
+            <th>Weight (KG)</th>
             <th>Dispatch</th>
             <th>Return</th>
         </tr>
         <?php
         getItems( $id , 0 );
         ?>
+        <tr>
+            <th>&nbsp;</th>
+            <th>&nbsp;</th>
+            <th>&nbsp;</th>
+            <th>&nbsp;</th>
+            <th><?php echo $_SESSION['weight']; ?>KG</th>
+            <th>&nbsp;</th>
+            <th>&nbsp;</th>
+        </tr>
     </table>
 </form>
