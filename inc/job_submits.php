@@ -288,7 +288,7 @@ if( isset( $_POST['submitUndo'] ) ) {
         $processReturn = $db->prepare( "UPDATE `jobs_lines` SET `return` =0 , `return_date` =NULL , `complete` =0 WHERE `job` =:jobID" );
         $processReturn->execute( [ ':jobID' => $id ] ); 
     } else if( $action == "dispatch" ) {
-        $processDispatch = $db->prepare( "UPDATE `jobs_lines` SET `return` =0 , `return_date` =NULL , `dispatch` =0 , `dispatch_date` =NULL , `complete` =0 WHERE `job` =:jobID" );
+        $processDispatch = $db->prepare( "UPDATE `jobs_lines` SET `return` =0 , `return_date` =NULL , `dispatch` =0 , `dispatch_date` =NULL WHERE `job` =:jobID" );
         $processDispatch->execute( [ ':jobID' => $id ] ); 
     } else if( $action == "complete" ) {
         $processComplete = $db->prepare( "UPDATE `jobs` SET `complete` =0 WHERE `id` =:jobID" );
