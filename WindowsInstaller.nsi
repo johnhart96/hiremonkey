@@ -2,7 +2,7 @@
 
 ; HM NIS Edit Wizard helper defines
 !define PRODUCT_NAME "HireMonkey"
-!define PRODUCT_VERSION "1.0.0.12"
+!define PRODUCT_VERSION "1.0.0.13"
 !define PRODUCT_PUBLISHER "John Hart"
 !define PRODUCT_WEB_SITE "https://jh96.co.uk"
 !define PRODUCT_DIR_REGKEY "Software\Microsoft\Windows\CurrentVersion\App Paths\HireMonkey.exe"
@@ -38,7 +38,7 @@
 ; MUI end ------
 
 Name "${PRODUCT_NAME} ${PRODUCT_VERSION}"
-OutFile "builds\HireMonkey-amd64-1.0.0.12.exe"
+OutFile "builds\HireMonkey-amd64-1.0.0.13.exe"
 InstallDir "$PROGRAMFILES\HireMonkey"
 InstallDirRegKey HKLM "${PRODUCT_DIR_REGKEY}" ""
 ShowInstDetails show
