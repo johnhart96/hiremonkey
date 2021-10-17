@@ -47,7 +47,11 @@ function trial() {
   $checkForLicence = $db->query( "SELECT * FROM `licence` LIMIT 1" );
   $fetch = $checkForLicence->fetch( PDO::FETCH_ASSOC );
   if( isset( $fetch['licencekey'] ) ) {
-    return FALSE;
+    if( $fetch['licencekey'] == "trial" ) {
+      return TRUE;
+    } else {
+      return FALSE;
+    }
   } else {
     return TRUE;
   }

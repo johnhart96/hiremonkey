@@ -27,7 +27,7 @@ function jhl_activate( $key , $version , $uuid = NULL ) {
 }
 function jhl_licenceerror() {
     if( isset( $_POST ) ) {
-        if( ! isset( $_POST['activate'] ) ) {
+        if( ! isset( $_POST['activate'] ) AND ! isset( $_POST['deactivate'] ) ) {
             unset( $_POST );
         }
     }

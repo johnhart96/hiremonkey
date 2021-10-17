@@ -43,9 +43,11 @@ if( date( "Y-m-d" , strtotime( licence( "nextactivation" ) ) ) < date( "Y-m-d" )
             $updateNextActivation->execute( [ ':nextActivation' => $nextActivation , ':lastActivation' => date( "Y-m-d H:i" ) , ':purchaseDate' => $purchaseDate , ':licenceto' => $licenceTo ] );
             echo "<script>console.log('Successful activation');</script>";
         } else {
-            jhl_licenceerror();
-            $licenceError = true;
-            echo "<script>console.log('Error with activation');</script>";
+            if( ! trial() ) {
+                jhl_licenceerror();
+                $licenceError = true;
+                echo "<script>console.log('Error with activation');</script>";
+            }
         }
     } else {
         jhl_licenceerror();
