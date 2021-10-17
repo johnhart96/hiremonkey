@@ -21,10 +21,11 @@ if( isset( $_POST['submit'] ) ) {
         <hr />
         <?php
         if( trial() ) {
-            if( entry_count( "kit" ) >= 10 ) {
+            if( entry_count( "jobs" ) >= 10 ) {
                 echo "<div class='alert alert-danger'><strong>Error:</strong> You can only have 10 jobs in trial mode!</div>";
             } else {
-                echo "<div class='alert alert-warning'><strong>Warning:</strong> You can only add " . 10 - entry_count( "jobs" ) . " more jobs while in trial mode!</div>";
+                $left = 10 - entry_count( "jobs" );
+                echo "<div class='alert alert-warning'><strong>Warning:</strong> You can only add " . $left . " more jobs while in trial mode!</div>";
             }
         }
         ?>
