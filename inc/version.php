@@ -30,6 +30,7 @@ $tables = array(
     'kit',
     'kit_accessories',
     'kit_stock',
-    'sloc'
+    'sloc',
+    'licence'
 );
 ?>

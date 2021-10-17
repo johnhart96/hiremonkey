@@ -242,7 +242,7 @@ if( isset( $_POST['submitNewItem'] ) ) {
 if( isset( $_POST['cancelJob'] ) ) {
     $jobToCancel = filter_var( $_POST['cancelJob'] , FILTER_SANITIZE_NUMBER_INT );
     $delLines = $db->prepare( "DELETE FROM `jobs_lines` WHERE `job` =:jobID" );
-    $delJob = $db->prepare( "DELETE FROM `jobs_lines` WHERE `job` =:jobID" );
+    $delJob = $db->prepare( "DELETE FROM `jobs` WHERE `id` =:jobID" );
     $delLines->execute( [ ':jobID' => $jobToCancel ] );
     $delJob->execute( [ ':jobID' => $jobToCancel ] );
     go( "index.php?l=job_browse&canceled" );
