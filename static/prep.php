@@ -186,6 +186,18 @@ $job = $getJob->fetch( PDO::FETCH_ASSOC );
                 </div>
                 <div class="col">&nbsp;</div>
             </div>
+            <div class="row">&nbsp;</div>
+            <div class="row">
+                <div class="col">
+                    <center>
+                        <?php
+                        if( trial() ) {
+                            echo "Generated using a trial of HireMonkey";
+                        }
+                        ?>
+                    </center>
+                <div>
+            </div>
         </div>
     </body>
 </html>

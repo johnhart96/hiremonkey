@@ -13,6 +13,9 @@ $id = filter_var( $_GET['id'] , FILTER_SANITIZE_NUMBER_INT );
 $getJob = $db->prepare( "SELECT * FROM `jobs` WHERE `id` =:id" );
 $getJob->execute( [ ':id' => $id ] );
 $job = $getJob->fetch( PDO::FETCH_ASSOC );
+$getCustomer = $db->prepare( "SELECT * FROM `customers` WHERE `id` =:id LIMIT 1" );
+$getCustomer->execute(  [ ':id' => (int)$job['customer'] ] );
+$customer = $getCustomer->fetch( PDO::FETCH_ASSOC );
 ?>
 <html>
     <head>
@@ -190,13 +193,26 @@ $job = $getJob->fetch( PDO::FETCH_ASSOC );
                                 <th>Total:</th>
                                 <th><?php echo company( 'currencysymbol' ) . price( $_SESSION['jobTotal'] ); ?></th>
                             </tr>
+                            <tr>
+                                <th>Payment terms:</th>
+                                <th><?php echo $customer['invoice_terms']; ?> days</th>
+                            </tr>
                         </table>
                     </div>
                 </div>
             </div>
             <div class="line"><hr /></div>
             <div class="row">
-                <div class="col"><center>This is not an invoice, equipment is not reserved!</center><div>
+                <div class="col">
+                    <center>
+                        This is not an invoice, equipment is not reserved! <br />
+                        <?php
+                        if( trial() ) {
+                            echo "Generated using a trial of HireMonkey";
+                        }
+                        ?>
+                    </center>
+                <div>
             </div>
         </div>
     </body>

@@ -196,7 +196,16 @@ $job = $getJob->fetch( PDO::FETCH_ASSOC );
             </div>
             <div class="line"><hr /></div>
             <div class="row">
-                <div class="col"><center>This is not an invoice, equipment is confirmed!</center><div>
+                <div class="col">
+                    <center>
+                        This is not an invoice, equipment is confirmed! <br />
+                        <?php
+                        if( trial() ) {
+                            echo "Generated using a trial of HireMonkey";
+                        }
+                        ?>
+                    </center>
+                <div>
             </div>
         </div>
     </body>
