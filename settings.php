@@ -52,7 +52,6 @@ if( isset( $_POST['submit'] ) ) {
     <div class="col">
         <ul class="nav nav-tabs">
             <li class="nav-item"><a class="nav-link active" aria-current="page" href="index.php?l=settings">Company</a></li>
-            <li class="nav-item"><a class="nav-link" aria-current="page" href="index.php?l=settings_db">Database</a></li>
             <li class="nav-item"><a class="nav-link" aria-current="page" href="index.php?l=settings_licence">Licence</a></li>
             <li class="nav-item"><a class="nav-link" aria-current="page" href="index.php?l=settings_sloc">Storage Locations</a></li>
         </ul>

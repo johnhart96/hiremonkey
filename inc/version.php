@@ -15,7 +15,7 @@ if( file_exists( "package.json" ) ) {
 }
 define( "BUILD_STATUS" , "alpha" ); 
 define( "LICENCEVERSION" , 1 ); 
-define( "FULLBUILD" , "1.0.0.13" );
+define( "FULLBUILD" , "1.0.0.14" );
 
 // Important table list
 $tables = array(

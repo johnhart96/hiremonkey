@@ -16,26 +16,6 @@ if( ! file_exists( $dbpath ) ) {
         die( "Unable to open local database file: " . $e->getMessage() );
     }
 }
-// Check for a remote database connection
-$checkForRemotes = $db->query( "SELECT * FROM `remote` ORDER BY `id` ASC LIMIT 1" );
-$fetch = $checkForRemotes->fetch( PDO::FETCH_ASSOC );
-if( $fetch ) {
-    // Remotes found
-    echo "<script>console.log('Starting remote database connection');</script>";
-    $host = $fetch['host'];
-    $username = $fetch['username'];
-    $password = $fetch['password'];
-    $dbname = $fetch['dbname'];
-    unset( $db );
-    try{
-        $db = new PDO( "mysql:host=" . $host . ";dbname=" . $dbname , $username , $password );
-    } catch( PDOException $Exception ) {
-        header( "Location: static/error_remote.php" );
-    }
-} else {
-    echo "<script>console.log('Remaining with local database');</script>";
-}
-
 require_once 'inc/version.php';
 
 // Licence control
