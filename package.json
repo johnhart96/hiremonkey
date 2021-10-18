@@ -7,9 +7,11 @@
   "scripts": {
     "start": "DEBUG=true electron .",
     "startWin": "electron .",
-    "build-mac": "electron-packager . --overwrite --platform=darwin --no-asar --icon=icons/logo.icns --prune=true --out=builds",
+    "build-mac-arm64": "electron-packager . --overwrite --platform=darwin --no-asar --icon=icons/logo.icns --prune=true --out=builds --arch=arm64",
+    "build-mac-intel": "electron-packager . --overwrite --platform=darwin --no-asar --icon=icons/logo.icns --prune=true --out=builds --arch=x64",
     "build-win": "electron-packager . HireMonkey --overwrite --no-asar --platform=win32 --arch=x64 --icon=icons/logo.ico --prune=true --out=builds -\"John Hart\" --version-string.FileDescription=CE --version-string.ProductName=\"HireMonkey\" --set-version-string \"LegalCopyright\" \"Copyright John Hart\"",
-    "dmg-arm64": "electron-installer-dmg builds/hiremonkey-darwin-arm64/hiremonkey.app HireMonkey --out=builds/hiremonkey-darwin-arm64 --overwrite --icon=icons/logo.icns"
+    "dmg-arm64": "electron-installer-dmg builds/hiremonkey-darwin-arm64/hiremonkey.app HireMonkey --out=builds/hiremonkey-darwin-arm64 --overwrite --icon=icons/logo.icns",
+    "dmg-x64": "electron-installer-dmg builds/hiremonkey-darwin-x64/hiremonkey.app HireMonkey --out=builds/hiremonkey-darwin-x64 --overwrite --icon=icons/logo.icns"
   },
   "author": "John Hart",
   "dependencies": {
@@ -19,7 +21,7 @@
   },
   "devDependencies": {
     "electron": "^15.1.0",
-    "electron-packager": "^15.4.0",
-    "electron-installer-dmg": "^3.0.0"
+    "electron-installer-dmg": "^3.0.0",
+    "electron-packager": "^15.4.0"
   }
 }
