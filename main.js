@@ -3,7 +3,7 @@ const electron = require('electron');
 const app = electron.app;
 const Menu = electron.Menu;
 const BrowserWindow = electron.BrowserWindow;
-
+const {shell} = require('electron')
 // Define App Menu
 app.on('ready', () => {
   const template = [
@@ -84,8 +84,17 @@ app.on('ready', () => {
       submenu: [
         {
           label: "About",
-            click: function() { navigate( "index.php?l=about" ) }
-          }
+          click: function() { navigate( "index.php?l=about" ) }
+        },{
+          label: "Support",
+          click: function() { shell.openExternal( 'https://www.jh96.co.uk/helpdesk' ) }
+        },{
+          label: "Recover Licence",
+          click: function() { shell.openExternal( 'https://hiremonkey.app/recover-licence.php' ) }
+        },{
+          label: "Purchase Licence",
+          click: function() { shell.openExternal( 'https://hiremonkey.app/pricing.php' ) }
+        }
       ]
     }
 ];
@@ -159,7 +168,6 @@ function createWindow() {
     minHeight: 768
   });
   mainWindow.loadURL('http://'+server.host+':'+server.port+'/static/company_select.php');
-  const {shell} = require('electron')
   shell.showItemInFolder('fullPath');
   mainWindow.on('closed', function () {
     server.close();
