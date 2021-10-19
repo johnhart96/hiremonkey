@@ -246,4 +246,28 @@ function avlb( $product , $date1 , $date2 ) {
   echo "<script>console.log('" . $balence . " are avlb.');</script>";
   return $balence;
 }
+function discount_to_percent( $decimel ) {
+  if( $decimel == 1 or $decimel == 1.0 ) {
+    return 0;
+  } else if( $decimel == 0 ) {
+    return 100;
+  } else {
+    $percent = str_replace( "0." , "" , $decimel );
+    if( strlen( $percent !== 2 ) ) {
+      $percent .= "0";
+    }
+    return (int)$percent;
+  }
+}
+function discount_to_decimel( $percent ) {
+  if( $percent == 100 ) {
+    return 0;
+  } else if( $percent == 0 ) {
+    return 1;
+  } else {
+    $decimel = "0." . $percent;
+    $decimel = (double)$decimel;
+    return 1.0 - $decimel;
+  }
+}
 ?>

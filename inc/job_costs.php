@@ -44,9 +44,15 @@
             $qty = (int)$item['qty'];
             echo $qty;
             echo "</td>";
+            // Discount
+            echo "<td>";
+            $discountName = $item['id'] . "_discount";
+            $discount = discount_to_percent( $item['discount'] );
+            echo "<input class='costbox' name='$discountName' value='$discount'>";
+            echo "</td>";
             // Line total
             echo "<td>";
-            $lineTotal = $price * $qty * $days;
+            $lineTotal = $price * (double)$item['discount'] * $qty * $days;
             echo price( $lineTotal );
             $_SESSION['totalPrice'] = $_SESSION['totalPrice'] + $lineTotal;
             echo "</td>";
@@ -81,7 +87,8 @@
         echo "<th width='10%'>Type</th>";
         echo "<th width='10%'>Unit Cost (" . company( "currencysymbol" )  . ")</th>";
         echo "<th width='10%'>Unit Price (" . company( "currencysymbol" )  . ")</th>";
-        echo "<th width='10%'>Qty</th>";
+        echo "<th width='5%'>Qty</th>";
+        echo "<th width='5%'>Discount (%)</th>";
         echo "<th width='10%'>Line Total (" . company( "currencysymbol" ) . ")</th>";
 
 
@@ -95,6 +102,7 @@
         echo "<th>&nbsp;</th>";
         // Total cost
         echo "<th>" . company( "currencysymbol" ) . price( $_SESSION['totalCost'] ) . "</th>";
+        echo "<th>&nbsp;</th>";
         echo "<th>&nbsp;</th>";
         echo "<th>&nbsp;</th>";
         // Total price

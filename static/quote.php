@@ -55,7 +55,7 @@ $customer = $getCustomer->fetch( PDO::FETCH_ASSOC );
             <div class="line"><hr /></div>
             <div class="row">
                 <div class="col">
-                    <div class="box" style="height: 300px; !important;">
+                    <div class="box" style="height: 350px; !important;">
                         <p>
                             <strong>Shipping Address:</strong><br />
                             <?php
@@ -71,7 +71,7 @@ $customer = $getCustomer->fetch( PDO::FETCH_ASSOC );
                     </div>
                 </div> 
                 <div class="col">
-                    <div class="box" height="200">
+                    <div class="box" style="height: 350px; !important;">
                         <p>
                             <strong>Job Details:</strong><br />
                         </p>
@@ -107,6 +107,20 @@ $customer = $getCustomer->fetch( PDO::FETCH_ASSOC );
                                 <th width='30%'>End date:</th>
                                 <td><?php echo date( "d/m/Y" , strtotime( $job['enddate'] ) ); ?></td>
                             </tr>
+                            <tr>
+                                <th width='30%'>Duration:</th>
+                                <td>
+                                    <?php
+                                    $startDate = strtotime( $job['startdate'] );
+                                    $endDate = strtotime( $job['enddate'] );
+                                    $diff = $endDate - $startDate;
+                                    $years = floor( $diff / (365*60*60*24) );
+                                    $months = floor( ( $diff - $years * 365*60*60*24 ) / ( 30*60*60*24 ) ); 
+                                    $days = floor( ( $diff - $years * 365*60*60*24 - $months*30*60*60*24 ) / ( 60*60*24 ) );
+                                    echo $days . " Days";
+                                    ?>
+                                </td>
+                            </tr>
                         </table>
                     </div>
                 </div>              
@@ -141,8 +155,9 @@ $customer = $getCustomer->fetch( PDO::FETCH_ASSOC );
                                 echo "<td>" . $item['itemName'] . "</td>";
                             }
                             echo "<td>" . $item['qty'] . "</td>";
+                            echo "<td>" . discount_to_percent( $item['discount'] ) . "%</td>";
                             echo "<td>" . company( 'currencysymbol' ) . price( $item['price'] ) . "</td>";
-                            $total = (double)$item['price'] * (int)$item['qty'] * $days;
+                            $total = (double)$item['price'] * (double)$item['discount'] * (int)$item['qty'] * $days;
                             $_SESSION['catTotal'] = $_SESSION['catTotal'] + $total;
                             echo "<td>" . company( 'currencysymbol' ) . price( $total ) . "</td>";
                             echo "</tr>";
@@ -159,7 +174,8 @@ $customer = $getCustomer->fetch( PDO::FETCH_ASSOC );
                             <thead>
                                 <tr>
                                     <th width='70%'>Item</th>
-                                    <th width='10%'>Qty</th>
+                                    <th width='5%'>Qty</th>
+                                    <th width='5%'>Discount</th>
                                     <th width='10%'>Unit price</th>
                                     <th width='10%'>Line total</th>
                                 </tr>
@@ -170,7 +186,7 @@ $customer = $getCustomer->fetch( PDO::FETCH_ASSOC );
                         echo "</tbody>";
                         echo "<tfoot>";
                         echo "<tr>";
-                        echo "<td colspan='2'>&nbsp;</td>";
+                        echo "<td colspan='3'>&nbsp;</td>";
                         echo "<td>";
                         echo "<td><strong>" . company( 'currencysymbol' ) . price( $_SESSION['catTotal'] ) . "</strong></td>";
                         echo "</td>";

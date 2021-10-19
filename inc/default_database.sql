@@ -28,7 +28,7 @@ CREATE TABLE jobs (id INTEGER PRIMARY KEY AUTOINCREMENT, name VARCHAR, customer 
 CREATE TABLE jobs_cat (id INTEGER PRIMARY KEY AUTOINCREMENT, job INTEGER, cat VARCHAR);
 
 -- Table: jobs_lines
-CREATE TABLE jobs_lines (id INTEGER PRIMARY KEY AUTOINCREMENT, job INTEGER, linetype VARCHAR DEFAULT hire, stockEntry INTEGER, stockEffect INTEGER DEFAULT (- 1), price DOUBLE DEFAULT (0.0), cat INTEGER DEFAULT (0), qty INTEGER DEFAULT (1), itemName VARCHAR, parent INTEGER DEFAULT (0), kit INTEGER, cost DOUBLE DEFAULT (0), notes TEXT, dispatch INTEGER DEFAULT (0), dispatch_date DATETIME, return INTEGER DEFAULT (0), return_date DATETIME, mandatory INTEGER DEFAULT 0, accType VARCHAR DEFAULT NULL);
+CREATE TABLE jobs_lines (id INTEGER PRIMARY KEY AUTOINCREMENT, job INTEGER, linetype VARCHAR DEFAULT hire, stockEntry INTEGER, stockEffect INTEGER DEFAULT (- 1), price DOUBLE DEFAULT (0.0), discount DOUBLE DEFAULT (1), cat INTEGER DEFAULT (0), qty INTEGER DEFAULT (1), itemName VARCHAR, parent INTEGER DEFAULT (0), kit INTEGER, cost DOUBLE DEFAULT (0), notes TEXT, dispatch INTEGER DEFAULT (0), dispatch_date DATETIME, return INTEGER DEFAULT (0), return_date DATETIME, mandatory INTEGER DEFAULT 0, accType VARCHAR DEFAULT NULL);
 
 -- Table: kit
 CREATE TABLE kit (id INTEGER PRIMARY KEY AUTOINCREMENT, name VARCHAR, purchasevalue DOUBLE, sloc INTEGER, price DOUBLE, height DOUBLE, width DOUBLE, length DOUBLE, weight DOUBLE, notes TEXT, active INTEGER (1, 1) DEFAULT (1), toplevel INTEGER (1, 1) DEFAULT (1), cat INTEGER DEFAULT (0));
@@ -42,8 +42,6 @@ CREATE TABLE kit_stock (id INTEGER PRIMARY KEY AUTOINCREMENT, kit INTEGER, stock
 -- Table: licence
 CREATE TABLE licence (id INTEGER PRIMARY KEY AUTOINCREMENT, licencekey TEXT NOT NULL, licenceto VARCHAR, purchasedate DATETIME, lastactivation DATETIME, nextactivation DATETIME);
 
--- Table: remote
-CREATE TABLE remote (id INTEGER PRIMARY KEY AUTOINCREMENT, host VARCHAR, username VARCHAR, password VARCHAR, dbname VARCHAR);
 
 -- Table: sloc
 CREATE TABLE sloc (id INTEGER PRIMARY KEY AUTOINCREMENT, name VARCHAR, address_line1 VARCHAR, address_line2 VARCHAR, town VARCHAR, postcode VARCHAR);

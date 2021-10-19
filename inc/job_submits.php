@@ -258,15 +258,17 @@ if( isset( $_POST['submitChangeType'] ) ) {
 if( isset( $_POST['submitCosts'] ) ) {
     $id = filter_var( $_GET['id'] , FILTER_SANITIZE_NUMBER_INT );
     $getLines = $db->prepare( "SELECT * FROM `jobs_lines` WHERE `job` =:jobID" );
-    $updateLine = $db->prepare( "UPDATE `jobs_lines` SET `price` =:price ,  `cost` =:cost WHERE `id` =:lineID AND `job` =:jobID" );
+    $updateLine = $db->prepare( "UPDATE `jobs_lines` SET `price` =:price ,  `cost` =:cost , `discount` =:discount WHERE `id` =:lineID AND `job` =:jobID" );
     $getLines->execute( [ ':jobID' => $id ] );
     while( $line = $getLines->fetch( PDO::FETCH_ASSOC ) ) {
         $offset_cost = $line['id'] . "_cost";
         $offset_price = $line['id'] . "_price";
+        $offset_discount = $line['id'] . "_discount";
         $cost = filter_var( $_POST[$offset_cost] , FILTER_VALIDATE_FLOAT );
         $price = filter_var( $_POST[$offset_price] , FILTER_VALIDATE_FLOAT );
+        $discount = discount_to_decimel( filter_var( $_POST[$offset_discount] , FILTER_VALIDATE_FLOAT ) );
         if( isset( $_POST[$offset_cost] ) && isset( $_POST[$offset_price] ) ) {
-            $updateLine->execute( [ ':price' => $price , ':cost' => $cost , ':lineID' => (int)$line['id'] , ':jobID' => $id ] );
+            $updateLine->execute( [ ':price' => $price , ':cost' => $cost , ':lineID' => (int)$line['id'] , ':discount' => $discount , ':jobID' => $id ] );
         }
     }
 }
