@@ -156,7 +156,11 @@ $job = $getJob->fetch( PDO::FETCH_ASSOC );
                             echo "<td>" . $item['qty'] . "</td>";
                             echo "<td>" . discount_to_percent( (double)$item['discount'] ) . "%</td>";
                             echo "<td>" . company( 'currencysymbol' ) . price( $item['price'] ) . "</td>";
-                            $total = (double)$item['price'] * (double)$item['discount'] * (int)$item['qty'] * $days;
+                            if( $item['linetype'] == "hire" or $item['linetype'] == "subhire" ) {
+                                $total = (double)$item['price'] * (double)$item['discount'] * (int)$item['qty'] * $days;
+                            } else {
+                                $total = (double)$item['price'] * (double)$item['discount'] * (int)$item['qty'];
+                            }
                             $_SESSION['catTotal'] = $_SESSION['catTotal'] + $total;
                             echo "<td>" . company( 'currencysymbol' ) . price( $total ) . "</td>";
                             echo "</tr>";

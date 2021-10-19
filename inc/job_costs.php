@@ -46,7 +46,11 @@
             echo "</td>";
             // Line total
             echo "<td>";
-            $lineTotal = $price * (double)$item['discount'] * $qty * $days;
+            if( $item['linetype'] == "hire" or $item['linetype'] == "subhire" ) {
+                $lineTotal = $price * (double)$item['discount'] * $qty * $days;
+            } else {
+                $lineTotal = $price * (double)$item['discount'] * $qty;
+            }
             echo price( $lineTotal );
             $_SESSION['totalPrice'] = $_SESSION['totalPrice'] + $lineTotal;
             echo "</td>";

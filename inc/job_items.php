@@ -44,7 +44,9 @@
                 echo $line['itemName'];
             }
             $e = (int)$avlb;
-            echo " [ " . $e . " AVLB] ";
+            if( $line['linetype'] == "hire" ) {
+                echo " [ " . $e . " AVLB] ";
+            }
             if( $line['dispatch'] == 0 ) {
                 echo "</a>";
             }
