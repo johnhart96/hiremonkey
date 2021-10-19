@@ -153,21 +153,25 @@ function sloc( $id ) {
   }
 }
 function price( $price ) {
-  if( $price !== 0 ) {
+  /*if( $price !== "0" ) {
     $bit = explode( "." , $price );
     $return = $bit[0];
     if( ! isset( $bit[1] ) ) {
       $bit[1] = "0";
     }
-    if( strlen( $bit[1] == 0 ) ) {
+    if( strlen( $bit[1] == "0" ) ) {
       $return .= ".00";
     } else {
+      if( strlen( $bit[1] ) < 2 ) {
+        $bit[1] .= "0";
+      }
       $return .= "." . $bit[1];
     }
     return $return;
   } else {
-    return 0.00;
-  }
+    return "0.00";
+  }*/
+  return number_format( $price , 2 );
 }
 function totalStockCount( $id ) {
   global $db;
