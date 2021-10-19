@@ -13,9 +13,9 @@ if( file_exists( "package.json" ) ) {
     fclose( $packageFile );
     define( "VERSION" , $package->version );
 }
-define( "BUILD_STATUS" , "alpha" ); 
+define( "BUILD_STATUS" , "beta" ); 
 define( "LICENCEVERSION" , 1 ); 
-define( "FULLBUILD" , "1.0.0.14" );
+define( "FULLBUILD" , "1.0.0.15" );
 
 // Important table list
 $tables = array(
