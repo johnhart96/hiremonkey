@@ -54,7 +54,8 @@ if( isset( $_POST['submit'] ) ) {
                 echo "<div class='alert alert-danger'><strong>Error:</strong> You can only have 10 equipment in trial mode!</div>";
                 die();
             } else {
-                echo "<div class='alert alert-warning'><strong>Warning:</strong> You can only add " . 10 - entry_count( "kit" ) . " more equipment while in trial mode!</div>";
+                $trial = 10 - entry_count( "kit" );
+                echo "<div class='alert alert-warning'><strong>Warning:</strong> You can only add " . $trial . " more equipment while in trial mode!</div>";
             }
         }
         ?>
