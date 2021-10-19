@@ -69,8 +69,11 @@ if( isset( $_POST['submitLineEdit'] ) ) {
     } else {
         $qty = 1;
     }
-    if( $lineType !== "hire" ) {
+    if( $lineType == "hire" ) {
         $stockEffect = $qty *-1;
+        if( $stockEffect == 0 ) {
+            die( "0 stock effect encountered" );
+        }
     } else {
         $stockEffect = 0;
     }
@@ -179,6 +182,9 @@ if( isset( $_POST['submitNewItem'] ) ) {
                     $catToUse = (int)$lastAdded['id'];
                 }
                 $stockEffect = (int)$qty * -1;
+                if( $stockEffect == 0 ) {
+                    die( "Stock effect cannot be 0" );
+                }
 
                 // Price handel
                 if( empty( $price ) ) {

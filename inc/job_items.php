@@ -36,13 +36,15 @@
             if( $line['linetype'] !== "hire" ) {
                 $avlb = 1000000000000000000000;
             }
-            if( $avlb < 1 ) {
+            if( $avlb < 0 ) {
                 echo "<span style='color:red' data-bs-toggle='tooltip' data-bs-placement='top' title='Stock shortage'>";
                 echo $line['itemName'];
                 echo "</span>";
             } else {
                 echo $line['itemName'];
             }
+            $e = (int)$avlb;
+            echo " [ " . $e . " AVLB] ";
             if( $line['dispatch'] == 0 ) {
                 echo "</a>";
             }
