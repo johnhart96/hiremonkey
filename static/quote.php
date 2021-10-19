@@ -13,9 +13,6 @@ $id = filter_var( $_GET['id'] , FILTER_SANITIZE_NUMBER_INT );
 $getJob = $db->prepare( "SELECT * FROM `jobs` WHERE `id` =:id" );
 $getJob->execute( [ ':id' => $id ] );
 $job = $getJob->fetch( PDO::FETCH_ASSOC );
-$getCustomer = $db->prepare( "SELECT * FROM `customers` WHERE `id` =:id LIMIT 1" );
-$getCustomer->execute(  [ ':id' => (int)$job['customer'] ] );
-$customer = $getCustomer->fetch( PDO::FETCH_ASSOC );
 ?>
 <html>
     <head>
@@ -117,6 +114,7 @@ $customer = $getCustomer->fetch( PDO::FETCH_ASSOC );
                                     $years = floor( $diff / (365*60*60*24) );
                                     $months = floor( ( $diff - $years * 365*60*60*24 ) / ( 30*60*60*24 ) ); 
                                     $days = floor( ( $diff - $years * 365*60*60*24 - $months*30*60*60*24 ) / ( 60*60*24 ) );
+                                    $days ++;
                                     echo $days . " Days";
                                     ?>
                                 </td>
@@ -135,6 +133,7 @@ $customer = $getCustomer->fetch( PDO::FETCH_ASSOC );
                     $years = floor( $diff / (365*60*60*24) );
                     $months = floor( ( $diff - $years * 365*60*60*24 ) / ( 30*60*60*24 ) ); 
                     $days = floor( ( $diff - $years * 365*60*60*24 - $months*30*60*60*24 ) / ( 60*60*24 ) );
+                    $days ++;
                     $_SESSION['jobTotal'] = 0.0;
                     function getLines( $parent = 0 , $cat = NULL ) {
                         global $db;
@@ -155,7 +154,7 @@ $customer = $getCustomer->fetch( PDO::FETCH_ASSOC );
                                 echo "<td>" . $item['itemName'] . "</td>";
                             }
                             echo "<td>" . $item['qty'] . "</td>";
-                            echo "<td>" . discount_to_percent( $item['discount'] ) . "%</td>";
+                            echo "<td>" . discount_to_percent( (double)$item['discount'] ) . "%</td>";
                             echo "<td>" . company( 'currencysymbol' ) . price( $item['price'] ) . "</td>";
                             $total = (double)$item['price'] * (double)$item['discount'] * (int)$item['qty'] * $days;
                             $_SESSION['catTotal'] = $_SESSION['catTotal'] + $total;
@@ -209,10 +208,6 @@ $customer = $getCustomer->fetch( PDO::FETCH_ASSOC );
                                 <th>Total:</th>
                                 <th><?php echo company( 'currencysymbol' ) . price( $_SESSION['jobTotal'] ); ?></th>
                             </tr>
-                            <tr>
-                                <th>Payment terms:</th>
-                                <th><?php echo $customer['invoice_terms']; ?> days</th>
-                            </tr>
                         </table>
                     </div>
                 </div>
@@ -221,7 +216,7 @@ $customer = $getCustomer->fetch( PDO::FETCH_ASSOC );
             <div class="row">
                 <div class="col">
                     <center>
-                        This is not an invoice, equipment is not reserved! <br />
+                        This is not an invoice, equipment is not confirmed! <br />
                         <?php
                         if( trial() ) {
                             echo "Generated using a trial of HireMonkey";

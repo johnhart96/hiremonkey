@@ -33,7 +33,6 @@ if( isset( $_POST['submitOpen'] ) ) {
         $upgrade = array();
         // Loop
         array_push( $tables , 'licence' );
-        array_push( $tables , 'remote' );
         foreach( $tables as $table ) {
             $upgrade[$table] = array();
             $get = $test->query( "SELECT * FROM `$table`" );
@@ -163,7 +162,6 @@ if( isset( $_POST['submitOpen'] ) ) {
                 ':cat' => $cat['cat']
             ]);
         }
-
         $jobs_lines = $newDB->prepare("
             INSERT INTO `jobs_lines` (`id`,`job`,`linetype`,`stockEntry`,`stockEffect`,`price`,`cat`,`qty`,`itemName`,`parent`,`kit`,`cost`,`notes`,`dispatch`,`dispatch_date`,`return`,`return_date`,`mandatory`,`accType`)
             VALUES(:id,:job,:linetype,:stockEntry,:stockEffect,:price,:cat,:qty,:itemName,:parent,:kit,:cost,:notes,:dispatch,:dispatch_date,:retrun,:return_date,:mandatory,:accType)

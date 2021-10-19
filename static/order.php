@@ -114,6 +114,7 @@ $job = $getJob->fetch( PDO::FETCH_ASSOC );
                                     $years = floor( $diff / (365*60*60*24) );
                                     $months = floor( ( $diff - $years * 365*60*60*24 ) / ( 30*60*60*24 ) ); 
                                     $days = floor( ( $diff - $years * 365*60*60*24 - $months*30*60*60*24 ) / ( 60*60*24 ) );
+                                    $days ++;
                                     echo $days . " Days";
                                     ?>
                                 </td>
@@ -132,6 +133,7 @@ $job = $getJob->fetch( PDO::FETCH_ASSOC );
                     $years = floor( $diff / (365*60*60*24) );
                     $months = floor( ( $diff - $years * 365*60*60*24 ) / ( 30*60*60*24 ) ); 
                     $days = floor( ( $diff - $years * 365*60*60*24 - $months*30*60*60*24 ) / ( 60*60*24 ) );
+                    $days ++;
                     $_SESSION['jobTotal'] = 0.0;
                     function getLines( $parent = 0 , $cat = NULL ) {
                         global $db;
