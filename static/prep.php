@@ -117,10 +117,10 @@ $job = $getJob->fetch( PDO::FETCH_ASSOC );
                         global $id;
                         global $days;
                         if( $parent == 0  ) {
-                            $getItems = $db->prepare( "SELECT * FROM `jobs_lines` WHERE `job` =:job AND `parent` =:parent AND `cat` =:cat AND `dispatch` =1" );
+                            $getItems = $db->prepare( "SELECT * FROM `jobs_lines` WHERE `job` =:job AND `parent` =:parent AND `cat` =:cat" );
                             $getItems->execute( [ ':job' => $id , ':parent' => $parent , ':cat' => $cat ] );
                         } else {
-                            $getItems = $db->prepare( "SELECT * FROM `jobs_lines` WHERE `job` =:job AND `parent` =:parent AND `dispatch` =1" );
+                            $getItems = $db->prepare( "SELECT * FROM `jobs_lines` WHERE `job` =:job AND `parent` =:parent" );
                             $getItems->execute( [ ':job' => $id , ':parent' => $parent ] );
                         }
                         while( $item = $getItems->fetch( PDO::FETCH_ASSOC ) ) {
