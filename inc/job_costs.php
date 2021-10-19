@@ -20,13 +20,7 @@
             echo "<tr>";
             // Item name
             echo "<td style='text-align:left'>";
-            if( $parent == 0 ) {
-                echo "<strong>";
-                echo $item['itemName'];
-                echo "</strong>";
-            } else {
-                echo $item['itemName'];
-            }
+            echo $item['itemName'];
             echo "</td>";
             // Type
             echo "<td>" . ucfirst( $item['linetype'] ) . "</td>";
