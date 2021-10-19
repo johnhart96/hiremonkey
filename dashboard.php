@@ -12,7 +12,7 @@ if( isset( $_POST['dismissWelcome'] ) ) {
             echo "<div class='alert alert-warning'><strong>WARNING:</strong> You are using an Alpha build!</div>";
         }
         if( BUILD_STATUS == "beta" ) {
-            echo "<div class='alert alert-warning'><strong>WARNING:</strong> You are using an Beta build!</div>";
+            echo "<div class='alert alert-info'>You are using an Beta build!</div>";
         }
         ?>
     </div>
