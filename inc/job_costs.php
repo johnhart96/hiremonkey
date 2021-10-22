@@ -28,11 +28,11 @@
             $costName = $item['id'] . "_cost";
             $cost = $item['cost'];
             $_SESSION['totalCost'] = $_SESSION['totalCost'] + $cost;
-            echo "<td><input class='costbox' name='$costName' value='$cost'></td>";
+            echo "<td><input class='form-control' name='$costName' value='$cost'></td>";
             // Price
             $priceName = $item['id'] . "_price";
             $price = $item['price'];
-            echo "<td><input class='costbox' name='$priceName' value='$price'></td>";
+            echo "<td><input class='form-control' name='$priceName' value='$price'></td>";
             // Qty
             echo "<td>";
             $qty = (int)$item['qty'];
@@ -42,7 +42,7 @@
             echo "<td>";
             $discountName = $item['id'] . "_discount";
             $discount = discount_to_percent( $item['discount'] );
-            echo "<input class='costbox' name='$discountName' value='$discount'>";
+            echo "<input class='form-control' name='$discountName' value='$discount'>";
             echo "</td>";
             // Line total
             echo "<td>";
