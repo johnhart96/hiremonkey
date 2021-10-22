@@ -119,8 +119,8 @@ foreach( $upgrade['jobs_cat'] as $cat ) {
 }
 
 $jobs_lines = $newDB->prepare("
-    INSERT INTO `jobs_lines` (`id`,`job`,`linetype`,`stockEntry`,`stockEffect`,`price`,`cat`,`qty`,`itemName`,`parent`,`kit`,`cost`,`notes`,`dispatch`,`dispatch_date`,`return`,`return_date`,`mandatory`,`accType`,`service_startdate`,`service_enddate`)
-    VALUES(:id,:job,:linetype,:stockEntry,:stockEffect,:price,:cat,:qty,:itemName,:parent,:kit,:cost,:notes,:dispatch,:dispatch_date,:return,:return_date,:mandatory,:accType,:startdate,:enddate)
+    INSERT INTO `jobs_lines` (`id`,`job`,`linetype`,`stockEntry`,`stockEffect`,`price`,`cat`,`qty`,`itemName`,`parent`,`kit`,`cost`,`notes`,`dispatch`,`dispatch_date`,`return`,`return_date`,`mandatory`,`accType`,`service_startdate`,`service_enddate`,`supplier`)
+    VALUES(:id,:job,:linetype,:stockEntry,:stockEffect,:price,:cat,:qty,:itemName,:parent,:kit,:cost,:notes,:dispatch,:dispatch_date,:return,:return_date,:mandatory,:accType,:startdate,:enddate,:supplier)
 ");
 foreach( $upgrade['jobs_lines'] as $line ) {
     if( isset( $line['mandatory' ]) ) {
@@ -139,6 +139,11 @@ foreach( $upgrade['jobs_lines'] as $line ) {
     } else {
         $service_startdate = NULL;
         $service_enddate = NULL;
+    }
+    if( isset( $line['supplier'] ) ) {
+        $supplier = $line['supplier'];
+    } else {
+        $supplier = 0;
     }
     $jobs_lines->execute([
        ':id' => $line['id'],
@@ -161,7 +166,8 @@ foreach( $upgrade['jobs_lines'] as $line ) {
         ':mandatory' => $mandatory,
         ':accType' => $accType,
         ':startdate' => $service_startdate,
-        ':enddate' => $service_enddate
+        ':enddate' => $service_enddate,
+        ':supplier' => $supplier
     ]);
 }
 
