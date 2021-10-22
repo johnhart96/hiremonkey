@@ -171,11 +171,24 @@ $job = $getJob->fetch( PDO::FETCH_ASSOC );
                         }
                         while( $item = $getItems->fetch( PDO::FETCH_ASSOC ) ) {
                             echo "<tr>";
+                            echo "<td>";
                             if( $parent == 0 ) {
-                                echo "<td><strong>" . $item['itemName'] . "</strong></td>";
+                                echo "<strong>" . $item['itemName'] . "</strong>";
                             } else {
-                                echo "<td>" . $item['itemName'] . "</td>";
+                                echo $item['itemName'];
                             }
+                            if( $item['linetype'] == "text" ) {
+                                if( ! empty( $item['service_startdate'] ) ) {
+                                    echo "<br />";
+                                    echo "<em>";
+                                    echo "&nbsp;";
+                                    echo date( "d/m/Y H:i" , strtotime( $item['service_startdate'] ) );
+                                    echo " - ";
+                                    echo date( "d/m/Y H:i" , strtotime( $item['service_enddate'] ) );
+                                    echo "</em>";
+                                }
+                            }
+                            echo "</td>";
                             echo "<td>" . $item['qty'] . "</td>";
                             echo "<td>" . discount_to_percent( (double)$item['discount'] ) . "%</td>";
                             echo "<td>" . company( 'currencysymbol' ) . price( $item['price'] ) . "</td>";

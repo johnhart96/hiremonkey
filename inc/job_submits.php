@@ -342,4 +342,29 @@ if( isset( $_POST['submitOpenDoc'] ) ) {
     $doc = filter_var( $_POST['doc'] , FILTER_SANITIZE_STRING );
     echo "<script>window.open('static/$doc.php?id=$id');</script>";
 }
+// Submit services
+if( isset( $_POST['submitServices'] ) ) {
+    $getServices = $db->prepare( "SELECT * FROM `jobs_lines` WHERE `linetype` ='text' AND `job` =:jobID" );
+    $getServices->execute( [ ':jobID' => $id ] );
+    $updateLine = $db->prepare( "UPDATE `jobs_lines` SET `itemName` =:itemName, `qty` =:qty, `price` =:price, `service_startdate` =:startdate, `service_enddate` =:enddate WHERE `job` =:job AND `id` =:lineID" );
+    while( $row = $getServices->fetch( PDO::FETCH_ASSOC ) ) {
+        $itemNameLine = $row['id'] . "_name";
+        $priceName = $row['id'] . "_price";
+        $qtyName = $row['id'] . "_qty";
+        $startDate = $row['id'] . "_startdate";
+        $endDate = $row['id'] . "_enddate";
+        if( isset( $_POST[$itemNameLine] ) ) {
+            $updateLine->execute([
+                ':lineID' => $row['id'],
+                ':job' => $id,
+                
+                ':itemName' => filter_var( $_POST[$itemNameLine] , FILTER_SANITIZE_STRING ),
+                ':qty' => filter_var( $_POST[$qtyName] , FILTER_SANITIZE_NUMBER_INT ),
+                ':price' => filter_var( $_POST[$priceName] , FILTER_VALIDATE_FLOAT ),
+                ':startdate' => filter_var( $_POST[$startDate] , FILTER_SANITIZE_STRING ),
+                ':enddate' => filter_var( $_POST[$endDate] , FILTER_SANITIZE_STRING )
+            ]);
+        } 
+    }
+}
 ?>

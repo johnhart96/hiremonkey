@@ -7,14 +7,19 @@ foreach( $upgrade['categories'] as $cat ) {
 }
 
 $company = $newDB->prepare("
-    INSERT INTO `company` (`id`,`name`,`address_line1`,`address_line2`,`town`,`postcode`,`telephone`,`website`,`email`,`currencysymbol`,`lastbackup`,`appversion`,`welcome`)
-    VALUES(:id,:company,:address_line1,:address_line2,:town,:postcode,:telephone,:website,:email,:currencysymbol,:lastbackup,:appversion,:welcome)
+    INSERT INTO `company` (`id`,`name`,`address_line1`,`address_line2`,`town`,`postcode`,`telephone`,`website`,`email`,`currencysymbol`,`lastbackup`,`appversion`,`welcome`,`logo`)
+    VALUES(:id,:company,:address_line1,:address_line2,:town,:postcode,:telephone,:website,:email,:currencysymbol,:lastbackup,:appversion,:welcome,:logo)
 ");
 foreach( $upgrade['company'] as $com ) {
     if( isset( $com['welcome'] ) ) {
         $welcome = $com['welcome'];
     } else {
         $welcome = 1;
+    }
+    if( isset( $com['logo'] ) ) {
+        $logo = $com['logo'];
+    } else {
+        $logo = 1;
     }
     $company->execute([
         ':id' => $com['id'],
@@ -29,7 +34,8 @@ foreach( $upgrade['company'] as $com ) {
         ':currencysymbol' => $com['currencysymbol'],
         ':lastbackup' => $com['lastbackup'],
         ':appversion' => FULLBUILD,
-        ':welcome' => $welcome
+        ':welcome' => $welcome,
+        ':logo' => $logo
     ]);
 } 
 
@@ -113,8 +119,8 @@ foreach( $upgrade['jobs_cat'] as $cat ) {
 }
 
 $jobs_lines = $newDB->prepare("
-    INSERT INTO `jobs_lines` (`id`,`job`,`linetype`,`stockEntry`,`stockEffect`,`price`,`cat`,`qty`,`itemName`,`parent`,`kit`,`cost`,`notes`,`dispatch`,`dispatch_date`,`return`,`return_date`,`mandatory`,`accType`)
-    VALUES(:id,:job,:linetype,:stockEntry,:stockEffect,:price,:cat,:qty,:itemName,:parent,:kit,:cost,:notes,:dispatch,:dispatch_date,:return,:return_date,:mandatory,:accType)
+    INSERT INTO `jobs_lines` (`id`,`job`,`linetype`,`stockEntry`,`stockEffect`,`price`,`cat`,`qty`,`itemName`,`parent`,`kit`,`cost`,`notes`,`dispatch`,`dispatch_date`,`return`,`return_date`,`mandatory`,`accType`,`service_startdate`,`service_enddate`)
+    VALUES(:id,:job,:linetype,:stockEntry,:stockEffect,:price,:cat,:qty,:itemName,:parent,:kit,:cost,:notes,:dispatch,:dispatch_date,:return,:return_date,:mandatory,:accType,:startdate,:enddate)
 ");
 foreach( $upgrade['jobs_lines'] as $line ) {
     if( isset( $line['mandatory' ]) ) {
@@ -126,6 +132,13 @@ foreach( $upgrade['jobs_lines'] as $line ) {
         $accType = $line['accType'];
     } else {
         $accType == NULL;
+    }
+    if( isset( $line['service_startdate'] ) ) {
+        $service_startdate = $line['service_startdate'];
+        $service_enddate = $line['service_enddate'];
+    } else {
+        $service_startdate = NULL;
+        $service_enddate = NULL;
     }
     $jobs_lines->execute([
        ':id' => $line['id'],
@@ -146,7 +159,9 @@ foreach( $upgrade['jobs_lines'] as $line ) {
         ':return' => $line['return'],
         ':return_date' => $line['return_date'],
         ':mandatory' => $mandatory,
-        ':accType' => $accType
+        ':accType' => $accType,
+        ':startdate' => $service_startdate,
+        ':enddate' => $service_enddate
     ]);
 }
 
