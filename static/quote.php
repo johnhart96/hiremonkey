@@ -43,10 +43,20 @@ $job = $getJob->fetch( PDO::FETCH_ASSOC );
                                     ?>
                                     <h1><?php echo company( 'name' ); ?></h1>
                                     <p>
-                                        <?php echo company( 'address_line1' ); ?>,<br />
-                                        <?php echo company( 'address_line2' ); ?>,<br />
-                                        <?php echo company( 'town' ); ?>,<br />
-                                        <?php echo company( 'postcode' ); ?><br />
+                                        <?php
+                                        if( ! empty( company( 'address_line1' ) ) ) {
+                                            echo company( 'address_line1' ) . "<br />";
+                                        }
+                                        if( ! empty( company( 'address_line2' ) ) ) {
+                                            echo company( 'address_line2' ) . "<br />";
+                                        }
+                                        if( ! empty( company( 'town' ) ) ) {
+                                            echo company( 'town' ) . "<br />";
+                                        }
+                                        if( ! empty( company( 'postcode' ) ) ) {
+                                            echo company( 'postcode' ) . "<br />";
+                                        }
+                                        ?>
                                     </p>
                                 </td>
                             </tr>
@@ -64,10 +74,18 @@ $job = $getJob->fetch( PDO::FETCH_ASSOC );
                             $getAddress = $db->prepare( "SELECT * FROM `customers_addresses` WHERE `id` =:id LIMIT 1" );
                             $getAddress->execute( [ ':id' => $job['address'] ] );
                             $fetch = $getAddress->fetch( PDO::FETCH_ASSOC );
-                            echo $fetch['line1'] . ",<br />";
-                            echo $fetch['line2'] . ",<br />";
-                            echo $fetch['town'] . ",<br />";
-                            echo $fetch['postcode'] . "";
+                            if( ! empty( $fetch['line1'] ) ) {
+                                echo $fetch['line1'] . "<br />";
+                            }
+                            if( ! empty( $fetch['line2'] ) ) {
+                                echo $fetch['line2'] . "<br />";
+                            }
+                            if( ! empty( $fetch['town'] ) ) {
+                                echo $fetch['town'] . "<br />";
+                            }
+                            if( ! empty( $fetch['postcode'] ) ) {
+                                echo $fetch['postcode'] . "<br />";
+                            }
                             ?>
                         </p>
                     </div>
@@ -177,7 +195,7 @@ $job = $getJob->fetch( PDO::FETCH_ASSOC );
                     while( $cat = $getJobCats->fetch( PDO::FETCH_ASSOC ) ) {
                         $_SESSION['catTotal'] = 0.0;
                         echo "<p><strong>" . $cat['cat'] . ":</strong></p>";
-                        echo "<table class='table table-bordered table-stripe'>";
+                        echo "<table class='table table-bordered table-striped'>";
                         echo "
                             <thead>
                                 <tr>
