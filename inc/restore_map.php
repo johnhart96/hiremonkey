@@ -243,4 +243,10 @@ foreach( $upgrade['sloc'] as $s ) {
         ':postcode' => $s['postcode']
     ]);
 }
+$licence = $newDB->prepare("
+    INSERT INTO `licence` (`licencekey`) VALUES(:licKey)
+");
+foreach( $upgrade['licence'] as $lic ) {
+    $licence->execute( [ ':licKey' => $lic['licencekey'] ] );
+}
 ?>
