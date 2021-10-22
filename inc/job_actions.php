@@ -166,7 +166,7 @@
                         // Cat
                         echo "<div class='input-group'>";
                         echo "<div class='input-group-prepend'><span class='input-group-text'>Category:</span></div>";
-                        echo "<select name='cat' class='form-control'>";
+                        echo "<select required name='cat' class='form-control'>";
                         $getJobCats = $db->prepare( "SELECT * FROM `jobs_cat` WHERE `job` =:jobID" );
                         $getJobCats->execute( [ ':jobID' => $id ] );
                         while( $row = $getJobCats->fetch( PDO::FETCH_ASSOC ) ) {
