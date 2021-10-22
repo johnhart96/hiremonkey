@@ -62,6 +62,7 @@ if( date( "Y-m-d" , strtotime( licence( "nextactivation" ) ) ) < date( "Y-m-d" )
 ?>
 
 <link href="../node_modules/bootstrap/dist/css/bootstrap.css" rel="stylesheet" type="text/css" />
+<link href="../node_modules/datatables/media/css/jquery.dataTables.css" rel="stylesheet" type="text/css" />
 <link href="css/sidebars.css" rel="stylesheet" type="text/css" />
 <link href="css/jquery-ui.css" rel="stylesheet" />
 <link href="css/job.css" rel="stylesheet" />
@@ -70,4 +71,6 @@ if( date( "Y-m-d" , strtotime( licence( "nextactivation" ) ) ) < date( "Y-m-d" )
     window.$ = window.jQuery = require('jQuery');
 </script>
 <script src="./js/jquery-ui.js" type="text/javascript"></script>
+<script src="../node_modules/datatables/media/js/jquery.dataTables.js" type="text/javascript"></script>
 <script src="./js/job.js" type="text/javascript"></script>
+<script src="./js/tables.js" type="text/javascript"></script>

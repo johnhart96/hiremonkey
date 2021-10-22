@@ -59,15 +59,17 @@
 </div>
 <div class="row">
     <div class="col">
-        <table class="table table-bordered table-striped">
-            <tr>
-                <th>Name</th>
-                <th>Category</th>
-                <th>Storage Location</th>
-                <th>Hire Price</th>
-                <th>Stock</th>
-                <th></th>
-            </tr>
+        <table class="table table-bordered table-striped" id="kit">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Category</th>
+                    <th>Storage Location</th>
+                    <th>Hire Price</th>
+                    <th>Stock</th>
+                    <th></th>
+                </tr>
+            </thead>
             <?php
             if( isset( $_POST['search'] ) ) {
                 $search = filter_var( $_POST['search'] , FILTER_SANITIZE_STRING );

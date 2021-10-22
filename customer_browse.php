@@ -20,22 +20,30 @@
 </div>
 <div class="row">
     <div class="col">
-        <table id="customers" class="table table-bordered table-stripe">
-            <?php
-            if( isset( $_POST['search'] ) ) {
-                $search = filter_var( $_POST['search'] , FILTER_SANITIZE_STRING );
-                $getCustomers = $db->prepare( "SELECT * FROM `customers` WHERE instr(`name`,:searchTerm) --case-insensitive " );
-                $getCustomers->execute( [ ':searchTerm' => $search ] );
-            } else {
-                $getCustomers = $db->query( "SELECT * FROM `customers`" );
-            }
-            while( $row = $getCustomers->fetch( PDO::FETCH_ASSOC ) ) {
-                echo "<tr>";
-                echo "<td>" . $row['name'] . "</td>";
-                echo "<td width='1'><a href='index.php?l=customer_view&id=" . $row['id'] . "' class='btn btn-primary'>View</a></td>";
-                echo "</tr>";
-            }
-            ?>
+        <table id="customers" class="table table-bordered table-striped" id="customers">
+            <thead>
+                <tr>
+                    <th>Customers</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                <?php
+                if( isset( $_POST['search'] ) ) {
+                    $search = filter_var( $_POST['search'] , FILTER_SANITIZE_STRING );
+                    $getCustomers = $db->prepare( "SELECT * FROM `customers` WHERE instr(`name`,:searchTerm) --case-insensitive " );
+                    $getCustomers->execute( [ ':searchTerm' => $search ] );
+                } else {
+                    $getCustomers = $db->query( "SELECT * FROM `customers`" );
+                }
+                while( $row = $getCustomers->fetch( PDO::FETCH_ASSOC ) ) {
+                    echo "<tr>";
+                    echo "<td>" . $row['name'] . "</td>";
+                    echo "<td width='1'><a href='index.php?l=customer_view&id=" . $row['id'] . "' class='btn btn-primary'>View</a></td>";
+                    echo "</tr>";
+                }
+                ?>
+            </tbody>
         </table>
     </div>
 </div>

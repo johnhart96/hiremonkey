@@ -55,29 +55,33 @@
             $getJobs = $db->query( "SELECT * FROM `jobs` WHERE `complete` =0 AND `lost` =0" );
         }
         ?>
-        <table class="table table-bordered table-stripe">
-            <tr>
-                <th>Job#</th>
-                <th>Name</th>
-                <th>Customer</th>
-                <th>Start Date</th>
-                <th>End Date</th>
-                <th>Type</th>
-                <th></th>
-            </tr>
-            <?php
-            while( $job = $getJobs->fetch( PDO::FETCH_ASSOC ) ) {
-                echo "<tr>";
-                echo "<td>" . $job['id'] . "</td>";
-                echo "<td>" . $job['name'] . "</td>";
-                echo "<td>" . customer( $job['customer'] ) . "</td>";
-                echo "<td>" . $job['startdate'] . "</td>";
-                echo "<td>" . $job['enddate'] . "</td>";
-                echo "<td>" . ucfirst( $job['jobType'] ) . "</td>";
-                echo "<td width='1'><a href='index.php?l=job_view&id=" . $job['id'] . "' class='btn btn-primary'>View</a></td>";
-                echo "</tr>";
-            }
-            ?>
+        <table class="table table-bordered table-striped" id="jobs">
+            <thead>
+                <tr>
+                    <th>Job#</th>
+                    <th>Name</th>
+                    <th>Customer</th>
+                    <th>Start Date</th>
+                    <th>End Date</th>
+                    <th>Type</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                <?php
+                while( $job = $getJobs->fetch( PDO::FETCH_ASSOC ) ) {
+                    echo "<tr>";
+                    echo "<td>" . $job['id'] . "</td>";
+                    echo "<td>" . $job['name'] . "</td>";
+                    echo "<td>" . customer( $job['customer'] ) . "</td>";
+                    echo "<td>" . $job['startdate'] . "</td>";
+                    echo "<td>" . $job['enddate'] . "</td>";
+                    echo "<td>" . ucfirst( $job['jobType'] ) . "</td>";
+                    echo "<td width='1'><a href='index.php?l=job_view&id=" . $job['id'] . "' class='btn btn-primary'>View</a></td>";
+                    echo "</tr>";
+                }
+                ?>
+            </tbody>
         </table>
     </div>
 </div>
