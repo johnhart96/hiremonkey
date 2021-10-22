@@ -40,8 +40,8 @@ foreach( $upgrade['company'] as $com ) {
 } 
 
 $customers = $newDB->prepare("
-    INSERT INTO `customers` (`id`,`name`,`creationdate`,`notes`,`company_number`,`vat_number`,`invoice_terms`,`hold`,`website`)
-    VALUES(:id,:customer,:creationdate,:notes,:company_number,:vat_number,:invoice_terms,:hold,:website)
+    INSERT INTO `customers` (`id`,`name`,`creationdate`,`notes`,`company_number`,`vat_number`,`invoice_terms`,`hold`,`website`,`supplier`)
+    VALUES(:id,:customer,:creationdate,:notes,:company_number,:vat_number,:invoice_terms,:hold,:website,:supplier)
 ");
 foreach( $upgrade['customers'] as $cus ) {
     $customers->execute([
@@ -53,7 +53,8 @@ foreach( $upgrade['customers'] as $cus ) {
         ':vat_number' => $cus['vat_number'],
         ':invoice_terms' => $cus['invoice_terms'],
         ':hold' => $cus['hold'],
-        ':website' => $cus['website']
+        ':website' => $cus['website'],
+        ':supplier' => $cust['supplier']
     ]);
 }
 
