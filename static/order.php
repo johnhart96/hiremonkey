@@ -36,6 +36,11 @@ $job = $getJob->fetch( PDO::FETCH_ASSOC );
                                     </p>
                                 </td>
                                 <td style="text-align: right">
+                                    <?php
+                                    if( ! empty( company( 'logo' ) ) && ! trial() ) {
+                                        echo "<img src='" . company( 'logo' ) . "'>";
+                                    }
+                                    ?>
                                     <h1><?php echo company( 'name' ); ?></h1>
                                     <p>
                                         <?php echo company( 'address_line1' ); ?>,<br />

@@ -9,6 +9,7 @@ if( isset( $_POST['submit'] ) ) {
     $website = filter_var( $_POST['website'] , FILTER_VALIDATE_URL );
     $email = filter_var( $_POST['email'] , FILTER_VALIDATE_EMAIL );
     $currencysymbol = filter_var( $_POST['currencysymbol'] , FILTER_SANITIZE_STRING );
+    $logo = filter_var( $_POST['logo'] , FILTER_VALIDATE_URL );
 
     $update = $db->prepare("
         UPDATE `company` SET
@@ -20,7 +21,8 @@ if( isset( $_POST['submit'] ) ) {
             `telephone` =:telephone,
             `website` =:website,
             `email` =:email,
-            `currencysymbol` =:currencysymbol
+            `currencysymbol` =:currencysymbol,
+            `logo` =:logo
         WHERE `id` =1
     ");
     $update->execute([
@@ -33,6 +35,7 @@ if( isset( $_POST['submit'] ) ) {
         ':website' => $website,
         ':email' => $email,
         ':currencysymbol' => $currencysymbol,
+        ':logo' => $logo
     ]);
     $saved = TRUE;
 }
@@ -100,6 +103,10 @@ if( isset( $_POST['submit'] ) ) {
             <div class="input-group">
                 <div class="input-group-prepend"><span class="input-group-text">Currency:</span></div>
                 <input type="text" name="currencysymbol" value="<?php echo $company['currencysymbol']; ?>" class="form-control">
+            </div>
+            <div class="input-group">
+                <div class="input-group-prepend"><span class="input-group-text">Logo:</span></div>
+                <input type="text" name="logo" value="<?php echo $company['logo']; ?>" class="form-control">
             </div>
             <p>&nbsp;</p>
             <p><button type="submit" name="submit" class="btn btn-success">Save</button></p>
