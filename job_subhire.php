@@ -33,10 +33,10 @@ echo "<div class='row'>&nbsp;</div>";
             <div class="card-header" id="order-head"><strong>Order:</strong></div>
             <div class="card-body" id="order-body">
             <ul class="nav nav-tabs">
-                <li class="nav-item"><a class="nav-link active" aria-current="page" href="index.php?l=job_view&id=<?php echo $id; ?>">Overview</a></li>
+                <li class="nav-item"><a class="nav-link" aria-current="page" href="index.php?l=job_view&id=<?php echo $id; ?>">Overview</a></li>
                 <li class="nav-item"><a class="nav-link" aria-current="page" href="index.php?l=job_costs&id=<?php echo $id; ?>">Costs</a></li>
                 <li class="nav-item"><a class="nav-link" aria-current="page" href="index.php?l=job_service&id=<?php echo $id; ?>">Services</a></li>
-                <li class="nav-item"><a class="nav-link" aria-current="page" href="index.php?l=job_subhire&id=<?php echo $id; ?>">Subhire</a></li>
+                <li class="nav-item"><a class="nav-link active" aria-current="page" href="index.php?l=job_subhire&id=<?php echo $id; ?>">Subhire</a></li>
                 <li class="nav-item"><a class="nav-link" aria-current="page" href="index.php?l=job_shipping&id=<?php echo $id; ?>">Shipping</a></li>
             </ul>
                 <?php
@@ -44,7 +44,7 @@ echo "<div class='row'>&nbsp;</div>";
                     echo "<p>&nbsp;</p>";
                     echo "<div class='alert alert-danger'>" . $error . "</div>";
                 }
-                require 'inc/job_items.php';
+                require 'inc/job_subhire.php';
                 ?>
             </div>
         </div>

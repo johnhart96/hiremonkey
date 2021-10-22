@@ -367,4 +367,25 @@ if( isset( $_POST['submitServices'] ) ) {
         } 
     }
 }
+
+// Submit subhire
+if( isset( $_POST['submitSubhire'] ) ) {
+    $updateLine = $db->prepare( "UPDATE `jobs_lines` SET `cost` =:cost, `price` =:price, `qty` =:qty, `supplier` =:supplier WHERE `id` =:lineID AND `job` =:jobID" );
+    $getSubhireLines = $db->prepare( "SELECT * FROM `jobs_lines` WHERE `linetype` ='subhire' AND `job` =:jobID ORDER BY `id` ASC" );
+    $getSubhireLines->execute( [ ':jobID' => $id ] );
+    while( $line = $getSubhireLines->fetch( PDO::FETCH_ASSOC ) ) {
+        $offset_price = $line['id'] . "_price";
+        $offset_qty = $line['id'] . "_qty";
+        $offset_cost = $line['id'] . "_cost";
+        $offset_supplier = $line['id'] . "_supplier";
+        $updateLine->execute([
+            ':lineID' => $line['id'],
+            ':jobID' => $id,
+            ':price' => filter_var( $_POST[$offset_price] , FILTER_VALIDATE_FLOAT ),
+            ':qty' => filter_var( $_POST[$offset_qty] , FILTER_SANITIZE_NUMBER_INT ),
+            ':cost' => filter_var( $_POST[$offset_cost] , FILTER_VALIDATE_FLOAT ),
+            ':supplier' => filter_var( $_POST[$offset_supplier] , FILTER_SANITIZE_NUMBER_INT )
+        ]);
+    }
+}
 ?>

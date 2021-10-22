@@ -35,7 +35,8 @@ echo "<div class='row'>&nbsp;</div>";
             <ul class="nav nav-tabs">
                 <li class="nav-item"><a class="nav-link" aria-current="page" href="index.php?l=job_view&id=<?php echo $id; ?>">Overview</a></li>
                 <li class="nav-item"><a class="nav-link" aria-current="page" href="index.php?l=job_costs&id=<?php echo $id; ?>">Costs</a></li>
-                <li class="nav-item"><a class="nav-link" aria-current="page" href="index.php?l=job_service&id=<?php echo $id; ?>">Service</a></li>
+                <li class="nav-item"><a class="nav-link" aria-current="page" href="index.php?l=job_service&id=<?php echo $id; ?>">Services</a></li>
+                <li class="nav-item"><a class="nav-link" aria-current="page" href="index.php?l=job_subhire&id=<?php echo $id; ?>">Subhire</a></li>
                 <li class="nav-item"><a class="nav-link active" aria-current="page" href="index.php?l=job_shipping&id=<?php echo $id; ?>">Shipping</a></li>
             </ul>
                 <?php

@@ -104,8 +104,9 @@
                                 <option selected disabled></option>
                                 <option value='quote'>Quotation</option>
                                 <option value='order'>Order Confirmation</option>
-                                <option value='dispatch'>Dispatch note</option>
+                                <option value='dispatch'>Dispatch Note</option>
                                 <option value='prep'>Picking list</option>
+                                <option value='subhire'>Subhire PO</option>
                             </select>
                         </div>
                         <input type='hidden' name='submitOpenDoc'>

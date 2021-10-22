@@ -13,6 +13,11 @@ if( isset( $_POST['submit'] ) ) {
     $invoice_terms = filter_var( $_POST['invoice_terms'] , FILTER_SANITIZE_NUMBER_INT );
     $website = filter_var( $_POST['website'] , FILTER_VALIDATE_URL );
     $hold = filter_var( $_POST['hold'] , FILTER_SANITIZE_NUMBER_INT );
+    if( isset( $_POST['supplier'] ) ) {
+        $supplier = 1;
+    } else {
+        $supplier = 0;
+    }
 
     $update = $db->prepare("
         UPDATE `customers` SET
@@ -21,7 +26,8 @@ if( isset( $_POST['submit'] ) ) {
             `vat_number` =:vat_number,
             `invoice_terms` =:invoice_terms,
             `website` =:website,
-            `hold` =:hold
+            `hold` =:hold,
+            `supplier` =:supplier
         WHERE `id` =:id
     ");
     try {
@@ -32,6 +38,7 @@ if( isset( $_POST['submit'] ) ) {
             ':invoice_terms' => $invoice_terms,
             ':website' => $website,
             ':hold' => $hold,
+            ':supplier' => $supplier,
             ':id' => $id
         ]);
     } catch( PDOException $e ) {
@@ -187,6 +194,22 @@ $customer = $getCustomer->fetch( PDO::FETCH_ASSOC );
                             }
                             ?>
                         </select>
+                    </div>
+                    <div class="input-group">
+                        <?php
+                        switch( $customer['supplier'] ) {
+                            case 0:
+                                $checked = "";
+                                break;
+                            case 1:
+                                $checked = "checked";
+                                break;
+                        }
+                        ?>
+                        <div class="btn-group" role="group" aria-label="Is this a supplier?">
+                            <input name='supplier' type="checkbox" class="btn-check" id="supplier" autocomplete="off" <?php echo $checked; ?>>
+                            <label class="btn btn-outline-primary" for="supplier">Supplier</label>
+                        </div>
                     </div>
                     <p style="margin-top: 5px;"><button type="submit" name="submit" class="btn btn-success">Save</button>
                 </div>
