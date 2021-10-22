@@ -54,7 +54,7 @@ foreach( $upgrade['customers'] as $cus ) {
         ':invoice_terms' => $cus['invoice_terms'],
         ':hold' => $cus['hold'],
         ':website' => $cus['website'],
-        ':supplier' => $cust['supplier']
+        ':supplier' => $cus['supplier']
     ]);
 }
 
