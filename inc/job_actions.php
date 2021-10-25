@@ -113,7 +113,9 @@
                         <input type='hidden' name='submitOpenDoc'>
                     ";
                     modal( "doc" , "Open document" , $dialog , "Open Cancel" );
-                    echo "<a href='index.php?l=invoicing_view&id=$id' class='btn btn-primary'>Invoicing</a>"; 
+                    if( $job['jobType'] == "order" ) {
+                        echo "<a href='index.php?l=invoicing_view&id=$id' class='btn btn-primary'>Invoicing</a>"; 
+                    }
                     ?>
                 </div>
             </center>
