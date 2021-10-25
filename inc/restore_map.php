@@ -88,8 +88,8 @@ foreach( $upgrade['customers_contacts'] as $contact ) {
 }
 
 $jobs = $newDB->prepare("
-    INSERT INTO `jobs` (`id`,`name`,`customer`,`address`,`contact`,`startdate`,`enddate`,`jobType`,`quoteAgreed`,`lost`,`complete`,`invoiced`)
-    VALUES(:id,:job,:customer,:address,:contact,:startdate,:enddate,:jobType,:quoteAgreed,:lost,:complete,:invoiced)
+    INSERT INTO `jobs` (`id`,`name`,`customer`,`address`,`contact`,`startdate`,`enddate`,`jobType`,`quoteAgreed`,`lost`,`complete`,`invoiced`,`invoice_number`)
+    VALUES(:id,:job,:customer,:address,:contact,:startdate,:enddate,:jobType,:quoteAgreed,:lost,:complete,:invoiced,:invoice_number)
 ");
 foreach( $upgrade['jobs'] as $j ) {
     $jobs->execute([
@@ -104,7 +104,8 @@ foreach( $upgrade['jobs'] as $j ) {
         ':quoteAgreed' => $j['quoteAgreed'],
         ':lost' => $j['lost'],
         ':complete' => $j['complete'],
-        ':invoiced' => $j['invoiced']
+        ':invoiced' => $j['invoiced'],
+        ':invoice_number' => $j['invoice_number']
     ]);
 }
 
