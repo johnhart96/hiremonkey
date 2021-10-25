@@ -222,7 +222,26 @@ if( isset( $_POST['submitNewItem'] ) ) {
                     $f = $getAccessory->fetch( PDO::FETCH_ASSOC );
                     $accName = $f['name'];
                     echo "<script>console.log('$accName');</script>";
-                    $error = newLine( $accName , (int)$acc['qty'] * $qty , TRUE , $parent , $mandatory , $acc['type'] , $acc['price'] );
+                    if( $acc['type'] !== "spare" ) {
+                        $error = newLine( $accName , (int)$acc['qty'] * $qty , TRUE , $parent , $mandatory , $acc['type'] , $acc['price'] );
+                    } else {
+                        // Spare
+                        $insert = $db->prepare( "INSERT INTO `jobs_lines` (`job`,`linetype`,`stockEffect`,`price`,`cat`,`qty`,`kit`,`itemName`,`parent`,`mandatory`,`accType`,`notes`) VALUES(:jobID,:linetype,:stockeffect,:price,:cat,:qty,:kit,:itemName,:parent,:mandatory,:accType,:notes)" );
+                        $insert->execute([
+                            ':jobID' => $id,
+                            ':linetype' => 'hire',
+                            ':stockeffect' => -1,
+                            ':price' => 0.0,
+                            ':cat' => $catToUse,
+                            ':qty' => 1,
+                            ':kit' => $fetch['id'],
+                            ':itemName' => $fetch['name'],
+                            ':parent' => $parent,
+                            ':mandatory' => $mandatory,
+                            ':accType' => $accType,
+                            ':notes' => 'Spare'
+                        ]);
+                    }
                 } 
             }
         } else {

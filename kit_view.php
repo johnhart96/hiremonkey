@@ -415,6 +415,9 @@ $kit = $getCurrent->fetch( PDO::FETCH_ASSOC );
                                 case "accessory":
                                     echo "Accessory";
                                     break;
+                                case "spare":
+                                    echo "Spare";
+                                    break;
                             }
                             echo "</td>";
                             // mandatory
@@ -446,7 +449,9 @@ $kit = $getCurrent->fetch( PDO::FETCH_ASSOC );
                             echo "</td>";
                             echo "</tr>";
                             $prefix = "- " . $prefix;
-                            getAccessories( $accessoryID , $prefix );
+                            if( $accessory['type'] !== 'spare' ) {
+                                getAccessories( $accessoryID , $prefix );
+                            }
                             $prefix = "";
                         }
                     }
@@ -463,9 +468,17 @@ $kit = $getCurrent->fetch( PDO::FETCH_ASSOC );
                             ";
                             $getAllAccessories = $db->prepare( "SELECT * FROM `kit` WHERE `toplevel` =0 AND `id` !=:id" );
                             $getAllAccessories->execute( [ ':id' => $id ] );
+                            $dialog .= "<optgroup label='Accessories'>";
                             while( $row = $getAllAccessories->fetch( PDO::FETCH_ASSOC ) ) {
                                 $dialog .= "<option value='" . $row['id'] . "'>" . $row['name'] . "</option>";
                             }
+                            $dialog .= "</optgroup>";
+                            $dialog .= "<optgroup label='Equipment'>";
+                            $getAllKit = $db->query( "SELECT * FROM `kit` WHERE `toplevel` =1" );
+                            while( $row = $getAllKit->fetch( PDO::FETCH_ASSOC ) ) {
+                                $dialog .= "<option value='" . $row['id'] . "'>" . $row['name'] . "</option>";
+                            }
+                            $dialog .= "</optgroup>";
                             $dialog .= "
                                     </select>
                                 </div>
@@ -479,6 +492,7 @@ $kit = $getCurrent->fetch( PDO::FETCH_ASSOC );
                                         <option value='safety'>Safety item</option>
                                         <option value='component'>Component</option>
                                         <option selected value='accessory'>Accessory</option>
+                                        <option value='spare'>Spare</option>
                                     </select>
                                 </div>
                                 <div class='input-group'>

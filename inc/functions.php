@@ -153,24 +153,6 @@ function sloc( $id ) {
   }
 }
 function price( $price ) {
-  /*if( $price !== "0" ) {
-    $bit = explode( "." , $price );
-    $return = $bit[0];
-    if( ! isset( $bit[1] ) ) {
-      $bit[1] = "0";
-    }
-    if( strlen( $bit[1] == "0" ) ) {
-      $return .= ".00";
-    } else {
-      if( strlen( $bit[1] ) < 2 ) {
-        $bit[1] .= "0";
-      }
-      $return .= "." . $bit[1];
-    }
-    return $return;
-  } else {
-    return "0.00";
-  }*/
   return number_format( $price , 2 );
 }
 function totalStockCount( $id ) {
@@ -234,17 +216,18 @@ function avlb( $product , $date1 , $date2 ) {
   while( $job = $getJobs->fetch( PDO::FETCH_ASSOC )  ) {
     // Check to see if this item is on the job
     if( (int)$job['complete'] == 0 ) {
-      echo "<script>console.log('Found active job');</script>";
+      $jobID = $job['id'];
+      echo "<script>console.log('Found active job `$jobID`');</script>";
       $jobID = (int)$job['id'];
-      $checkForStockOnJob = $db->prepare( "SELECT * FROM `jobs_lines` WHERE `kit` =:kitID" );
-      $checkForStockOnJob->execute( [ ':kitID' => $product ] );
+      $checkForStockOnJob = $db->prepare( "SELECT * FROM `jobs_lines` WHERE `kit` =:kitID AND `job` =:jobID" );
+      $checkForStockOnJob->execute( [ ':kitID' => $product , ':jobID' => $jobID ] );
       while( $line = $checkForStockOnJob->fetch( PDO::FETCH_ASSOC ) ) {
         if( $line['linetype'] == "hire" ) {
+          $d = $line['stockEffect'];
+          echo "<script>console.log('$d');</script>";
           $balence = $balence + (int)$line['stockEffect'];
         }
       }
-    } else {
-      echo "<script>console.log('Found inactive job');</script>";
     }
   }
   echo "<script>console.log('" . $balence . " are avlb.');</script>";

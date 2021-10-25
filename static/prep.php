@@ -151,7 +151,12 @@ $job = $getJob->fetch( PDO::FETCH_ASSOC );
                             if( $parent == 0 ) {
                                 echo "<td><strong>" . $item['itemName'] . "</strong></td>";
                             } else {
-                                echo "<td>" . $item['itemName'] . "</td>";
+                                echo "<td>";
+                                echo $item['itemName'];
+                                if( $item['notes'] == 'Spare' ) {
+                                    echo " (Spare)";
+                                }
+                                echo "</td>";
                             }
                             echo "<td>" . $item['qty'] . "</td>";
                             // SLOC

@@ -177,6 +177,9 @@ $job = $getJob->fetch( PDO::FETCH_ASSOC );
                             } else {
                                 echo $item['itemName'];
                             }
+                            if( $item['notes'] == 'Spare' ) {
+                                echo " (Spare)";
+                            }
                             if( $item['linetype'] == "text" ) {
                                 if( ! empty( $item['service_startdate'] ) ) {
                                     echo "<br />";
