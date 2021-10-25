@@ -107,11 +107,13 @@
                                 <option value='dispatch'>Dispatch Note</option>
                                 <option value='prep'>Picking list</option>
                                 <option value='subhire'>Subhire PO</option>
+                                <option value='invoice'>Customer Invoice</option>
                             </select>
                         </div>
                         <input type='hidden' name='submitOpenDoc'>
                     ";
                     modal( "doc" , "Open document" , $dialog , "Open Cancel" );
+                    echo "<a href='index.php?l=invoicing_view&id=$id' class='btn btn-primary'>Invoicing</a>"; 
                     ?>
                 </div>
             </center>

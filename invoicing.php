@@ -1,6 +1,6 @@
 <div class="row">
     <div class="col">
-        <h1>Invoicing</h1>
+        <h1>Invoice Pile</h1>
         <hr />
     </div>
 </div>
