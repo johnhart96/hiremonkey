@@ -73,7 +73,7 @@
                     echo "<tr>";
                     echo "<td>" . $job['id'] . "</td>";
                     echo "<td>" . $job['name'] . "</td>";
-                    echo "<td>" . customer( $job['customer'] ) . "</td>";
+                    echo "<td><a href='index.php?l=customer_view&id=" . $job['customer'] . "'>" . customer( $job['customer'] ) . "</a></td>";
                     echo "<td>" . $job['startdate'] . "</td>";
                     echo "<td>" . $job['enddate'] . "</td>";
                     echo "<td>" . ucfirst( $job['jobType'] ) . "</td>";
