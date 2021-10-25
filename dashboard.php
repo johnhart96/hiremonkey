@@ -207,7 +207,7 @@ if( isset( $_POST['dismissWelcome'] ) ) {
                         <th width='1'></th>
                     </tr>
                     <?php
-                    $getOverdue = $db->prepare( "SELECT * FROM `jobs` WHERE `complete` =0 AND `enddate` < :today" );
+                    $getOverdue = $db->prepare( "SELECT * FROM `jobs` WHERE `complete` =0 AND `enddate` < :today AND `jobType` ='order'" );
                     $getOverdue->execute( [ ':today' => date( "Y-m-d" ) ] );
                     while( $job = $getOverdue->fetch( PDO::FETCH_ASSOC ) ) {
                         echo "<tr>";
