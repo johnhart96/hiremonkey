@@ -1,4 +1,16 @@
 <?php
+/**
+ * company_select.php
+ *
+ * This source code is subject to copyright.
+ * Viewing, distributing, editing or extracting this source code will result in licence violation and/or legal action
+ *
+ * 
+ * @package    HireMonkey
+ * @author     John Hart
+ * @copyright  2021 John Hart
+ * @license    https://www.hiremonkey.app/licence.php
+ */
 // INIT
 if( file_exists( '../inc/version.php' ) ) {
     require '../inc/version.php';

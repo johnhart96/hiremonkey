@@ -1,4 +1,15 @@
 <?php
+/**
+ *
+ * This source code is subject to copyright.
+ * Viewing, distributing, editing or extracting this source code will result in licence violation and/or legal action
+ *
+ * 
+ * @package    HireMonkey
+ * @author     John Hart
+ * @copyright  2021 John Hart
+ * @license    https://www.hiremonkey.app/licence.php
+ */
 if( isset( $_POST['preview'] ) ) {
     $format = filter_var( $_POST['format'] , FILTER_SANITIZE_STRING );
     $include = "inc/import_customer_" . $format . ".php";

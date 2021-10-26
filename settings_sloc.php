@@ -1,4 +1,15 @@
 <?php
+/**
+ *
+ * This source code is subject to copyright.
+ * Viewing, distributing, editing or extracting this source code will result in licence violation and/or legal action
+ *
+ * 
+ * @package    HireMonkey
+ * @author     John Hart
+ * @copyright  2021 John Hart
+ * @license    https://www.hiremonkey.app/licence.php
+ */
 // Submit edit sloc
 if( isset( $_POST['submitEditSloc'] ) ) {
     $name = filter_var( $_POST['name'] , FILTER_SANITIZE_STRING );

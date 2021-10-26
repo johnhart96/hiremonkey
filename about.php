@@ -1,3 +1,16 @@
+<?php
+/**
+ *
+ * This source code is subject to copyright.
+ * Viewing, distributing, editing or extracting this source code will result in licence violation and/or legal action
+ *
+ * 
+ * @package    HireMonkey
+ * @author     John Hart
+ * @copyright  2021 John Hart
+ * @license    https://www.hiremonkey.app/licence.php
+ */
+?>
 <div class="row">&nbsp;</div>
 <div class="row">
     <div class="col-md-2 col-md-offset-5"></div>
@@ -9,7 +22,7 @@
 
             <p>&nbsp;</p>
             <p>
-                Version <?php echo VERSION; ?> <br />
+                Version <?php echo VERSION; ?> (<?php echo FULLBUILD; ?>) <br />
             </p>
         </center>
     </div>
