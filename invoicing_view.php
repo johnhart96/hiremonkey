@@ -61,10 +61,41 @@ $job = $getJob->fetch( PDO::FETCH_ASSOC );
     <div class="row">
         <div class="col">
             <div class="card">
-                <div class="card-header"><strong>Invoice</strong></div>
+                <div class="card-header"><strong>Body</strong></div>
                 <div class="card-body">
-                    <?php //require 'static/invoice.php'; ?>
-                    <iframe style="width: 100%; height: 1024px; border: none;" src="static/invoice.php?id=<?php echo $id; ?>"></iframe>
+                    <div class="alert alert-info">
+                        Invoice body serves to copy into your accounting package. Any changes to the text body will not be saved!
+                    </div>
+                    <?php
+                    // Duration calc
+                    $startDate = strtotime( $job['startdate'] );
+                    $endDate = strtotime( $job['enddate'] );
+                    $diff = $endDate - $startDate;
+                    $years = floor( $diff / (365*60*60*24) );
+                    $months = floor( ( $diff - $years * 365*60*60*24 ) / ( 30*60*60*24 ) ); 
+                    $days = floor( ( $diff - $years * 365*60*60*24 - $months*30*60*60*24 ) / ( 60*60*24 ) );
+                    $days ++;
+
+                    $totalBill = 0.0;
+                    // Body
+                    echo "<textarea style='height: 400px; width: 100%;'>";
+                    echo "Hire as per job " . $job['id'] . " (" . $job['name'] . ") from " . date( "d/m/Y" , strtotime( $job['startdate'] ) ) . " till " . date( "d/m/Y" , strtotime( $job['enddate'] ) ) . ":\n";
+                    $getJobLines = $db->prepare( "SELECT * FROM `jobs_lines` WHERE `job` =:jobID ORDER BY `id` ASC" );
+                    $getJobLines->execute( [ ':jobID' => $id ] );
+                    while( $line = $getJobLines->fetch( PDO::FETCH_ASSOC ) ) {
+                        if( $line['linetype'] == "hire" or $line['linetype'] == "subhire" ) {
+                            $total = (double)$line['price'] * (double)$line['discount'] * (int)$line['qty'] * $days;
+                        } else {
+                            $total = (double)$line['price'] * (double)$line['discount'] * (int)$line['qty'];
+                        }
+                        echo "    " . $line['qty'] . "x " . $line['itemName'] . " = " . company( 'currencysymbol') . price( $total ) . "\n";
+                        $totalBill = $totalBill + $total;
+                    }
+                    echo "</textarea>";
+                    ?>
+                </div>
+                <div class="card-footer">
+                    <strong>Total to bill: </strong><?php echo company( 'currencysymbol') . price( $totalBill ); ?>
                 </div>
             </div>
         </div>
