@@ -1,0 +1,64 @@
+End-user software agreement
+________________________________________________________________________________
+Revised: 26/10/2021
+
+01. Definitions
+	“vendor” is defined as ‘John Hart’ the individual.
+	“customer” is defined as the end-user of the software that has ether purchased or using the 	trial version of this software.
+	“software” is defined as the HireMonkey software.
+	"Business Day" means any weekday other than a bank or public holiday in England.
+	"Business Hours" means the hours of 09:00 to 17:00 GMT/BST on a Business Day.
+	"Documentation" means the documentation for the Software produced by the vendor and 	delivered or made available by the vendor to the customer;
+	“Trial period” means the period of time and feature limits the end user can use the software, 	without purchasing a license from the vendor.
+	“Life span” means the time where a particular version is supported and maintained by the 	vendor.	
+02. Rights
+	(a) The software remains the property of the vendor at all times. At no point does the 	customer own the exclusive rights to the software or it’s source code.
+	(b) The customer reserves the right to use the software indefinitely with no expiration.
+03. Agreement
+	(a) By installing this software, you are agreeing to the terms as outlined in this end-user 	software agreement and any future alterations or revisions of this document.
+	(b) If you do not agree to these terms, you must uninstall the software from all of your 	devices right away and not continue to use it in any way.
+04. Trial
+	(a) The software can be used free of charge indefinitely with no expiration.
+	(b) The software will limit use and/or features during the trial period.
+	(c) All terms outlined in this document will remain in place, unless specified otherwise.
+	(d) The trial period is once a valid licence key is activated on your computer. This will only 	effect the computer that the licence is activated on.
+	(e) The customer is not entitled to any technical support during the trial period.
+05. Licence purchasing
+	(a) Customers are required to purchase a licence for the software to unlock full features and 	render the trial period void as defined in section 4.
+	(b) Licences can be purchased as advertised within the software itself or on any marketing 
+	(c)  From purchasing, licence keys are delivered within 24 hours.
+	(d) Licence keys can only be used on one single computer. Once activated for the first time, 	the licence will be locked to that computer.
+	(c) Customers that want to use the software on more than one computer, will be required to 	purchase an additional licence for each and every computer, they want to use the software 	on.
+	(d) When a customer purchases a licence, the customer is purchasing a licence for the latest 	version at the time of purchase and is entitled to future fixes and patches. But no new 	features.
+06. Versions
+	(a) As stated in section 5. A software licence is intended for the latest version at the time of 	purchase.
+	(b) The customer will be entitled to bug fixes and patches for the version purchased with 	their licence
+07. Defects
+	(a) The vendor is responsible for resolving and patching bugs and defects that have been 	reported for up to 1 year following the release of the version the customer is running and 	provide them to the customer.
+	(b) The vendor takes no responsibility for defects that have not been reported or discovered 	by the vendor itself.
+08. Support
+	(a) The customer is entitled to technical support in the means of email and/or help-desk 	support. The vendor does not provide telephone support.
+	(b) Customers are only entitled to support the version of the software that the customer has a 	valid licence for and during the life span of the product.
+	(c) The vendor reserves the right to refuse support for the customer if this agreement is in- 	breach and pursue legal action as and when required.
+	(d) The vendor will not provide support for any licences that are within an active trial 	period. 
+	(e) The vendor is reserves the right to ask for verification of a valid licence purchase before 	any support is provided.
+	(f) Technical support is only provided during business hours on a business day.
+09. Liability
+	(a) The vendor is not responsible for any liability for loss of earnings that the customer may 	face in any way.
+	(b) The vendor is not liable for any illegal activity that the customer may partake in, 	involving the use of the software.
+	(c) The vendor is not responsible for any data security of any data entered into or exported 	from the software.
+10. Licence invalidation
+The vendor reserves the right to invalidate a licence purchased by the customer for the following reasons:
+	(a) Illegal activity involving the use of the software.
+	(b) Breach of this agreement.
+	(c) Any known legal dispute involving the vendor and/or the customer.
+	(d) Modification of source code.
+	(e) Illegal re-sale of licences
+11. Source code
+	(a) The customer must not read or modify any of the source code relating to the software.
+	(b) The customer must not decompile any of the source code relating to this software.
+	(c) The customer must not distribute or copy any of the source code relating to this software.
+	(d) The source code remains the property of the vendor at all times.
+12. Software upgrades
+	(a) as mentioned in section 6, the customer is only entitled to use the version of the software 	that was sold as part of the license.
+	(b) The customer may purchase an upgrade to their licence that will entitle them to a newer 	version of the software as documented on any upgrade invoice.

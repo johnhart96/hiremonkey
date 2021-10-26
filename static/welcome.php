@@ -89,7 +89,10 @@ if( isset( $_POST['submit'] ) ) {
                                 </div>
                             </div>
                             <div class="card-footer">
-                                <center><button type="submit" name="submit" class="btn btn-success">Yet's get started!</button></center>
+                                <center>
+                                    By continueing, you are agreeing to the <a href='../LICENSE.txt' download>end-user agreement!</a> <br />
+                                    <button type="submit" name="submit" class="btn btn-success">Yet's get started!</button>
+                                </center>
                             </div>
                         </div>
                     </form>
