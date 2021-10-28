@@ -243,7 +243,7 @@ function discount_to_percent( $decimel ) {
     if( strlen( $percent !== 2 ) ) {
       $percent .= "0";
     }
-    return (int)$percent;
+    return 100 - (int)$percent;
   }
 }
 function discount_to_decimel( $percent ) {
