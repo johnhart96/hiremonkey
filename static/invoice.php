@@ -86,6 +86,7 @@ if( $job['invoiced'] == 0 ) {
                 <div class="col">
                     <div class="box" style="height: 400px; !important;">
                         <p>
+                            <strong>Customer:</strong> <?php echo customer( $job['customer'] ); ?> <br />
                             <strong>Shipping Address:</strong><br />
                             <?php
                             $getAddress = $db->prepare( "SELECT * FROM `customers_addresses` WHERE `id` =:id LIMIT 1" );
