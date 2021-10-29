@@ -103,10 +103,11 @@
                             <select name='doc' class='form-control'>
                                 <option selected disabled></option>
                                 <option value='quote'>Quotation</option>
-                                <option value='order'>Order Confirmation</option>
-                                <option value='dispatch'>Dispatch Note</option>
-                                <option value='prep'>Picking list</option>
                                 <option value='subhire'>Subhire PO</option>
+                                <option value='order'>Order Confirmation</option>
+                                <option value='prep'>Picking list</option>
+                                <option value='dispatch'>Dispatch Note</option>
+                                <option value='return'>Return Note</option>
                                 <option value='invoice'>Customer Invoice</option>
                             </select>
                         </div>

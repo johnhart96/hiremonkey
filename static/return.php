@@ -28,7 +28,7 @@ $job = $getJob->fetch( PDO::FETCH_ASSOC );
 ?>
 <html>
     <head>
-        <title><?php echo $job['name']; ?> - Delivery Note</title>
+        <title><?php echo $job['name']; ?> - Return Note</title>
         <link href="../../node_modules/bootstrap/dist/css/bootstrap.css" rel="stylesheet" type="text/css" />
         <link href="../css/documents.css" rel="stylesheet" type="text/css" />
     </head>
@@ -40,7 +40,7 @@ $job = $getJob->fetch( PDO::FETCH_ASSOC );
                         <table class="table">
                             <tr>
                                 <td>
-                                    <h1>Delivery Note</h1>
+                                    <h1>Return Note</h1>
                                     <p>
                                         <?php echo company( 'website' ); ?><br />
                                         <?php echo company( 'email' ); ?><br />
@@ -150,16 +150,13 @@ $job = $getJob->fetch( PDO::FETCH_ASSOC );
                     <?php
                     $startDate = strtotime( $job['startdate'] );
                     $endDate = strtotime( $job['enddate'] );
-                    $diff = $endDate - $startDate;
-                    $years = floor( $diff / (365*60*60*24) );
-                    $months = floor( ( $diff - $years * 365*60*60*24 ) / ( 30*60*60*24 ) ); 
-                    $days = floor( ( $diff - $years * 365*60*60*24 - $months*30*60*60*24 ) / ( 60*60*24 ) );
+                    $days = duration( $job['startdate'] , $job['enddate'] );
                     function getLines( $parent = 0 , $cat = NULL ) {
                         global $db;
                         global $id;
                         global $days;
                         if( $parent == 0  ) {
-                            $getItems = $db->prepare( "SELECT * FROM `jobs_lines` WHERE `job` =:job AND `parent` =:parent AND `cat` =:cat AND `dispatch` =1" );
+                            $getItems = $db->prepare( "SELECT * FROM `jobs_lines` WHERE `job` =:job AND `parent` =:parent AND `cat` =:cat AND `dispatch` =1 AND `return` =1" );
                             $getItems->execute( [ ':job' => $id , ':parent' => $parent , ':cat' => $cat ] );
                         } else {
                             $getItems = $db->prepare( "SELECT * FROM `jobs_lines` WHERE `job` =:job AND `parent` =:parent AND `dispatch` =1" );
@@ -181,7 +178,7 @@ $job = $getJob->fetch( PDO::FETCH_ASSOC );
                             echo (double)$fetch['weight'];
                             echo " KG</td>";
                             // Dispatch date
-                            echo "<td>" . date( "d/m/Y" , strtotime( $item['dispatch_date'] ) ) . "</td>";
+                            echo "<td>" . date( "d/m/Y" , strtotime( $item['return_date'] ) ) . "</td>";
                             echo "</tr>";
                             getLines( $item['id'] , $cat );
                         }
@@ -198,7 +195,7 @@ $job = $getJob->fetch( PDO::FETCH_ASSOC );
                                     <th width='70%'>Item</th>
                                     <th width='10%'>Qty</th>
                                     <th width='10%'>Weight</th>
-                                    <th width='10%'>Dispatch date</th>
+                                    <th width='10%'>Return date</th>
                                 </tr>
                             </thead>
                         ";
@@ -214,7 +211,7 @@ $job = $getJob->fetch( PDO::FETCH_ASSOC );
             <div class="row">
                 <div class="col">
                     <div class="box">
-                        <p><em>I confirm that I have received the equipment listed above in good working order and I agree to the terms and conditions.</em></p>
+                        <p><em>I confirm that I have returned the equipment listed above in good working order.</em></p>
                         <table class="table table-bordered table-striped">
                             <tr>
                                 <th width="50%">Signed:</th>
