@@ -8,4 +8,7 @@ $(document).ready(function() {
     $('#kit').DataTable({
         "searching":     false   
     });
+    $('#revenue').DataTable({
+        "searching":     true   
+    });
 } );

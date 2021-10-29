@@ -405,9 +405,46 @@ $customer = $getCustomer->fetch( PDO::FETCH_ASSOC );
 <div class="row">
     <div class="col">
         <div class="card">
-            <div class="card-header"><strong>Revenue:</strong></div>
+            <div class="card-header"><strong>Jobs:</strong></div>
             <div class="card-body">
-                dfdf
+                <table class="table table-bordered table-stripped" id="revenue">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Name</th>
+                            <th>Start Date</th>
+                            <th>End Date</th>
+                            <th>Duration (days)</th>
+                            <th>Revenue</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php
+                        $getJobs = $db->prepare( "SELECT * FROM `jobs` WHERE `customer` =:id ORDER BY `startdate` DESC" );
+                        $getJobs->execute( [ ':id' => $id ] );
+                        $getLines = $db->prepare( "SELECT * FROM `jobs_lines` WHERE `job` =:id" );
+                        while( $job = $getJobs->fetch( PDO::FETCH_ASSOC ) ) {
+                            echo "<tr>";
+                            echo "<td>" . $job['id'] . "</td>";
+                            echo "<td><a href='index.php?l=job_view&id=" . $job['id'] . "'>" . $job['name'] . "</a></td>";
+                            echo "<td>" . date( "d/m/Y" , strtotime( $job['startdate'] ) ) . "</td>";
+                            echo "<td>" . date( "d/m/Y" , strtotime( $job['enddate'] ) ) . "</td>";
+                            echo "<td>" . duration( $job['startdate'] , $job['enddate'] ) . "</td>";
+                            // Revenue
+                            echo "<td>";
+                            $getLines->execute( [ ':id' => $job['id'] ] );
+                            $rev = 0.0;
+                            while( $line = $getLines->fetch( PDO::FETCH_ASSOC ) ) {
+                                $line = (double)$line['price'] * (int)$line['qty'] * (double)$line['discount'] * duration( $job['startdate'] , $job['enddate'] );
+                                $rev = $rev + $line;
+                            }
+                            echo company( 'currencysymbol' ) . price( $rev );
+                            echo "</td>";
+                            echo "</tr>";
+                        }
+                        ?>
+                    </tbody>
+                </table>
             </div>
         </div>
     </div>
