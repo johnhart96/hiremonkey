@@ -54,16 +54,19 @@
             echo "&nbsp;[" . company( "currencysymbol" ) . price( $line['price'] ) . "]";
             echo "&nbsp;(" . ucfirst( $line['linetype'] ) . ")";
             // Accessory type
-            if( ! empty( $line['accType'] ) && $parent !==0 ) {
+            if( ! empty( $line['accType'] ) ) {
                 switch( $line['accType'] ) {
+                    case "component":
+                        $accType = "Component";
+                        break;
                     case "safety":
                         $accType = "Safety item";
                         break;
                     case "accessory":
                         $accType = "Accessory";
                         break;
-                    case "component":
-                        $accType = "Component";
+                    default:
+                        $accType = NULL;
                         break;
                 }
                 echo "&nbsp; - <em style='color: #CCC;'>" . $accType . "</em>";
@@ -83,7 +86,6 @@
             }
             $parent = $line['id'];
             getLines( $parent , $cat );
-            $parent = 0;
             echo "</ul>";
             echo "</li>";
         }

@@ -64,6 +64,7 @@ if( isset( $_POST['submitLineEdit'] ) ) {
     $price = filter_var( $_POST['price'] , FILTER_VALIDATE_FLOAT );
     $notes = filter_var( $_POST['notes'] , FILTER_SANITIZE_STRING );
     $lineType = filter_var( $_POST['lineType'] , FILTER_SANITIZE_STRING );
+    echo $lineType;
     if( ! empty( $_POST['qty'] ) ) {
         $qty = filter_var( $_POST['qty'] , FILTER_SANITIZE_NUMBER_INT );
     } else {
