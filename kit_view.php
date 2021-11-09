@@ -145,6 +145,49 @@ if( isset( $_POST['deleteKit'] ) ) {
 $getCurrent = $db->prepare( "SELECT * FROM `kit` WHERE `id` =:id LIMIT 1" );
 $getCurrent->execute( [ ':id' => $id ] );
 $kit = $getCurrent->fetch( PDO::FETCH_ASSOC );
+
+// Duplicate
+if( isset( $_POST['duplicate'] ) ) {
+    $dup = $db->prepare("
+        INSERT INTO `kit` (`name`,`purchasevalue`,`sloc`,`price`,`height`,`width`,`weight`,`notes`,`active`,`toplevel`,`cat`)
+        VALUES(:kit,:purchasevalue,:sloc,:price,:height,:width,:weight,:notes,:active,:toplevel,:cat)
+    ");
+    $dup->execute(
+        [
+            ':kit' => $kit['name'] . "_" . date( "YmdHi" ),
+            ':purchasevalue' => $kit['purchasevalue'],
+            ':sloc' => $kit['sloc'],
+            ':price' => $kit['price'],
+            ':height' => $kit['height'],
+            ':weight' => $kit['weight'],
+            ':active' => $kit['active'],
+            ':toplevel' => $kit['toplevel'],
+            ':notes' => $kit['notes'],
+            ':cat' => $kit['cat']
+        ]
+    );
+    $getLastID = $db->query( "SELECT `id` FROM `kit` ORDER BY `id` DESC LIMIT 1" );
+    $lastID = $getLastID->fetch( PDO::FETCH_ASSOC );
+    $newID = (int)$lastID['id'];
+    // Add accessories
+    $getAccessories = $db->prepare( "SELECT * FROM `kit_accessories` WHERE `kit` =:kitID " );
+    $getAccessories->execute( [ ':kitID' => $id ] );
+    $insertAcccessory = $db->prepare( "INSERT INTO `kit_accessories` (`accessory`,`type`,`price`,`kit`,`qty`,`mandatory`) VALUES(:accessory,:typeID,:price,:kit,:qty,:mandatory)" );
+
+    while( $accessory = $getAccessories->fetch( PDO::FETCH_ASSOC ) ) {
+        $insertAcccessory->execute(
+            [
+                ':accessory' => $accessory['accessory'],
+                ':typeID' => $accessory['type'],
+                ':price' => $accessory['price'],
+                ':kit' => $newID,
+                ':qty' => $accessory['qty'],
+                ':mandatory' => $accessory['mandatory']
+            ]
+        );
+    }
+    go( "index.php?l=kit_view&id=$newID" );
+}
 ?>
 
 <div class="row">
@@ -168,6 +211,33 @@ $kit = $getCurrent->fetch( PDO::FETCH_ASSOC );
         ?>
     </div>
 </div>
+<div class="row">
+    <div class="col">
+        <div class="btn-group">
+            <?php
+            // Duplicate
+            modalButton( "duplicate" , "Duplicate" );
+            $dialog = "
+                Are you sure you want to duplicate this equipment record?
+                <input type='hidden' name='duplicate'>
+            ";
+            modal( "duplicate" , "Duplicate record" , $dialog , "Yes No" );
+
+            // Delete
+            modalButton_red( "deletekit" , "Delete" );
+            $dialog = "
+                <div class='alert alert-warning'>
+                    <strong>WARNING!</strong> Deleting this equipment record will delete all stock records. Are you sure you want to do this? <br />
+                    This will no have any effect on existing jobs!
+                </div>
+                <input type='hidden' name='deleteKit'>
+            ";
+            modal( "deletekit" , "Delete?" , $dialog , "Yes No" );
+            ?>
+        </div>
+    </div>
+</div>
+<div class="row">&nbsp;</div>
 <form method="post">
     <div class="row">
         <div class="col">
@@ -532,15 +602,7 @@ $kit = $getCurrent->fetch( PDO::FETCH_ASSOC );
 <div class="row">
     <div class="col">
         <?php
-        modalButton_red( "deletekit" , "Delete" );
-        $dialog = "
-            <div class='alert alert-warning'>
-                <strong>WARNING!</strong> Deleting this equipment record will delete all stock records. Are you sure you want to do this? <br />
-                This will no have any effect on existing jobs!
-            </div>
-            <input type='hidden' name='deleteKit'>
-        ";
-        modal( "deletekit" , "Delete?" , $dialog , "Yes No" );
+        
         ?>
     </div>
 </div>
