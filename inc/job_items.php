@@ -54,7 +54,7 @@
             echo "&nbsp;[" . company( "currencysymbol" ) . price( $line['price'] ) . "]";
             echo "&nbsp;(" . ucfirst( $line['linetype'] ) . ")";
             // Accessory type
-            if( ! empty( $line['accType'] ) ) {
+            if( ! empty( $line['accType'] ) && $parent !==0 ) {
                 switch( $line['accType'] ) {
                     case "safety":
                         $accType = "Safety item";
