@@ -83,6 +83,7 @@
             }
             $parent = $line['id'];
             getLines( $parent , $cat );
+            $parent = 0;
             echo "</ul>";
             echo "</li>";
         }
