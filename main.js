@@ -32,6 +32,9 @@ app.on('ready', () => {
           label: 'Settings',
           click: function() { navigate( "index.php?l=settings" ) }
         },{
+          label: 'Backup',
+          click: function() { navigate( "index.php?l=backup" ) }
+        },{
           label: 'Quit',
           accelerator: 'CmdOrCtrl+Q',
           click: function() { app.quit(); }
@@ -41,6 +44,23 @@ app.on('ready', () => {
       label: "File",
       submenu: [
         {
+          label: "New",
+          submenu: [
+            {
+              label: 'Contact',
+              click: function() { navigate( 'index.php?l=customer_new' ) },
+              accelerator: "CmdOrCtrl+Shift+c"
+            },{
+              label: 'Equipment',
+              click: function() { navigate( 'index.php?l=kit_new' ) },
+              accelerator: "CmdOrCtrl+Shift+e"
+            },{
+              label: 'Job',
+              click: function() { navigate( 'index.php?l=job_new' ) },
+              accelerator: "CmdOrCtrl+Shift+j"
+            }
+          ]
+        },{
           label: "Print",
           click: function() { print(); },
           accelerator: 'CmdOrCtrl+P'
