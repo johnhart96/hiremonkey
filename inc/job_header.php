@@ -7,6 +7,9 @@
                 if( (int)$job['complete'] ==1 ) {
                     echo "<div class='alert alert-success'>Job is complete!</div>";
                 }
+                if( (int)$job['price_lock'] == 1 ) {
+                    echo "<div class='alert alert-info'>Pricing is locked!</div>";
+                }
                 ?>
                 <form method="post">
                     <div class="input-group">

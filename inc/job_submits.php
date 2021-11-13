@@ -61,7 +61,14 @@ if( isset( $_GET['deletecat'] ) ) {
 if( isset( $_POST['submitLineEdit'] ) ) {
     $line = filter_var( $_POST['submitLineEdit'] , FILTER_SANITIZE_NUMBER_INT );
     $cat = filter_var( $_POST['cat'] , FILTER_SANITIZE_NUMBER_INT );
-    $price = filter_var( $_POST['price'] , FILTER_VALIDATE_FLOAT );
+    if( ! isset( $_POST['price'] ) ) {
+        $getCurrentPrice = $db->prepare( "SELECT `price` FROM `jobs_lines` WHERE `id` =:lineID" );
+        $getCurrentPrice->execute( [ ':lineID' => $line ] );
+        $c = $getCurrentPrice->fetch( PDO::FETCH_ASSOC );
+        $price = $c['price'];
+    } else {
+        $price = filter_var( $_POST['price'] , FILTER_VALIDATE_FLOAT );
+    }
     $notes = filter_var( $_POST['notes'] , FILTER_SANITIZE_STRING );
     $lineType = filter_var( $_POST['lineType'] , FILTER_SANITIZE_STRING );
     echo $lineType;
@@ -190,6 +197,12 @@ if( isset( $_POST['submitNewItem'] ) ) {
                 // Price handel
                 if( empty( $price ) ) {
                     $price = $fetch['price'];
+                }
+                $getJob = $db->prepare( "SELECT `price_lock` FROM `jobs` WHERE `id` =:jobID" );
+                $getJob->execute( [ ':jobID' => $id ] );
+                $f = $getJob->fetch( PDO::FETCH_ASSOC );
+                if( (int)$f['price_lock'] == 1 ) {
+                    $price = 0.0;
                 }
                 // Add the line into the job
                 $insert->execute([
@@ -407,5 +420,15 @@ if( isset( $_POST['submitSubhire'] ) ) {
             ':supplier' => filter_var( $_POST[$offset_supplier] , FILTER_SANITIZE_NUMBER_INT )
         ]);
     }
+}
+// Lock pricing
+if( isset( $_GET['lock'] ) ) {
+    $lock = $db->prepare( "UPDATE `jobs` SET `price_lock` =1 WHERE `id` =:jobID" );
+    $lock->execute( [ ':jobID' => $id ] );
+}
+// Unlock pricing
+if( isset( $_GET['unlock'] ) ) {
+    $unlock = $db->prepare( "UPDATE `jobs` SET `price_lock` =0 WHERE `id` =:jobID" );
+    $unlock->execute( [ ':jobID' => $id ] );
 }
 ?>

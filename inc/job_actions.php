@@ -117,6 +117,13 @@
                     if( $job['jobType'] == "order" ) {
                         echo "<a href='index.php?l=invoicing_view&id=$id' class='btn btn-primary'>Invoicing</a>"; 
                     }
+                    if( (int)$job['price_lock'] == 1 ) {
+                        // Pricing locked
+                        echo "<a href='index.php?l=job_view&id=$id&unlock' class='btn btn-danger'>Unlock " . company( "currencysymbol" ) . "</a>";
+                    } else {
+                        // Pricing not locked
+                        echo "<a href='index.php?l=job_view&id=$id&lock' class='btn btn-danger'>Lock " . company( "currencysymbol" ) . "</a>";
+                    }
                     ?>
                 </div>
             </center>
@@ -187,9 +194,17 @@
                         echo "</div>";
 
                         // Price
+                        $checkPriceLock = $db->prepare( "SELECT `price_lock` FROM `jobs` WHERE `id` =:jobID" );
+                        $checkPriceLock->execute( [ ':jobID' => $id ] );
+                        $f = $checkPriceLock->fetch( PDO::FETCH_ASSOC );
+                        if( (int)$f['price_lock'] == 1 ) {
+                            $disabled = "disabled";
+                        } else {
+                            $disabled = "";
+                        }
                         echo "<div class='input-group'>";
                         echo "<div class='input-group-prepend'><span class='input-group-text'>Price: " . company( "currencysymbol") . "</span></div>";
-                        echo "<input type='text' name='price' class='form-control' value='" . price( $line['price'] ) . "'>";
+                        echo "<input type='text' name='price' $disabled class='form-control' value='" . price( $line['price'] ) . "'>";
                         echo "</div>";
 
                         // Qty

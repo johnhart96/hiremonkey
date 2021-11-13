@@ -1,7 +1,13 @@
 <br />
 <form method="post">
     <p>
-        <button type="submit" name="submitCosts" class="btn btn-success">Save</button>
+        <?php
+        if( (int)$job['price_lock'] == 0 ) {
+            echo "<button type='submit' name='submitCosts' class='btn btn-success'>Save</button>";
+        } else {
+            echo "<div class='alert alert-warning'>Pricing is locked!</div>";
+        }
+        ?>
     </p>
     <?php
     $getJobCats = $db->prepare( "SELECT * FROM `jobs_cat` WHERE `job` =:jobID" );
