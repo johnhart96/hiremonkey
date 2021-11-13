@@ -88,10 +88,15 @@ foreach( $upgrade['customers_contacts'] as $contact ) {
 }
 
 $jobs = $newDB->prepare("
-    INSERT INTO `jobs` (`id`,`name`,`customer`,`address`,`contact`,`startdate`,`enddate`,`jobType`,`quoteAgreed`,`lost`,`complete`,`invoiced`,`invoice_number`)
-    VALUES(:id,:job,:customer,:address,:contact,:startdate,:enddate,:jobType,:quoteAgreed,:lost,:complete,:invoiced,:invoice_number)
+    INSERT INTO `jobs` (`id`,`name`,`customer`,`address`,`contact`,`startdate`,`enddate`,`jobType`,`quoteAgreed`,`lost`,`complete`,`invoiced`,`invoice_number`,`price_lock`)
+    VALUES(:id,:job,:customer,:address,:contact,:startdate,:enddate,:jobType,:quoteAgreed,:lost,:complete,:invoiced,:invoice_number,:price_lock)
 ");
 foreach( $upgrade['jobs'] as $j ) {
+    if( isset( $j['price_lock'] ) ) {
+        $price_lock = $j['price_lock'];
+    } else {
+        $price_lock = 0;
+    }
     $jobs->execute([
         ':id' => $j['id'],
         ':job' => $j['name'],
@@ -105,7 +110,8 @@ foreach( $upgrade['jobs'] as $j ) {
         ':lost' => $j['lost'],
         ':complete' => $j['complete'],
         ':invoiced' => $j['invoiced'],
-        ':invoice_number' => $j['invoice_number']
+        ':invoice_number' => $j['invoice_number'],
+        ':price_lock' => $price_lock
     ]);
 }
 
