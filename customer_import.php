@@ -41,7 +41,7 @@ if( isset( $_POST['preview'] ) ) {
 ?>
 <div class="row">
     <div class="col">
-        <h1>Customer Import:</h1>
+        <h1>Contact Import:</h1>
         <hr />
         <?php
         if( isset( $done ) ) {

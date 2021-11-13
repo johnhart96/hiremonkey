@@ -37,7 +37,7 @@ if( isset( $_POST['submit'] ) ) {
 ?>
 <div class="row">
     <div class="col">
-        <h1>New Customer:</h1>
+        <h1>New Contact:</h1>
         <hr />
         <?php
         if( trial() ) {

@@ -144,7 +144,7 @@ $customer = $getCustomer->fetch( PDO::FETCH_ASSOC );
 ?>
 <div class="row">
     <div class="col">
-        <h1>Customer Record:</h1>
+        <h1>Contact Record:</h1>
         <hr />
         <?php
         if( isset( $updated ) ) {

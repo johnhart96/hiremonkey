@@ -13,7 +13,7 @@
 ?>
 <div class="row">
     <div class="col">
-        <h1>Customers:</h1>
+        <h1>Contacts:</h1>
         <hr />
     </div>
 </div>
