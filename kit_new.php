@@ -21,6 +21,7 @@ if( isset( $_POST['submit'] ) ) {
     $notes = filter_var( $_POST['notes'] , FILTER_SANITIZE_STRING );
     $price = filter_var( $_POST['price'] , FILTER_VALIDATE_FLOAT );
     $cat = filter_var( $_POST['cat'] , FILTER_SANITIZE_NUMBER_INT );
+    $img = filter_var( $_POST['img'] , FILTER_VALIDATE_URL );
     if( isset( $_POST['accessory'] ) ) {
         $toplevel = 0;
     } else {
@@ -33,8 +34,8 @@ if( isset( $_POST['submit'] ) ) {
     }
 
     $insert = $db->prepare("
-        INSERT INTO `kit` (`name`,`sloc`,`purchasevalue`,`height`,`width`,`length`,`weight`,`notes`,`price`,`active`,`toplevel`,`cat`)
-        VALUES(:name,:sloc,:purchasevalue,:height,:weight,:length,:weight,:notes,:price,:active,:toplevel,:cat)
+        INSERT INTO `kit` (`name`,`sloc`,`purchasevalue`,`height`,`width`,`length`,`weight`,`notes`,`price`,`active`,`toplevel`,`cat`,`img`)
+        VALUES(:name,:sloc,:purchasevalue,:height,:weight,:length,:weight,:notes,:price,:active,:toplevel,:cat,:img)
     ");
     $insert->execute([
         ':name' => $name,
@@ -48,7 +49,8 @@ if( isset( $_POST['submit'] ) ) {
         ':price' => $price,
         ':active' => $active,
         ':toplevel' => $toplevel,
-        ':cat' => $cat
+        ':cat' => $cat,
+        ':img' => $img
     ]);
     $getLastEntry = $db->query( "SELECT * FROM `kit` ORDER BY `id` DESC LIMIT 1" );
     $fetch = $getLastEntry->fetch( PDO::FETCH_ASSOC );
@@ -136,6 +138,10 @@ if( isset( $_POST['submit'] ) ) {
                     }
                     ?>
                 </select>
+            </div>
+            <div class="input-group">
+                <div class="input-group-prepend"><span class="input-group-text">Image URL:</span></div>
+                <input type="text" name="img" class="form-control" value="">
             </div>
             <div class="form-floating">
                 <textarea class="form-control" name="notes" placeholder="Notes:" id="notes" style="height: 100px"></textarea>

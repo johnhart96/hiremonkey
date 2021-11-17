@@ -26,6 +26,7 @@ if( isset( $_POST['saveDetails'] ) ) {
     $toplevel = filter_var( $_POST['toplevel'] , FILTER_SANITIZE_NUMBER_INT );
     $sloc = filter_var( $_POST['sloc'] , FILTER_SANITIZE_NUMBER_INT );
     $cat = filter_var( $_POST['cat'] , FILTER_SANITIZE_NUMBER_INT );
+    $img = filter_var( $_POST['img'] , FILTER_VALIDATE_URL );
     
     $update = $db->prepare("
         UPDATE `kit` SET
@@ -40,7 +41,8 @@ if( isset( $_POST['saveDetails'] ) ) {
             `active` =:active,
             `toplevel` =:toplevel,
             `sloc` =:sloc,
-            `cat` =:cat
+            `cat` =:cat,
+            `img` =:img
         WHERE `id` =:id
     ");
     $update->execute([
@@ -56,6 +58,7 @@ if( isset( $_POST['saveDetails'] ) ) {
         ':toplevel' => $toplevel,
         ':sloc' => $sloc,
         ':cat' => $cat,
+        ':img' => $img,
         ':id' => $id
     ]);
     $saved = true;
@@ -240,6 +243,16 @@ if( isset( $_POST['duplicate'] ) ) {
 <div class="row">&nbsp;</div>
 <form method="post">
     <div class="row">
+        <?php if( strlen( $kit['img'] ) > 2 ) { ?>
+            <div class="col-2">
+                <div class="card">
+                    <div class="card-header"><strong>Image:</strong></div>
+                    <div class="card-body">
+                        <img width="100%" src="<?php echo $kit['img']; ?>">
+                    </div>
+                </div>
+            </div>
+        <?php } ?>
         <div class="col">
             <div class="card">
                 <div class="card-header"><strong>Details:</strong></div>
@@ -346,6 +359,10 @@ if( isset( $_POST['duplicate'] ) ) {
                             }
                             ?>
                         </select>
+                    </div>
+                    <div class="input-group">
+                        <div class="input-group-prepend"><span class="input-group-text">Image URL:</span></div>
+                        <input type="text" name="img" class="form-control" value="<?php echo $kit['img']; ?>">
                     </div>
                     <div class="form-floating">
                         <textarea name="notes" id="notes" placeholder="Notes:" class="form-control"><?php echo $kit['notes']; ?></textarea>

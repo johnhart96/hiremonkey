@@ -180,10 +180,15 @@ foreach( $upgrade['jobs_lines'] as $line ) {
 }
 
 $kit = $newDB->prepare("
-    INSERT INTO `kit` (`id`,`name`,`purchasevalue`,`sloc`,`price`,`height`,`width`,`length`,`weight`,`notes`,`active`,`toplevel`,`cat`)
-    VALUES(:id,:kit,:purchasevalue,:sloc,:price,:height,:width,:length,:weight,:notes,:active,:toplevel,:cat)
+    INSERT INTO `kit` (`id`,`name`,`purchasevalue`,`sloc`,`price`,`height`,`width`,`length`,`weight`,`notes`,`active`,`toplevel`,`cat`,`img`)
+    VALUES(:id,:kit,:purchasevalue,:sloc,:price,:height,:width,:length,:weight,:notes,:active,:toplevel,:cat,:img)
 ");
 foreach( $upgrade['kit'] as $k ) {
+    if( isset( $k['img'] ) ) {
+        $img = $k['img'];
+    } else {
+        $img = NULL;
+    }
     $kit->execute([
         ':id' => $k['id'],
         ':kit' => $k['name'],
@@ -197,7 +202,8 @@ foreach( $upgrade['kit'] as $k ) {
         ':notes' => $k['notes'],
         ':active' => $k['active'],
         ':toplevel' => $k['toplevel'],
-        ':cat' => $k['cat']
+        ':cat' => $k['cat'],
+        ':img' => $img
     ]);
 }
 

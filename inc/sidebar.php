@@ -47,6 +47,7 @@
             <li><a href='index.php?l=kit_new' class='link-dark rounded'>New</a></li>
             <li><a href='index.php?l=kit_browse' class='link-dark rounded'>Browse</a></li>
             <li><a href='index.php?l=cats' class='link-dark rounded'>Categories</a></li>
+            <li><a href='index.php?l=catalog' class='link-dark rounded'>Catalog</a></li>
           </ul>
         </div>
       </li>
