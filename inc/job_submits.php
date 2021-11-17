@@ -183,11 +183,15 @@ if( isset( $_POST['submitNewItem'] ) ) {
                     $catToUse = (int)$jobCat['id'];
                 } else {
                     // cat does not exist
-                    $insertCat = $db->prepare( "INSERT INTO `jobs_cat` (`cat`,`job`) VALUES(:catName,:jobID)" );
-                    $insertCat->execute( [ ':catName' => $catName , ':jobID' => $id ] );
-                    $getLastAdded = $db->query( "SELECT * FROM `jobs_cat` ORDER BY `id` DESC LIMIT 1" );
-                    $lastAdded = $getLastAdded->fetch( PDO::FETCH_ASSOC );
-                    $catToUse = (int)$lastAdded['id'];
+                    if( $parent == 0 ) {
+                        $insertCat = $db->prepare( "INSERT INTO `jobs_cat` (`cat`,`job`) VALUES(:catName,:jobID)" );
+                        $insertCat->execute( [ ':catName' => $catName , ':jobID' => $id ] );
+                        $getLastAdded = $db->query( "SELECT * FROM `jobs_cat` ORDER BY `id` DESC LIMIT 1" );
+                        $lastAdded = $getLastAdded->fetch( PDO::FETCH_ASSOC );
+                        $catToUse = (int)$lastAdded['id'];
+                    } else {
+                        $catToUse = 0;
+                    }
                 }
                 $stockEffect = (int)$qty * -1;
                 if( $stockEffect == 0 ) {
