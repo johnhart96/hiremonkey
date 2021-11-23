@@ -7,3 +7,12 @@
     margin-top: 5px;
     margin-bottom: 5px;
 }
+body,table, center, strong {
+    font-size: 12px;
+}
+table {
+    margin: 0px !important;
+}
+h1 {
+    font-size: 20px;
+}

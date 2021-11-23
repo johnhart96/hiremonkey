@@ -58,7 +58,7 @@
     <div class="line"><hr /></div>
     <div class="row">
         <div class="col">
-            <div class="box" style="height: 350px; !important;">
+            <div class="box" style="height: 300px; !important;">
                 <p>
                     <strong>Purchase order to:</strong><br />
                     <?php
@@ -83,7 +83,7 @@
             </div>
         </div> 
         <div class="col">
-            <div class="box" style="height: 350px; !important;">
+            <div class="box" style="height: 300px; !important;">
                 <p>
                     <strong>Job Details:</strong><br />
                 </p>

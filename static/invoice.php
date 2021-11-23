@@ -84,7 +84,7 @@ if( $job['invoiced'] == 0 ) {
             <div class="line"><hr /></div>
             <div class="row">
                 <div class="col">
-                    <div class="box" style="height: 400px; !important;">
+                    <div class="box" style="height: 300px;; !important;">
                         <p>
                             <strong>Customer:</strong> <?php echo customer( $job['customer'] ); ?> <br />
                             <strong>Shipping Address:</strong><br />
@@ -109,7 +109,7 @@ if( $job['invoiced'] == 0 ) {
                     </div>
                 </div> 
                 <div class="col">
-                    <div class="box" style="height: 400px; !important;">
+                    <div class="box" style="height: 300px; !important;">
                         <p>
                             <strong>Job Details:</strong><br />
                         </p>

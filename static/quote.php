@@ -79,7 +79,7 @@ $job = $getJob->fetch( PDO::FETCH_ASSOC );
             <div class="line"><hr /></div>
             <div class="row">
                 <div class="col">
-                    <div class="box" style="height: 350px; !important;">
+                    <div class="box" style="height: 280px; !important;">
                         <p>
                             <strong>Customer:</strong> <?php echo customer( $job['customer'] ); ?> <br />
                             <strong>Shipping Address:</strong><br />
@@ -104,7 +104,7 @@ $job = $getJob->fetch( PDO::FETCH_ASSOC );
                     </div>
                 </div> 
                 <div class="col">
-                    <div class="box" style="height: 350px; !important;">
+                    <div class="box" style="height: 280px; !important;">
                         <p>
                             <strong>Job Details:</strong><br />
                         </p>
