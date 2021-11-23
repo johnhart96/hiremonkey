@@ -15,6 +15,10 @@ const app = electron.app;
 const Menu = electron.Menu;
 const BrowserWindow = electron.BrowserWindow;
 const {shell} = require('electron')
+
+const httpPort = getRandomInt(30000);
+
+
 // Define App Menu
 app.on('ready', () => {
   const template = [
@@ -158,7 +162,7 @@ const PHPServer = require('php-server-manager');
 var options;
 if( process.platform == "win32" ) {
   options = {
-    port: 5555,
+    port: httpPort,
     host: "127.0.0.1",
     directory: __dirname,
     php: 'php/php.exe',
@@ -169,7 +173,7 @@ if( process.platform == "win32" ) {
   }
 } else {
   options = {
-    port: 5555,
+    port: httpPort,
     host: "127.0.0.1",
     directory: __dirname,
     directives: {
@@ -228,7 +232,7 @@ app.on('activate', function () {
 // Disable security warnings
 process.env['ELECTRON_DISABLE_SECURITY_WARNINGS'] = 'true';
 
-// Printing
+// Functions
 function print() {
   let win = BrowserWindow.getFocusedWindow();
 	// let win = BrowserWindow.getAllWindows()[0];
@@ -238,4 +242,7 @@ function print() {
 
 		console.log('Print Initiated');
 	});
+}
+function getRandomInt(max) {
+  return Math.floor(Math.random() * max);
 }
