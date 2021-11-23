@@ -246,7 +246,7 @@ if( isset( $_POST['dismissWelcome'] ) ) {
                         <th width='1'></th>
                     </tr>
                     <?php
-                    $getToBeInvoiced = $db->query( "SELECT * FROM `jobs` WHERE `invoiced` =0 AND `jobType` ='order'" );
+                    $getToBeInvoiced = $db->query( "SELECT * FROM `jobs` WHERE `invoiced` =0 AND `jobType` ='order' AND `complete` =1" );
                     while( $job = $getToBeInvoiced->fetch( PDO::FETCH_ASSOC ) ) {
                         echo "<tr>";
                         echo "<td>" . $job['id'] . "</td>";
