@@ -21,7 +21,7 @@ if( ! file_exists( usrPath ) ) {
     if( PLATFORM == "macos" ) {
         shell_exec( "mkdir " . usrPath );
     } else {
-        shell_exec( 'mkdir "' . usrPath . "'" );
+        shell_exec( 'mkdir "' . usrPath  );
     }
 }
 ?>
