@@ -104,6 +104,7 @@
                                 <option selected disabled></option>
                                 <option value='quote'>Quotation</option>
                                 <option value='subhire'>Subhire PO</option>
+                                <option value='insurance'>Insurance Values</option>
                                 <option value='order'>Order Confirmation</option>
                                 <option value='prep'>Picking list</option>
                                 <option value='dispatch'>Dispatch Note</option>

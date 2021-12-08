@@ -1,0 +1,248 @@
+<?php
+/**
+ * company_select.php
+ *
+ * This source code is subject to copyright.
+ * Viewing, distributing, editing or extracting this source code will result in licence violation and/or legal action
+ *
+ * 
+ * @package    HireMonkey
+ * @author     John Hart
+ * @copyright  2021 John Hart
+ * @license    https://www.hiremonkey.app/licence.php
+ */
+// INIT
+require '../inc/version.php';
+require '../inc/usrPath.php';
+require '../inc/functions.php';
+session_start();
+$file = usrPath . "/" . $_SESSION['company'];
+$db = new PDO( 'sqlite:' . $file );
+if( ! isset( $_GET['id'] ) ) {
+    die( "No ID was passed!" );
+}
+$id = filter_var( $_GET['id'] , FILTER_SANITIZE_NUMBER_INT );
+$getJob = $db->prepare( "SELECT * FROM `jobs` WHERE `id` =:id" );
+$getJob->execute( [ ':id' => $id ] );
+$job = $getJob->fetch( PDO::FETCH_ASSOC );
+?>
+<html>
+    <head>
+        <title><?php echo $job['name']; ?> - Insurance Values</title>
+        <link href="../../node_modules/bootstrap/dist/css/bootstrap.css" rel="stylesheet" type="text/css" />
+        <link href="../css/documents.css" rel="stylesheet" type="text/css" />
+    </head>
+    <body>
+        <div class="container">
+            <div class="row">
+                <div class="col">
+                    <div class="box">
+                        <table class="table">
+                            <tr>
+                                <td>
+                                    <h1>Insurance Values</h1>
+                                    <p>
+                                        <?php echo company( 'website' ); ?><br />
+                                        <?php echo company( 'email' ); ?><br />
+                                        <?php echo company( 'telephone' ); ?>
+                                    </p>
+                                </td>
+                                <td style="text-align: right">
+                                    <?php
+                                    if( ! empty( company( 'logo' ) ) && ! trial() ) {
+                                        echo "<img src='" . company( 'logo' ) . "'>";
+                                    }
+                                    ?>
+                                    <h1><?php echo company( 'name' ); ?></h1>
+                                    <p>
+                                        <?php
+                                        if( ! empty( company( 'address_line1' ) ) ) {
+                                            echo company( 'address_line1' ) . "<br />";
+                                        }
+                                        if( ! empty( company( 'address_line2' ) ) ) {
+                                            echo company( 'address_line2' ) . "<br />";
+                                        }
+                                        if( ! empty( company( 'town' ) ) ) {
+                                            echo company( 'town' ) . "<br />";
+                                        }
+                                        if( ! empty( company( 'postcode' ) ) ) {
+                                            echo company( 'postcode' ) . "<br />";
+                                        }
+                                        ?>
+                                    </p>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="line"><hr /></div>
+            <div class="row">
+                <div class="col">
+                    <div class="box" style="height: 250px; !important;">
+                        <p>
+                            <strong>Customer:</strong> <?php echo customer( $job['customer'] ); ?> <br />
+                            <strong>Shipping Address:</strong><br />
+                            <?php
+                            $getAddress = $db->prepare( "SELECT * FROM `customers_addresses` WHERE `id` =:id LIMIT 1" );
+                            $getAddress->execute( [ ':id' => $job['address'] ] );
+                            $fetch = $getAddress->fetch( PDO::FETCH_ASSOC );
+                            if( ! empty( $fetch['line1'] ) ) {
+                                echo $fetch['line1'] . "<br />";
+                            }
+                            if( ! empty( $fetch['line2'] ) ) {
+                                echo $fetch['line2'] . "<br />";
+                            }
+                            if( ! empty( $fetch['town'] ) ) {
+                                echo $fetch['town'] . "<br />";
+                            }
+                            if( ! empty( $fetch['postcode'] ) ) {
+                                echo $fetch['postcode'] . "<br />";
+                            }
+                            ?>
+                        </p>
+                    </div>
+                </div> 
+                <div class="col">
+                    <div class="box" style="height: 250px !important;">
+                        <p>
+                            <strong>Job Details:</strong><br />
+                        </p>
+                        <table class='table table-bordered'>
+                            <tr>
+                                <th width='30%'>Job#:</th>
+                                <td><?php echo $job['id']; ?></td>
+                            </tr>
+                            <tr>
+                                <th width='30%'>Job name:</th>
+                                <td><?php echo $job['name']; ?></td>
+                            </tr>
+                            <tr>
+                                <th width='30%'>Contact:</th>
+                                <td>
+                                    <?php
+                                    $getContact = $db->prepare( "SELECT * FROM `customers_contacts` WHERE `id` =:id LIMIT 1" );
+                                    $getContact->execute( [ ':id' => $job['contact'] ] );
+                                    $contact = $getContact->fetch( PDO::FETCH_ASSOC );
+                                    echo $contact['name'];
+                                    ?>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th width='30%'>Date:</th>
+                                <td><?php echo date( "d/m/Y" ) ?></td>
+                            </tr>
+                            <tr>
+                                <th width='30%'>Start date:</th>
+                                <td><?php echo date( "d/m/Y" , strtotime( $job['startdate'] ) ); ?></td>
+                            </tr>
+                            <tr>
+                                <th width='30%'>End date:</th>
+                                <td><?php echo date( "d/m/Y" , strtotime( $job['enddate'] ) ); ?></td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>              
+            </div>
+            <div class="line"><hr /></div>
+            <div class="row">
+                <div class="col">
+                    <?php
+                    $totalValue = 0.0;
+                    function getLines( $parent = 0 , $cat = NULL ) {
+                        global $db;
+                        global $id;
+                        global $days;
+                        global $totalValue;
+                        if( $parent == 0  ) {
+                            $getItems = $db->prepare( "SELECT * FROM `jobs_lines` WHERE `job` =:job AND `parent` =:parent AND `cat` =:cat AND `lineType` !='service' AND `lineType` !='text'" );
+                            $getItems->execute( [ ':job' => $id , ':parent' => $parent , ':cat' => $cat ] );
+                        } else {
+                            $getItems = $db->prepare( "SELECT * FROM `jobs_lines` WHERE `job` =:job AND `parent` =:parent" );
+                            $getItems->execute( [ ':job' => $id , ':parent' => $parent ] );
+                        }
+                        while( $item = $getItems->fetch( PDO::FETCH_ASSOC ) ) {
+                            echo "<tr>";
+                            if( $parent == 0 ) {
+                                echo "<td><strong>" . $item['itemName'] . "</strong></td>";
+                            } else {
+                                echo "<td>";
+                                echo $item['itemName'];
+                                if( $item['notes'] == 'Spare' ) {
+                                    echo " (Spare)";
+                                }
+                                echo "</td>";
+                            }
+                            echo "<td>" . $item['qty'] . "</td>";
+                            // SLOC
+                            echo "<td>";
+                            $getKit = $db->prepare( "SELECT * FROM `kit` WHERE `id` =:kitID" );
+                            $getKit->execute( [ ':kitID' => $item['kit'] ] );
+                            $kitFetch = $getKit->fetch( PDO::FETCH_ASSOC );
+                            echo company( 'currencysymbol') .  price( $kitFetch['purchasevalue'] );
+                            echo "</td>";
+                            $lineTotal = (double)$kitFetch['purchasevalue'] * $item['qty'];
+                            $totalValue = $totalValue + $lineTotal;
+                            echo "<td>" . company( 'currencysymbol' ) . price( $lineTotal ) . "</td>";
+
+                            echo "</tr>";
+                            
+                            getLines( $item['id'] , $cat );
+                        }
+                    }
+                    $getJobCats = $db->prepare( "SELECT * FROM `jobs_cat` WHERE `job` =:job" );
+                    $getJobCats->execute( [ ':job' => $id ] );
+                    while( $cat = $getJobCats->fetch( PDO::FETCH_ASSOC ) ) {
+                        $_SESSION['catTotal'] = 0.0;
+                        echo "<p><strong>" . $cat['cat'] . ":</strong></p>";
+                        echo "<table class='table table-bordered table-striped'>";
+                        echo "
+                            <thead>
+                                <tr>
+                                    <th width='70%'>Item</th>
+                                    <th width='10%'>Qty</th>
+                                    <th width='10%'>Value</th>
+                                    <th width='10%'>Total</th>
+                                </tr>
+                            </thead>
+                        ";
+                        echo "<tbody>";
+                        getLines( 0 , $cat['id'] );
+                        echo "</tbody>";
+                        echo "</table>";
+                        
+                    }
+                    ?>
+                </div>
+            </div>
+            <div class="line"><hr /></div>
+            <div class="row">
+                <div class="col">
+                    <div class="box">
+                        <table class="table table-bordered">
+                            <tr>
+                                <th>Total Value:</th>
+                                <td>
+                                    <?php
+                                    echo company( "currencysymbol" ) . price( $totalValue );
+                                    ?>
+                                </td>           
+                            </tr>
+                        </table>
+                    </div>  
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <center>
+                        <?php
+                        if( trial() ) {
+                            echo "Generated using a trial of HireMonkey";
+                        }
+                        ?>
+                    </center>
+                <div>
+            </div>
+        </div>
+    </body>
+</html>
