@@ -93,7 +93,7 @@ if( isset( $_POST['submitDelete'] ) ) {
 <div class="row">&nbsp;</div>
 <div class="row">
     <div class="col">
-        <table class="table table-bordered table-stripe">
+        <table class="table table-bordered table-striped">
             <tr>
                 <th>Name</th>
                 <th colspan="2"></th>
