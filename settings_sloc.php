@@ -68,7 +68,7 @@ if( isset( $_POST['submitDeleteSloc'] ) ) {
 
 <div class="row">
     <div class="col">
-        <table class="table table-bordered table-stripe">
+        <table class="table table-bordered table-striped">
             <tr>
                 <th>Name</th>
                 <th>Address Line 1</th>
