@@ -27,7 +27,7 @@
                 <th>&nbsp;</th>
             </tr>
             <?php
-            $getUnInvoiced = $db->query( "SELECT * FROM `jobs` WHERE `jobType` ='order' AND `invoiced` =0" );
+            $getUnInvoiced = $db->query( "SELECT * FROM `jobs` WHERE `jobType` ='order' AND `invoiced` =0 AND `complete` =1" );
             while( $job = $getUnInvoiced->fetch( PDO::FETCH_ASSOC ) ) {
                 echo "<tr>";
                 echo "<td>" . $job['id'] . "</td>";
