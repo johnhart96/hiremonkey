@@ -15,3 +15,8 @@ $(document).ready(function() {
         $('#order-body').slideToggle();
     });
 });
+$( function() {
+    $( ".editline" ).draggable();
+    $( ".editline").resizable();
+    $( '.itemlist').accordion();
+});

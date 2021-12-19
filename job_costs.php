@@ -19,7 +19,7 @@ require 'inc/job_select.php';
 ?>
 <div class="row">
     <div class="col">
-        <h1>Job Sheet:</h1>
+        <h1 id="jobtitle">Job Sheet:</h1>
         <hr />
         <?php
         if( isset( $saved ) ) {
@@ -40,9 +40,8 @@ echo "<div class='row'>&nbsp;</div>";
 ?>
 <div class="row">
     <div class="col">
-        <div class="card">
-            <div class="card-header" id="order-head"><strong>Order:</strong></div>
-            <div class="card-body" id="order-body">
+        <div class="items">
+            <div class="items-body" id="order-body">
             <ul class="nav nav-tabs">
                 <li class="nav-item"><a class="nav-link" aria-current="page" href="index.php?l=job_view&id=<?php echo $id; ?>">Overview</a></li>
                 <li class="nav-item"><a class="nav-link active" aria-current="page" href="index.php?l=job_costs&id=<?php echo $id; ?>">Costs</a></li>

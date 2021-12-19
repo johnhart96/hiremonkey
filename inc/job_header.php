@@ -1,8 +1,144 @@
+<script>
+  // Set job name
+  document.getElementById("jobtitle").innerHTML = "<?php echo $job['name']; ?>";
+
+  // Get inventory and add to new item box.
+  $( function() {
+    var availableTags = [
+      <?php
+      $getKit = $db->query( "SELECT * FROM `kit` WHERE `toplevel` =1 AND `active` =1" );
+      while( $kit = $getKit->fetch( PDO::FETCH_ASSOC ) ) {
+          echo "'" . $kit['name'] . "',";
+      }
+      ?>
+    ];
+    $( "#newitem" ).autocomplete({
+      source: availableTags
+    });
+  } );
+  </script>
+
+<!-- Actions -->
+<div class="row">
+    <div class="col">
+        <div class="btn-group">
+            <?php
+            // New category
+            if( (int)$job['complete'] == 0 ) {
+                modalButton_green( "newcat" , "New category" );
+                $newcat = "
+                    <div class='input-group'>
+                        <div class='input-group-prepend'>
+                            <span class='input-group-text'>Category:</span>
+                        </div>
+                        <select name='cat' class='form-control'>
+                ";
+                $getCats = $db->query( "SELECT * FROM `categories`" );
+                while( $cat = $getCats->fetch( PDO::FETCH_ASSOC ) ) {
+                    $newcat .= "<option>" . $cat['name'] . "</option>";
+                }
+                $newcat .= "</select></div><input type='hidden' name='submitNewCat'>";
+                modal( "newcat" , "New category" , $newcat , "Add Cancel" );
+            }
+            // Job Type
+            if( $job['complete'] == 0 ) {
+                modalButton( "changetype" , "Job type" );
+                $dialog = "
+                    <div class='input-group'>
+                        <div class='input-group-prepend'><span class='input-group-text'>Type:</span></div>
+                        <select class='form-control' name='changeType'>
+                            <option selected disabled</option>
+                            <option value='quote'>Quote</option>
+                            <option value='order'>Order</option>
+                        </select>
+                    </div>
+                    <input type='hidden' name='submitChangeType' value='$id'>
+                ";
+                modal( "changetype" , "Order Type" , $dialog , "Change Cancel" );
+            }
+
+            // Cancel job
+            if( $job['complete'] ==0 ) {
+                modalButton_red( "delete" , "Cancel" );
+                $dialog = "
+                    Are you sure you want to cancel this job?
+                    <input type='hidden' name='cancelJob' value='$id'>
+                ";
+                modal( "delete" , "Cancel job?" , $dialog , "Yes No" );
+            }
+
+            // Undo
+            $dialog = "
+                <div class='input-group'>
+                    <div class='input-group-prepend'><span class='input-group-text'>Action:</span></div>
+                    <select name='action' class='form-control'>
+                        <option value='0' selected disabled></option>
+                        <option value='dispatch'>Dispatch</option>
+                        <option value='return'>Return</option>
+                        <option value='complete'>Job Completion</option>
+                    </select>
+                </div>
+                <input type='hidden' name='submitUndo'>
+            ";
+            modal( "undo" , "Reverse?" , $dialog , "Confirm Cancel" );
+            modalButton( "undo" , "Reverse" );
+
+            // Complete
+            if( $job['jobType'] == "order" && $job['complete'] == 0 ) {
+                modalButton( "complete" , "Complete" );
+                $dialog = "
+                    Are you sure you want to complete this job?
+                    <input type='hidden' name='completeJob' value='" . $job['id'] . "'>
+                ";
+                modal( "complete" , "Complete job" , $dialog , "Yes No" );
+            }
+
+            // Print document
+            modalButton( "doc" , "Print/Export" );
+            $dialog = "
+                <p>Please select the document you want to open</p>
+                <div class='input-group'>
+                    <select name='doc' class='form-control'>
+                        <option selected disabled></option>
+                        <option value='quote'>Quotation</option>
+                        <option value='subhire'>Subhire PO</option>
+                        <option value='insurance'>Insurance Values</option>
+                        <option value='order'>Order Confirmation</option>
+                        <option value='prep'>Picking list</option>
+                        <option value='dispatch'>Dispatch Note</option>
+                        <option value='return'>Return Note</option>
+                        <option value='invoice'>Customer Invoice</option>
+                    </select>
+                </div>
+                <input type='hidden' name='submitOpenDoc'>
+            ";
+            modal( "doc" , "Print/Export" , $dialog , "Open Cancel" );
+
+            // Invoicing
+            if( $job['jobType'] == "order" ) {
+                echo "<a href='index.php?l=invoicing_view&id=$id' class='btn btn-primary'>Invoicing</a>"; 
+            }
+
+            // Pricing Lock?
+            if( (int)$job['price_lock'] == 1 ) {
+                // Pricing locked
+                echo "<a href='index.php?l=job_view&id=$id&unlock' class='btn btn-danger'>Unlock " . company( "currencysymbol" ) . "</a>";
+            } else {
+                // Pricing not locked
+                echo "<a href='index.php?l=job_view&id=$id&lock' class='btn btn-danger'>Lock " . company( "currencysymbol" ) . "</a>";
+            }
+            ?>
+        </div>
+    </div>
+</div>
+<div class="row">&nbsp;</div>
+
+
 <div class="row">
     <div class="col">
         <div class="card">
             <div class="card-header" id="header-head"><strong><?php echo ucfirst( $job['jobType'] ); ?> Header:</strong></div>
-            <div class="card-body" id="header-body">
+            <div class="card-body" id="header-body" style="display: none;">
                 <?php
                 if( (int)$job['complete'] ==1 ) {
                     echo "<div class='alert alert-success'>Job is complete!</div>";
@@ -102,5 +238,4 @@
             </div>
         </div>
     </div>
-    <?php require 'inc/job_actions.php'; ?>
 </div>

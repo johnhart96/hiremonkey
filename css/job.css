@@ -47,3 +47,21 @@ a.line_select:hover{
 .status {
     color: #888;
 }
+.items-body {
+    padding: 5px;
+}
+.editline {
+    position: absolute;
+    left: 75%;
+    top: 30%;
+    transform: translate(-50%, -50%);
+    z-index: 5;
+    background-color: #eeeeee;
+}
+.editline-body {
+    padding: 10px;
+}
+.editline-header {
+    padding: 10px;
+    border-bottom: solid #000 2px;
+}
