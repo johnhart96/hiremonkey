@@ -439,6 +439,16 @@ if( isset( $_POST['duplicate'] ) ) {
                     }
                     ?>
                     <tr>
+                        <th colspan="3">
+                            Current Stock:
+                            <?php
+                            echo avlb( $id , date( "Y-m-d" ) , date( "Y-m-d" ) );
+                            ?>
+                        </th>
+                        <td colspan="2">
+                        </td>
+                    </tr>
+                    <tr>
                         <td colspan="5" align="center">
                             <?php
                             modalButton_green( "newstock" , "New" );
