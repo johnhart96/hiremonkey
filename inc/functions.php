@@ -194,7 +194,7 @@ function cat( $id ) {
 function avlb( $product , $date1 , $date2 ) {
   global $db;
   global $id;
-  echo "<script>console.log('Starting stock check');</script>";
+  echo "<script>console.log('Starting stock check with dates $date1 and $date2');</script>";
 
   // Get stock held
   $stock_held = 0;
@@ -211,7 +211,7 @@ function avlb( $product , $date1 , $date2 ) {
   echo "<script>console.log('" . $balence . " are held.');</script>";
 
   // Get jobs between these dates
-  $getJobs = $db->prepare( "SELECT * FROM `jobs` WHERE `startdate` BETWEEN :date1 AND :date2" );
+  $getJobs = $db->prepare( "SELECT * FROM `jobs` WHERE `startdate` BETWEEN :date1 AND :date2 OR `enddate` BETWEEN :date1 AND :date2 " );
   $getJobs->execute( [ ':date1' => $date1 , ':date2' => $date2 ] );
   while( $job = $getJobs->fetch( PDO::FETCH_ASSOC )  ) {
     // Check to see if this item is on the job
@@ -228,6 +228,8 @@ function avlb( $product , $date1 , $date2 ) {
           $balence = $balence + (int)$line['stockEffect'];
         }
       }
+    } else {
+      echo "<script>console.log('Found inactive job `$jobID`');</script>";
     }
   }
   echo "<script>console.log('" . $balence . " are avlb.');</script>";
