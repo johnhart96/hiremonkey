@@ -55,11 +55,12 @@ if( isset( $_POST['submitDelete'] ) ) {
         if( isset( $saved ) ) {
             echo "<div class='alert alert-success'>Saved!</div>";
         }
+        $trial = 10 - entry_count( "cats" );
         if( trial() ) {
             if( entry_count( "cats" ) >= 10 ) {
                 echo "<div class='alert alert-danger'><strong>Error:</strong> You can only have 10 categories in trial mode!</div>";
             } else {
-                echo "<div class='alert alert-warning'><strong>Warning:</strong> You can only add " . 10 - entry_count( "cats" ) . " more categories while in trial mode!</div>";
+                echo "<div class='alert alert-warning'><strong>Warning:</strong> You can only add " . (int)$trial . " more categories while in trial mode!</div>";
             }
         }
         ?>
