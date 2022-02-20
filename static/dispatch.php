@@ -178,7 +178,11 @@ $job = $getJob->fetch( PDO::FETCH_ASSOC );
                             $getWeight = $db->prepare( "SELECT `weight` FROM `kit` WHERE `id` =:kitID LIMIT 1" );
                             $getWeight->execute( [ ':kitID' => $item['kit'] ] );
                             $fetch = $getWeight->fetch( PDO::FETCH_ASSOC );
-                            echo (double)$fetch['weight'];
+                            if( ! empty( $fetch['weight'] ) ) {
+                                echo (double)$fetch['weight'];
+                            } else {
+                                echo 0;
+                            }
                             echo " KG</td>";
                             // Dispatch date
                             echo "<td>" . date( "d/m/Y" , strtotime( $item['dispatch_date'] ) ) . "</td>";
