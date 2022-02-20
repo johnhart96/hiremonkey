@@ -160,6 +160,12 @@ function navigate( url ) {
 // PHP Server
 const PHPServer = require('php-server-manager');
 var options;
+var errorDisplay;
+if( process.env.DEBUG ) {
+  errorDisplay = 1;
+} else {
+  errorDisplay = 0;
+}
 if( process.platform == "win32" ) {
   options = {
     port: httpPort,
@@ -167,7 +173,7 @@ if( process.platform == "win32" ) {
     directory: __dirname,
     php: 'php/php.exe',
     directives: {
-      display_errors: 1,
+      display_errors: errorDisplay,
       expose_php: 1
     }
   }
@@ -177,7 +183,7 @@ if( process.platform == "win32" ) {
     host: "127.0.0.1",
     directory: __dirname,
     directives: {
-      display_errors: 1,
+      display_errors: errorDisplay,
       expose_php: 1
     }
   }
