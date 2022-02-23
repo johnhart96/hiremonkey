@@ -163,6 +163,7 @@ var options;
 var errorDisplay;
 if( process.env.DEBUG ) {
   errorDisplay = 1;
+  console.log("Debug enabled");
 } else {
   errorDisplay = 0;
 }
