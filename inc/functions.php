@@ -153,6 +153,8 @@ function sloc( $id ) {
   }
 }
 function price( $price ) {
+  $price = str_replace( "," , "" , $price );
+  $price = (double)$price;
   return number_format( $price , 2 );
 }
 function totalStockCount( $id ) {
