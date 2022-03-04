@@ -179,7 +179,11 @@ function customer( $id ) {
   if( empty( $id ) ) {
     return "<em>None</em>";
   } else {
-    return $fetch['name'];
+    if( ! empty( $fetch['name'] ) ) {
+      return $fetch['name'];
+    } else {
+      return NULL;
+    }
   }
 }
 function cat( $id ) {
