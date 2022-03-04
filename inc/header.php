@@ -4,7 +4,12 @@ require 'inc/usrPath.php';
 if( ! isset( $_SESSION['company'] ) ) {
     go( "static/company_select.php" );
 }
-$dbpath = usrPath . "/" . $_SESSION['company'];
+if( ! empty( $_SESSION['company'] ) ) {
+    $dbpath = usrPath . "/" . $_SESSION['company'];
+} else {
+    $dbpath = NULL;
+}
+
 if( ! file_exists( $dbpath ) ) {
     session_destroy();
     header( "Location:static/company_select.php" );
