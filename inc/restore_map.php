@@ -264,7 +264,7 @@ foreach( $upgrade['licence'] as $lic ) {
 }
 
 $repairs = $newDB->prepare("
-    INSERT INTO `kit_repairs` (`id`,`kit`,`startdate`,`enddate`,`repairtype`,`notes`,`conmplete`,`stockeffect`,`descscription`,`cost`)
+    INSERT INTO `kit_repairs` (`id`,`kit`,`startdate`,`enddate`,`repairtype`,`notes`,`complete`,`stockeffect`,`description`,`cost`)
     VALUES(:id,:kit,:startdate,:enddate,:repairtype,:notes,:complete,:stockeffect,:description,:cost)
 ");
 foreach( $upgrade['repairs'] as $repair ) {
