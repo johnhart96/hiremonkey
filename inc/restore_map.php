@@ -262,4 +262,23 @@ $licence = $newDB->prepare("
 foreach( $upgrade['licence'] as $lic ) {
     $licence->execute( [ ':licKey' => $lic['licencekey'] ] );
 }
+
+$repairs = $newDB->prepare("
+    INSERT INTO `kit_repairs` (`id`,`kit`,`startdate`,`enddate`,`repairtype`,`notes`,`conmplete`,`stockeffect`,`descscription`,`cost`)
+    VALUES(:id,:kit,:startdate,:enddate,:repairtype,:notes,:complete,:stockeffect,:description,:cost)
+");
+foreach( $upgrade['repairs'] as $repair ) {
+    $repairs->execute([
+        ':id' => $repair['id'],
+        ':kit' => $repair['kit'],
+        ':startdate' => $repair['startdate'],
+        ':enddate' => $repair['enddate'],
+        ':repairtype' => $repair['repairtype'],
+        ':notes' => $repair['notes'],
+        ':complete' => $repair['complete'],
+        ':stockeffect' => $repair['stockeffect'],
+        ':description'=> $repair['description'],
+        ':cost' => $repair['cost']
+    ]);
+}
 ?>

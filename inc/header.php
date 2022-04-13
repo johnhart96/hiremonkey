@@ -78,4 +78,7 @@ if( date( "Y-m-d" , strtotime( licence( "nextactivation" ) ) ) < date( "Y-m-d" )
 <script src="./js/jquery-ui.js" type="text/javascript"></script>
 <script src="../node_modules/datatables/media/js/jquery.dataTables.js" type="text/javascript"></script>
 <script src="./js/job.js" type="text/javascript"></script>
+<script src="./js/repairs.js" type="text/javascript"></script>
 <script src="./js/tables.js" type="text/javascript"></script>
+<script src="ckeditor/ckeditor.js"></script>
+<script src="js/ckeditor.init.js"></script>

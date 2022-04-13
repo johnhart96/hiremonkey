@@ -11,4 +11,7 @@ $(document).ready(function() {
     $('#revenue').DataTable({
         "searching":     true   
     });
+    $('#repairs').DataTable({
+        "searching":     true   
+    });
 } );

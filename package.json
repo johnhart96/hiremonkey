@@ -15,6 +15,7 @@
   },
   "author": "John Hart",
   "dependencies": {
+    "@ckeditor/ckeditor5-build-classic": "^32.0.0",
     "bootstrap": "^5.1.1",
     "datatables": "^1.10.18",
     "jquery": "^3.6.0",

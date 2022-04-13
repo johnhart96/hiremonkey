@@ -1,3 +1,16 @@
+<?php
+/**
+ *
+ * This source code is subject to copyright.
+ * Viewing, distributing, editing or extracting this source code will result in licence violation and/or legal action
+ *
+ * 
+ * @package    HireMonkey
+ * @author     John Hart
+ * @copyright  2021 John Hart
+ * @license    https://www.hiremonkey.app/licence.php
+ */
+?>
 <div class='flex-shrink-0 p-3 bg-white' style='width: 200px; border-right: solid 1px #000;;'>
     <a href='/' class='d-flex align-items-center pb-3 mb-3 link-dark text-decoration-none border-bottom'>
     <img src="icons/logo.png" height="30">
@@ -48,6 +61,7 @@
             <li><a href='index.php?l=kit_browse' class='link-dark rounded'>Browse</a></li>
             <li><a href='index.php?l=cats' class='link-dark rounded'>Categories</a></li>
             <li><a href='index.php?l=catalog' class='link-dark rounded'>Catalog</a></li>
+            <li><a href='index.php?l=repairs' class='link-dark rounded'>Repairs</a></li>
           </ul>
         </div>
       </li>

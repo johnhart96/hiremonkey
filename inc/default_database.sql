@@ -46,6 +46,20 @@ CREATE TABLE licence (id INTEGER PRIMARY KEY AUTOINCREMENT, licencekey TEXT NOT 
 -- Table: sloc
 CREATE TABLE sloc (id INTEGER PRIMARY KEY AUTOINCREMENT, name VARCHAR, address_line1 VARCHAR, address_line2 VARCHAR, town VARCHAR, postcode VARCHAR);
 
+-- Table: kit_repairs
+CREATE TABLE kit_repairs (
+    id          INTEGER PRIMARY KEY AUTOINCREMENT,
+    kit         INTEGER NOT NULL,
+    startdate   DATE,
+    enddate     DATE    DEFAULT (0 - 0 - 0),
+    repairtype  VARCHAR DEFAULT corrective,
+    notes       TEXT,
+    complete    INTEGER DEFAULT (0),
+    stockeffect INTEGER DEFAULT ( -1),
+    description VARCHAR,
+    cost        DOUBLE  DEFAULT (0.0)
+);
+
 
 COMMIT TRANSACTION;
 PRAGMA foreign_keys = on;

@@ -235,6 +235,14 @@ function avlb( $product , $date1 , $date2 ) {
       }
     }
   }
+  // Repairs
+  $searchForRepairs = $db->prepare( "SELECT * FROM `kit_repairs` WHERE `kit` =:kitID AND `complete` =0" );
+  $searchForRepairs->execute( [ ':kitID' => $product ] );
+  while( $repair = $searchForRepairs->fetch( PDO::FETCH_ASSOC ) ) {
+    $stock_effect = $repair['stockeffect'];
+    echo "<script>console.log('Open repair " . $stock_effect . "');</script>";
+    $balence = $balence + $stock_effect;
+  }
   echo "<script>console.log('" . $balence . " are avlb.');</script>";
   return $balence;
 }

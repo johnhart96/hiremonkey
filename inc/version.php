@@ -31,6 +31,7 @@ $tables = array(
     'kit_accessories',
     'kit_stock',
     'sloc',
-    'licence'
+    'licence',
+    'kit_repairs'
 );
 ?>

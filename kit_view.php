@@ -191,6 +191,26 @@ if( isset( $_POST['duplicate'] ) ) {
     }
     go( "index.php?l=kit_view&id=$newID" );
 }
+// Repair
+if( isset( $_POST['submitRepair'] ) ) {
+    $qty = filter_var( $_POST['qty'] , FILTER_SANITIZE_NUMBER_INT );
+    $description = filter_var( $_POST['description'] , FILTER_SANITIZE_STRING );
+    $newRepair = $db->prepare("
+        INSERT INTO `kit_repairs` (`kit`,`description`,`startdate`,`stockeffect`)
+        VALUES(:kit,:description,:startdate,:stockeffect)
+    ");
+    $newRepair->execute(
+        [
+            ':kit' => $id,
+            ':description' => $description,
+            ':startdate' => date( "Y-m-d" ),
+            ':stockeffect' => $qty * -1
+        ]
+    );
+    $getLastRepair = $db->query( "SELECT `id` FROM `kit_repairs` ORDER BY `id` DESC LIMIT 1" );
+    $fetch = $getLastRepair->fetch( PDO::FETCH_ASSOC );
+    go( "index.php?l=repairbench&id=" . $fetch['id'] );
+}
 ?>
 
 <div class="row">
@@ -236,6 +256,21 @@ if( isset( $_POST['duplicate'] ) ) {
                 <input type='hidden' name='deleteKit'>
             ";
             modal( "deletekit" , "Delete?" , $dialog , "Yes No" );
+
+            // Repair
+            modalButton( "repair" , "Repair" );
+            $dialog = "
+                <div class='input-group'>
+                    <div class='input-group-prepend'><span class='input-group-text'>Description:</span></div>
+                    <input type='text' name='description' value=''>
+                </div>
+                <div class='input-group'>
+                    <div class='input-group-prepend'><span class='input-group-text'>Qty:</span></div>
+                    <input type='text' name='qty' value='1'>
+                </div>
+                <input type='hidden' name='submitRepair' value=''>
+            ";
+            modal( "repair" , "New repair" , $dialog , "Save Cancel" );
             ?>
         </div>
     </div>
@@ -375,6 +410,53 @@ if( isset( $_POST['duplicate'] ) ) {
         </div>
     </div>
 </form>
+<div class="row">&nbsp;</div>
+<div class="row">
+    <div class="col">
+        <div class="card">
+            <div class="card-header"><strong>Repairs</strong></div>
+            <div class="card-body">
+                <table class="table table-bordered table-striped">
+                    <thead>
+                        <tr>
+                            <th>ID</td>
+                            <th>Description</th>
+                            <th>Start date</th>
+                            <th>End date</th>
+                            <th>Qty</th>
+                            <th>Cost</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php
+                        $getRepairs = $db->prepare( "SELECT * FROM `kit_repairs` WHERE `kit` =:kitID" );
+                        $getRepairs->execute( [ ':kitID' => $id ] );
+                        $repairBill = 0.0;
+                        while( $repair = $getRepairs->fetch( PDO::FETCH_ASSOC ) ) {
+                            echo "<tr>";
+                            echo "<td>" . $repair['id'] . "</td>";
+                            echo "<td><a href='index.php?l=repairbench&id=" . $repair['id'] . "'>" . $repair['description'] . "</a></td>";
+                            echo "<td>" . $repair['startdate'] . "</td>";
+                            echo "<td>" . $repair['enddate'] . "</td>";
+                            echo "<td>" . str_replace( "-" , "" , $repair['stockeffect'] ). "</td>";
+                            echo "<td>" . company( "currencysymbol") . price( $repair['cost'] ) . "</td>";
+                            echo "</tr>";
+                            $repairBill = $repairBill + $repair['cost'];
+                        }
+                        ?>
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <th style="text-align: right" colspan="5">Total repair bill:</th>
+                            <td><?php echo company( "currencysymbol") . price( $repairBill ); ?></td>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row">&nbsp;</div>
 <div class="row">
     <div class="col">
         <div class="card">
