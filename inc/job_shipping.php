@@ -2,10 +2,34 @@
 <form method="post">
     <div class="btn-group" style="margin-bottom: 5px;">
         <button type="submit" name="submitShipping" class="btn btn-success">Save</button>
-        <?php if( $job['jobType'] !== "quote" ) { ?>
+        <?php
+        if( $job['jobType'] !== "quote" ) {
+            modalButton( "dispatchAll" , "Dispatch All" );
+            $dispatch = "
+                <div class='input-group'>
+                    <div class='input-group-prepend'>
+                        <span class='input-group-text'>Dispatch date:</span>
+                    </div>
+                    <input placeholder='YYYY-MM-DD HH:MM' name='dispatchDate' type='text' class='form-control' value='" . date( "Y-m-d H:i") .  "'>
+                </div>
+            ";
+            modal( "dispatchAll" , "Process Dispatch" , $dispatch , "Save Cancel" );
+            modalButton( "returnAll" , "Return All" );
+            $return = "
+                <div class='input-group'>
+                    <div class='input-group-prepend'>
+                        <span class='input-group-text'>Return date:</span>
+                    </div>
+                    <input placeholder='YYYY-MM-DD HH:MM' name='returnDate' type='text' class='form-control' value='" . date( "Y-m-d H:i") .  "'>
+                </div>
+            ";
+            modal( "returnAll" , "Process Return" , $return , "Save Cancel" );
+        }
+        ?>
+        <!--
             <a href="index.php?l=job_shipping&dispatch&id=<?php echo $id; ?>" class="btn btn-primary">Dispatch All</a>
             <a href="index.php?l=job_shipping&return&id=<?php echo $id; ?>" class="btn btn-primary">Return All</a>
-        <?php } ?>
+        -->
     </div>
     <?php
     $getJobCats = $db->prepare( "SELECT * FROM `jobs_cat` WHERE `job` =:jobID" );

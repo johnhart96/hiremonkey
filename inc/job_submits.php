@@ -352,17 +352,17 @@ if( isset( $_POST['submitUndo'] ) ) {
     }
 }
 // Dispatch all
-if( isset( $_GET['dispatch'] ) ) {
+if( isset( $_POST['dispatchDate'] ) ) {
     $id = filter_var( $_GET['id'] , FILTER_SANITIZE_NUMBER_INT );
-    $today = date( "Y-m-d H:i" );
+    $today = filter_var( $_POST['dispatchDate'] , FILTER_SANITIZE_STRING );
     $dispatch = $db->prepare( "UPDATE `jobs_lines` SET `dispatch` =1 , `dispatch_date` =:today , `return` =0 , `return_date` =NULL WHERE `job` =:jobID" );
     $dispatch->execute( [ ':today' => $today , ':jobID' => $id ] );
     go( "index.php?l=job_shipping&id=$id" );
 }
 // Return All
-if( isset( $_GET['return'] ) ) {
+if( isset( $_POST['returnDate'] ) ) {
     $id = filter_var( $_GET['id'] , FILTER_SANITIZE_NUMBER_INT );
-    $today = date( "Y-m-d H:i" );
+    $today = filter_var( $_POST['returnDate'] , FILTER_SANITIZE_STRING );
     $return = $db->prepare( "UPDATE `jobs_lines` SET `return` =1 , `return_date` =:today WHERE `job` =:jobID" );
     $return->execute( [ ':today' => $today , ':jobID' => $id ] );
     go( "index.php?l=job_shipping&id=$id" );
