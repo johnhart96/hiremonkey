@@ -203,7 +203,7 @@ if( isset( $_POST['dismissWelcome'] ) ) {
         </div>
     </div>
 </div>
-<div class="row">&nbsp;</p>
+<div class="row">&nbsp;</div>
 <div class="row">
     <div class="col">
         <div class="card">
@@ -256,6 +256,39 @@ if( isset( $_POST['dismissWelcome'] ) ) {
                         echo "</tr>";
                     }
                     ?>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row">&nbsp;</div>
+<div class="row">
+    <div class="col">
+        <div class="card">
+            <div class="card-header"><strong>Repairs:</strong></div>
+            <div class="card-body">
+                <table class="table table-bordered table-stripped">
+                    <thead>
+                        <tr>
+                            <th>Repair#</th>
+                            <th>Description</th>
+                            <th>Start date</th>
+                            <th>&nbsp;</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php
+                        $getRepairs = $db->query( "SELECT * FROM `kit_repairs` WHERE `complete` =0" );
+                        while( $repair = $getRepairs->fetch( PDO::FETCH_ASSOC ) ) {
+                            echo "<tr>";
+                            echo "<td>" . $repair['id'] . "</td>";
+                            echo "<td>" . $repair['description'] . "</td>";
+                            echo "<td>" . date( "Y-m-d" , strtotime( $repair['startdate'] ) ) . "</td>";
+                            echo "<td><a href='index.php?l=repairbench&id=" . $repair['id'] . "' class='btn btn-primary'>Open</a></td>";
+                            echo "</tr>";
+                        }
+                        ?>
+                    </tbody>
                 </table>
             </div>
         </div>
