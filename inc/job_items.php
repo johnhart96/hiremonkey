@@ -13,7 +13,11 @@
         }
         while( $line = $getLineItems->fetch( PDO::FETCH_ASSOC ) ) {
             $avlb = avlb( (int)$line['kit'] , $job['startdate'] , $job['enddate'] );
-            echo "<li class='line'>";
+            if( $parent == 0 ) {
+                echo "<li class='line toplevel'>";
+            } else {
+                echo "<li class='line'>";
+            }
             if( isset( $_GET['editline'] ) ) {
                 $selectedLine = filter_var( $_GET['editline'] , FILTER_SANITIZE_NUMBER_INT );
                 if( $selectedLine == (int)$line['id'] ) {
@@ -88,6 +92,7 @@
             getLines( $parent , $cat );
             echo "</ul>";
             echo "</li>";
+            $parent = 0;
         }
     }
     // Items with no cat
@@ -100,6 +105,7 @@
         // Get items
         echo "<ul class='cat'>";
         getLines( 0 , $cat['id'] );
+        $parent = 0;
         echo "</ul>";
         echo "</li>"; // End of this cat
     }

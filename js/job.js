@@ -14,7 +14,11 @@ $(document).ready(function() {
     $('#order-head').click(function() {
         $('#order-body').slideToggle();
     });
+    $('.toplevel').click(function() {
+        $(this).find('ul').slideToggle();
+    });
 });
+
 $( function() {
     $( ".editline" ).draggable();
     $( ".editline").resizable();
