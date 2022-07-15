@@ -53,8 +53,19 @@
             fclose( $save );
             $updateLastBackup = $db->prepare( "UPDATE `company` SET `lastbackup` =:today WHERE `id` > 0 " );
             $updateLastBackup->execute( [ ':today' => date( "Y-m-d H:i" ) ] );
-        }
 
+            $ftp = true;
+            if( company( "ftp_backup" ) == 1 ) {
+                $dest_file = company( "ftp_dir" ) .  str_replace( " " , "-" , company( 'name' ) ) . "_" . date( "YmdHi" ) . ".json";
+                $ftp = ftp_connect( company( "ftp_host" ) , company( "ftp_port" ) , 100 );
+                ftp_login( $ftp , company( "ftp_username" ) , company( "ftp_password" ) );
+                $ret = ftp_nb_put( $ftp, $dest_file, $filename, FTP_BINARY, FTP_AUTORESUME);
+                $ftp_upload = true;
+                ftp_close( $ftp );
+            }
+            $saved = true;
+
+        }
         ?>
     </div>
 </div>
@@ -62,6 +73,14 @@
 <div class="row">&nbsp;</div>
 <div class="row">
     <div class="col">
+        <?php
+        if( isset( $saved ) ) {
+            echo "<div class='alert alert-success'>Backup created locally!</div>";
+        }
+        if( isset( $ftp_upload ) ) {
+            echo "<div class='alert alert-success'>Backup created on FTP!</div>";
+        }
+        ?>
         <div class="card">
             <div class="card-header"><strong>Existing Backups:</strong></div>
             <div class="card-body">
