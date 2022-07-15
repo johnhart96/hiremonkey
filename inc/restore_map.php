@@ -7,8 +7,8 @@ foreach( $upgrade['categories'] as $cat ) {
 }
 
 $company = $newDB->prepare("
-    INSERT INTO `company` (`id`,`name`,`address_line1`,`address_line2`,`town`,`postcode`,`telephone`,`website`,`email`,`currencysymbol`,`lastbackup`,`appversion`,`welcome`,`logo`)
-    VALUES(:id,:company,:address_line1,:address_line2,:town,:postcode,:telephone,:website,:email,:currencysymbol,:lastbackup,:appversion,:welcome,:logo)
+    INSERT INTO `company` (`id`,`name`,`address_line1`,`address_line2`,`town`,`postcode`,`telephone`,`website`,`email`,`currencysymbol`,`lastbackup`,`appversion`,`welcome`,`logo`,`ftp_host`,`ftp_username`,`ftp_password`,`ftp_port`,`ftp_dir`,`ftp_backup`)
+    VALUES(:id,:company,:address_line1,:address_line2,:town,:postcode,:telephone,:website,:email,:currencysymbol,:lastbackup,:appversion,:welcome,:logo,:ftp_host,:ftp_username,:ftp_password,:ftp_port,:ftp_dir,:ftp_backup)
 ");
 foreach( $upgrade['company'] as $com ) {
     if( isset( $com['welcome'] ) ) {
@@ -20,6 +20,22 @@ foreach( $upgrade['company'] as $com ) {
         $logo = $com['logo'];
     } else {
         $logo = 1;
+    }
+    if( isset( $com['ftp_host'] ) ) {
+        $ftp_host = $com['ftp_host'];
+        $ftp_username = $com['ftp_username'];
+        $ftp_password = $com['ftp_password'];
+        $ftp_port = $com['ftp_port'];
+        $ftp_dir = $com['ftp_dir'];
+        $ftp_backup = $com['ftp_backup'];
+
+    } else {
+        $ftp_host = NULL;
+        $ftp_username = NULL;
+        $ftp_password = NULL;
+        $ftp_port = 21;
+        $ftp_dir = NULL;
+        $ftp_backup = 0;
     }
     $company->execute([
         ':id' => $com['id'],
@@ -35,7 +51,14 @@ foreach( $upgrade['company'] as $com ) {
         ':lastbackup' => $com['lastbackup'],
         ':appversion' => FULLBUILD,
         ':welcome' => $welcome,
-        ':logo' => $logo
+        ':logo' => $logo,
+        ':ftp_host' => $ftp_host,
+        ':ftp_username' => $ftp_username,
+        ':ftp_password' => $ftp_password,
+        ':ftp_port' => $ftp_port,
+        ':ftp_dir' => $ftp_dir,
+        ':ftp_backup' => $ftp_backup
+
     ]);
 } 
 

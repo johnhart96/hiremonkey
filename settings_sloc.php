@@ -61,6 +61,7 @@ if( isset( $_POST['submitDeleteSloc'] ) ) {
             <li class="nav-item"><a class="nav-link" aria-current="page" href="index.php?l=settings">Company</a></li>
             <li class="nav-item"><a class="nav-link" aria-current="page" href="index.php?l=settings_licence">Licence</a></li>
             <li class="nav-item"><a class="nav-link active" aria-current="page" href="index.php?l=settings_sloc">Storage Locations</a></li>
+            <li class="nav-item"><a class="nav-link" aria-current="page" href="index.php?l=settings_ftp">FTP</a></li>
         </ul>
     </div>
 </div>
