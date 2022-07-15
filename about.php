@@ -23,6 +23,7 @@
             <p>&nbsp;</p>
             <p>
                 Version <?php echo VERSION; ?> (<?php echo FULLBUILD; ?>) <br />
+                PHP Version: <?php echo phpversion(); ?> <br />
             </p>
         </center>
     </div>

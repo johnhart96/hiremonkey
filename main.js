@@ -146,6 +146,9 @@ if( process.env.DEBUG ) {
       {
         role: 'reload',
         accelerator: 'Alt+R'
+      },{
+        label: 'Debug Info',
+        click: function() { navigate( "index.php?l=debug" ) }
       }
     ]
   });
