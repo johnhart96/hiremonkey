@@ -30,7 +30,7 @@ if ( PLATFORM == "windows" ) {
 $_SESSION['uuid'] = md5( $uuid ) ;
 
 // Submit open
-if( isset( $_POST['submitOpen'] ) ) {
+if( isset( $_POST['company'] ) ) {
     $company = filter_var( $_POST['company'] , FILTER_SANITIZE_STRING );
     // Try the file
     $test = new PDO( 'sqlite:' . usrPath . "/" . $company );
@@ -99,7 +99,7 @@ if( isset( $_POST['submitOpen'] ) ) {
             <div class="row">&nbsp;</div>    
             <div class="row">
                 <div class="col">
-                    <form method="post">
+                    <form method="post" id="companySelect" action="company_select.php">
                         <div class="card">
                             <div class="card-header"><strong>Open:</strong></div>
                             <div class="card-body">
@@ -161,5 +161,10 @@ if( isset( $_POST['submitOpen'] ) ) {
                 </div>
             </div>
         </div>
+        <script>
+            document.getElementById("company").addEventListener("dblclick", function() {
+                document.getElementById('companySelect').submit();
+            });
+        </script>
     </body>
 </html>
