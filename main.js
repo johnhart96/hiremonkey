@@ -122,7 +122,7 @@ app.on('ready', () => {
           click: function() { navigate( "index.php?l=about" ) }
         },{
           label: "Support",
-          click: function() { shell.openExternal( 'https://www.jh96.co.uk/helpdesk' ) }
+          click: function() { shell.openExternal( 'https://billing.jh96.co.uk/helpdesk.php' ) }
         },{
           label: "Recover Licence",
           click: function() { shell.openExternal( 'https://hiremonkey.app/recover-licence.php' ) }
