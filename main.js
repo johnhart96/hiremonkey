@@ -129,6 +129,9 @@ app.on('ready', () => {
         },{
           label: "Purchase Licence",
           click: function() { shell.openExternal( 'https://hiremonkey.app/pricing.php' ) }
+        },{
+          label: "Force data engine to start",
+          click: function() { server.run(); }
         }
       ]
     }
