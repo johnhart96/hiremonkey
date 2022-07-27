@@ -1,17 +1,22 @@
 $(document).ready(function() {
     $('#jobs').DataTable({
-        "searching":     false   
+        "searching":     false,
+        "paging":       false
     });
     $('#customers').DataTable({
-        "searching":     false   
+        "searching":     false,
+        "paging":       false 
     });
     $('#kit').DataTable({
-        "searching":     false   
+        "searching":     false,
+        "paging":       false  
     });
     $('#revenue').DataTable({
-        "searching":     true   
+        "searching":     true,
+        "paging":       false  
     });
     $('#repairs').DataTable({
-        "searching":     true   
+        "searching":     true,
+        "paging":       false  
     });
 } );

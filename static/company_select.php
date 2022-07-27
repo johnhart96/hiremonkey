@@ -78,6 +78,12 @@ if( isset( $_POST['company'] ) ) {
             .card-body {
                 height: 200px;
             }
+            body {
+                background-color: #5f5f5f;
+            }
+            h1 {
+                color: #FFFFFF;
+            }
         </style>
     </head>
     <body>

@@ -60,7 +60,7 @@
             $search = $db->query( "SELECT * FROM `kit_repairs` WHERE `complete` =0" );
         }
         ?>
-        <table id="repairs" class="table table-bordered table-striped">
+        <table id="repairs" class="table table-bordered table-striped table-dark">
             <thead>
                 <tr>
                     <th>ID</th>

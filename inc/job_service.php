@@ -2,7 +2,7 @@
     <p>
         <button type="submit" name="submitServices" class="btn btn-success">Save</button>
     </p>
-    <table class="table table-bordered table-striped">
+    <table class="table table-bordered table-striped table-dark">
         <thead>
             <tr>
                 <th>Service</th>

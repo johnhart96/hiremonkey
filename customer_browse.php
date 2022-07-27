@@ -32,7 +32,7 @@
 </div>
 <div class="row">
     <div class="col">
-        <table id="customers" class="table table-bordered table-striped" id="customers">
+        <table id="customers" class="table table-bordered table-striped table-dark" id="customers">
             <thead>
                 <tr>
                     <th>Customers</th>

@@ -72,7 +72,7 @@
 </div>
 <div class="row">
     <div class="col">
-        <table class="table table-bordered table-striped" id="kit">
+        <table class="table table-bordered table-striped table-dark" id="kit">
             <thead>
                 <tr>
                     <th>Name</th>

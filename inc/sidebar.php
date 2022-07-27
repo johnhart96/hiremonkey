@@ -11,7 +11,7 @@
  * @license    https://www.hiremonkey.app/licence.php
  */
 ?>
-<div class='flex-shrink-0 p-3 bg-white' style='width: 200px; border-right: solid 1px #000;;'>
+<div class='flex-shrink-0 p-3 bg-white' id="sidebar">
     <a href='/' class='d-flex align-items-center pb-3 mb-3 link-dark text-decoration-none border-bottom'>
     <img src="icons/logo.png" height="30">
       <span class='fs-5 fw-semibold'>&nbsp;HireMonkey</span>

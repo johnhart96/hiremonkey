@@ -2,7 +2,7 @@
     <p>
         <button type="submit" name="submitSubhire" class="btn btn-success">Save</button>
     </p>
-    <table class="table table-bordered">
+    <table class="table table-bordered table-dark">
         <thead>
             <tr>
                 <th>Item</th>

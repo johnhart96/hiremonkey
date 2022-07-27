@@ -103,7 +103,7 @@
         }
     }
     ?>
-    <table class="table table-bordered table-striped" style="text-align: center;">
+    <table class="table table-bordered table-striped table-dark" style="text-align: center;">
         <tr>
             <th>Item</th>
             <th>Qty</th>

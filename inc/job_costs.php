@@ -84,7 +84,7 @@
         $_SESSION['totalPrice'] = 0.0;
         $_SESSION['totalProfit'] = 0.0;
         echo "<h3>" . $cat['cat'] . ":</h3>";
-        echo "<table class='table table-bordered table-stripe' style='text-align:center'>";
+        echo "<table class='table table-dark table-bordered table-stripe' style='text-align:center'>";
         // table head
         echo "<tr>";
         echo "<th width='40%' style='text-align:left'>Item</th>";
@@ -126,7 +126,7 @@
         $_SESSION['grandTotal'] = $_SESSION['grandTotal'] + $_SESSION['totalPrice'];
     }
     ?>
-    <table class='table table-bordered'>
+    <table class='table table-bordered table-dark'>
         <tr>
             <td width='80%' colspan='5'><strong>Total Price:</td>
             <td width='10%' style='text-align:center;'><strong><?php echo company( 'currencysymbol' ) . $_SESSION['grandTotal']; ?></strong></td>

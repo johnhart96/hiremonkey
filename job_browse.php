@@ -68,7 +68,7 @@
             $getJobs = $db->query( "SELECT * FROM `jobs` WHERE `complete` =0 AND `lost` =0" );
         }
         ?>
-        <table class="table table-bordered table-striped" id="jobs">
+        <table class="table table-dark table-bordered table-striped" id="jobs">
             <thead>
                 <tr>
                     <th>Job#</th>
