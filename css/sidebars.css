@@ -124,6 +124,6 @@ main div {
 .items .items-body .nav .nav-item a {
   color: #000000 !important;
 }
-.nav .nav-items a {
+.nav-link {
   color: #000000 !important;
 }
