@@ -64,7 +64,7 @@ if( isset( $_POST['submit'] ) ) {
         <?php
         if( trial() ) {
             if( entry_count( "kit" ) >= 10 ) {
-                echo "<div class='alert alert-danger'><strong>Error:</strong> You can only have 10 equipment in trial mode!</div>";
+                echo "<div class='alert alert-danger'><strong>Error:</strong> You can only have 10 equipment in trial mode! <a href='index.php'>Return?</a></div>";
                 die();
             } else {
                 $trial = 10 - entry_count( "kit" );
@@ -85,7 +85,7 @@ if( isset( $_POST['submit'] ) ) {
         <div class="col">
             <div class="input-group">
                 <div class="input-group-prepend"><span class="input-group-text">Name:</span></div>
-                <input type="text" name="name" required class="form-control">
+                <input type="text" name="name" autofocus required class="form-control">
             </div>
             <div class="input-group">
                 <div class="input-group-prepend"><span class="input-group-text">Purchase value: <?php echo company( "currencysymbol" ); ?></span></div>

@@ -42,7 +42,8 @@ if( isset( $_POST['submit'] ) ) {
         <?php
         if( trial() ) {
             if( entry_count( "customers" ) >= 10 ) {
-                echo "<div class='alert alert-danger'><strong>Error:</strong> You can only have 10 customers in trial mode!</div>";
+                echo "<div class='alert alert-danger'><strong>Error:</strong> You can only have 10 customers in trial mode! <a href='index.php'>Return?</a></div>";
+                die();
             } else {
                 echo "<div class='alert alert-warning'><strong>Warning:</strong> You can only add " . 10 - entry_count( "customers" ) . " more customers while in trial mode!</div>";
             }
