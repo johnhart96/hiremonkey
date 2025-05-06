@@ -121,15 +121,6 @@ app.on('ready', () => {
           label: "About",
           click: function() { navigate( "index.php?l=about" ) }
         },{
-          label: "Support",
-          click: function() { shell.openExternal( 'https://billing.jh96.co.uk/helpdesk.php' ) }
-        },{
-          label: "Recover Licence",
-          click: function() { shell.openExternal( 'https://hiremonkey.app/recover-licence.php' ) }
-        },{
-          label: "Purchase Licence",
-          click: function() { shell.openExternal( 'https://hiremonkey.app/pricing.php' ) }
-        },{
           label: "Force data engine to start",
           click: function() { server.run(); }
         }
