@@ -25,7 +25,7 @@
                     <?php
                     function checked( $ch ) {
                         if( isset( $_POST['filter'] ) ) {
-                            $filter = filter_var( $_POST['filter'] , FILTER_SANITIZE_STRING );
+                            $filter = filter_var( $_POST['filter'] , FILTER_UNSAFE_RAW );
                             if( $ch == $filter ) {
                                 return "selected";
                             }
@@ -50,7 +50,7 @@
     <div class="col">
         <?php
         if( isset( $_POST['filter'] ) ) {
-            $filter = filter_var( $_POST['filter'] , FILTER_SANITIZE_STRING );
+            $filter = filter_var( $_POST['filter'] , FILTER_UNSAFE_RAW );
             if( $filter == "active" ) {
                 $search = $db->query( "SELECT * FROM `kit_repairs` WHERE `complete` =0" );
             } else {

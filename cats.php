@@ -21,7 +21,7 @@ if( isset( $_POST['submitNew'] ) ) {
         $add = true;
     }
     if( $add ) {
-        $name = filter_var( $_POST['name'] , FILTER_SANITIZE_STRING );
+        $name = filter_var( $_POST['name'] , FILTER_UNSAFE_RAW );
         $insert = $db->prepare( "INSERT INTO `categories` (`name`) VALUES(:cat)" );
         $insert->execute( [ ':cat' => $name ] );
         $saved = true;
@@ -29,7 +29,7 @@ if( isset( $_POST['submitNew'] ) ) {
 }
 if( isset( $_POST['submitEdit'] ) ) {
     $id = filter_var( $_POST['submitEdit'] , FILTER_SANITIZE_NUMBER_INT ) ;
-    $name = filter_var( $_POST['name'] , FILTER_SANITIZE_STRING );
+    $name = filter_var( $_POST['name'] , FILTER_UNSAFE_RAW );
     $update = $db->prepare( "UPDATE `categories` SET `name` =:cat WHERE `id` =:id" );
     $update->execute( [ ':cat' => $name , ':id' => $id ] );
     $saved = true;

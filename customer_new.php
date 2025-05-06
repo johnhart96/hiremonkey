@@ -11,9 +11,9 @@
  * @license    https://www.hiremonkey.app/licence.php
  */
 if( isset( $_POST['submit'] ) ) {
-    $name = filter_var( $_POST['name'] , FILTER_SANITIZE_STRING );
-    $company_number = filter_var( $_POST['company_number'] , FILTER_SANITIZE_STRING );
-    $vat_number = filter_var( $_POST['vat_number'] , FILTER_SANITIZE_STRING );
+    $name = filter_var( $_POST['name'] , FILTER_UNSAFE_RAW );
+    $company_number = filter_var( $_POST['company_number'] , FILTER_UNSAFE_RAW );
+    $vat_number = filter_var( $_POST['vat_number'] , FILTER_UNSAFE_RAW );
     $invoice_terms = filter_var( $_POST['invoice_terms'] , FILTER_SANITIZE_NUMBER_INT );
     $website = filter_var( $_POST['website'] , FILTER_VALIDATE_URL );
 

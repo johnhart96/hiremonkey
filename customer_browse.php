@@ -22,7 +22,7 @@
         <form method="post" id="search">
             <div class="input-group">
                 <div class="input-group-prepend"><span class="input-group-text">Search:</span></div>
-                <input autofocus name="search" class="form-control" placeholder="Skidrow theatre" value="<?php if( isset( $_POST['search'] ) ) { echo filter_var( $_POST['search'] , FILTER_SANITIZE_STRING ); } ?>" >
+                <input autofocus name="search" class="form-control" placeholder="Skidrow theatre" value="<?php if( isset( $_POST['search'] ) ) { echo filter_var( $_POST['search'] , FILTER_UNSAFE_RAW ); } ?>" >
                 <div class="input-group-append">
                     <button type="submit" class="btn btn-primary">Search</button>
                 </div>
@@ -42,7 +42,7 @@
             <tbody>
                 <?php
                 if( isset( $_POST['search'] ) ) {
-                    $search = filter_var( $_POST['search'] , FILTER_SANITIZE_STRING );
+                    $search = filter_var( $_POST['search'] , FILTER_UNSAFE_RAW );
                     $getCustomers = $db->prepare( "SELECT * FROM `customers` WHERE instr(`name`,:searchTerm) --case-insensitive " );
                     $getCustomers->execute( [ ':searchTerm' => $search ] );
                 } else {

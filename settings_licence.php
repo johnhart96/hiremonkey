@@ -12,7 +12,7 @@
  */
 // Activate
 if( isset( $_POST['activate'] ) ) {
-    $key = filter_var( $_POST['key'] , FILTER_SANITIZE_STRING );
+    $key = filter_var( $_POST['key'] , FILTER_UNSAFE_RAW );
     // Delete existing keys
     $delete = $db->query( "DELETE FROM `licence`" );
     // Add new key
@@ -30,9 +30,9 @@ if( isset( $_POST['activate'] ) ) {
             // Activation was successful
             $updateKey = $db->prepare( "UPDATE `licence` SET `purchasedate` =:purchasedate , `lastactivation` =:lastactivation , `nextactivation` =:nextactivation , `licenceto` =:licenceto WHERE `id` !=0" );
             $updateKey->execute([
-                ':purchasedate' => filter_var( $activate->purchaseDate , FILTER_SANITIZE_STRING ),
-                ':lastactivation' => filter_var( $activate->activationDate , FILTER_SANITIZE_STRING ),
-                ':nextactivation' => filter_var( $activate->nextActivation , FILTER_SANITIZE_STRING ),
+                ':purchasedate' => filter_var( $activate->purchaseDate , FILTER_UNSAFE_RAW ),
+                ':lastactivation' => filter_var( $activate->activationDate , FILTER_UNSAFE_RAW ),
+                ':nextactivation' => filter_var( $activate->nextActivation , FILTER_UNSAFE_RAW ),
                 ':licenceto' => filter_var( $activate->customer , FILTER_VALIDATE_EMAIL )
             ]);
             $activated = $activate->message;

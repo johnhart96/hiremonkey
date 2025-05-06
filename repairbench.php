@@ -1,10 +1,10 @@
 <?php
 $id = filter_var( $_GET['id'] , FILTER_SANITIZE_NUMBER_INT );
 if( isset( $_POST['submitHeader'] ) ) {
-    $description = filter_var( $_POST['description'] , FILTER_SANITIZE_STRING );
-    $repairtype = filter_var( $_POST['repairtype'] , FILTER_SANITIZE_STRING );
-    $startdate = filter_var( $_POST['startdate'] , FILTER_SANITIZE_STRING );
-    $enddate = filter_var( $_POST['enddate'] , FILTER_SANITIZE_STRING );
+    $description = filter_var( $_POST['description'] , FILTER_UNSAFE_RAW );
+    $repairtype = filter_var( $_POST['repairtype'] , FILTER_UNSAFE_RAW );
+    $startdate = filter_var( $_POST['startdate'] , FILTER_UNSAFE_RAW );
+    $enddate = filter_var( $_POST['enddate'] , FILTER_UNSAFE_RAW );
     
     $update = $db->prepare( "UPDATE `kit_repairs` SET `description` =:descr, `repairtype` =:repairtype, `startdate` =:startdate, `enddate` =:enddate WHERE `id` =:repairID" );
     try {

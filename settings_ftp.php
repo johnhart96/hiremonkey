@@ -12,11 +12,11 @@
  */
 
 if( isset( $_POST['submitFTP'] ) ) {
-    $ftp_host = filter_var( $_POST['ftp_host'] , FILTER_SANITIZE_STRING );
-    $ftp_username = filter_var( $_POST['ftp_username'] , FILTER_SANITIZE_STRING );
-    $ftp_password = filter_var( $_POST['ftp_password'] , FILTER_SANITIZE_STRING );
+    $ftp_host = filter_var( $_POST['ftp_host'] , FILTER_UNSAFE_RAW );
+    $ftp_username = filter_var( $_POST['ftp_username'] , FILTER_UNSAFE_RAW );
+    $ftp_password = filter_var( $_POST['ftp_password'] , FILTER_UNSAFE_RAW );
     $ftp_port = filter_var( $_POST['ftp_port'] , FILTER_SANITIZE_NUMBER_INT );
-    $ftp_dir = filter_var( $_POST['ftp_dir'] , FILTER_SANITIZE_STRING );
+    $ftp_dir = filter_var( $_POST['ftp_dir'] , FILTER_UNSAFE_RAW );
     if( isset( $_POST['ftp_backup'] ) ) {
         $ftp_backup = 1;
     } else {

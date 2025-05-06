@@ -27,7 +27,7 @@ if( isset( $_POST['submit'] ) ) {
     $newDB = new SQLite3( $file );
     $newDB->query( $sql );
 
-    $name = filter_var( $_POST['name'] , FILTER_SANITIZE_STRING );
+    $name = filter_var( $_POST['name'] , FILTER_UNSAFE_RAW );
     $email = filter_var( $_POST['email'] , FILTER_VALIDATE_EMAIL );
     $licencekey = NULL;
 
@@ -47,10 +47,10 @@ if( isset( $_POST['submit'] ) ) {
             // Activation fine!
             $addActivation = $db->prepare( "UPDATE `licence` SET `licenceto` =:licenceto , `purchasedate` =:purchasedate , `lastactivation` =:lastactivation , `nextactivation` =:nextactivation WHERE `id` > 0" );
             $addActivation->execute([
-                ':licenceto' => filter_var( $activation->customer , FILTER_SANITIZE_STRING ),
-                ':purchasedate' => filter_var( $activation->purchaseDate , FILTER_SANITIZE_STRING ),
-                ':lastactivation' => filter_var( $activation->activationDate , FILTER_SANITIZE_STRING ),
-                ':nextactivation' => filter_var( $activation->nextActivation , FILTER_SANITIZE_STRING )
+                ':licenceto' => filter_var( $activation->customer , FILTER_UNSAFE_RAW ),
+                ':purchasedate' => filter_var( $activation->purchaseDate , FILTER_UNSAFE_RAW ),
+                ':lastactivation' => filter_var( $activation->activationDate , FILTER_UNSAFE_RAW ),
+                ':nextactivation' => filter_var( $activation->nextActivation , FILTER_UNSAFE_RAW )
             ]);
         }
     }

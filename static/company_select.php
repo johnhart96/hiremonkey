@@ -31,7 +31,7 @@ $_SESSION['uuid'] = md5( $uuid ) ;
 
 // Submit open
 if( isset( $_POST['company'] ) ) {
-    $company = filter_var( $_POST['company'] , FILTER_SANITIZE_STRING );
+    $company = filter_var( $_POST['company'] , FILTER_UNSAFE_RAW );
     // Try the file
     $test = new PDO( 'sqlite:' . usrPath . "/" . $company );
     $getVersion = $test->query( "SELECT `appversion`,`name` FROM `company` ORDER BY `id` DESC LIMIT 1" );
@@ -62,10 +62,10 @@ if( isset( $_POST['company'] ) ) {
         
         require '../inc/restore_map.php';
         
-        unlink( usrPath . "/" . filter_var( $_POST['company'] , FILTER_SANITIZE_STRING ) );
+        unlink( usrPath . "/" . filter_var( $_POST['company'] , FILTER_UNSAFE_RAW ) );
         $_SESSION['company'] = str_replace( usrPath . "/" , "" , $newFile );
     } else {
-        $_SESSION['company'] = filter_var( $_POST['company'] , FILTER_SANITIZE_STRING );
+        $_SESSION['company'] = filter_var( $_POST['company'] , FILTER_UNSAFE_RAW );
     }
     header( "Location:../index.php" );
 }

@@ -1,9 +1,9 @@
 <?php
 // Submit header
 if( isset( $_POST['submitHeader'] ) ) {
-    $name = filter_var( $_POST['name'] , FILTER_SANITIZE_STRING );
-    $startdate = filter_var( $_POST['startdate'] , FILTER_SANITIZE_STRING );
-    $enddate = filter_var( $_POST['enddate'] , FILTER_SANITIZE_STRING );
+    $name = filter_var( $_POST['name'] , FILTER_UNSAFE_RAW );
+    $startdate = filter_var( $_POST['startdate'] , FILTER_UNSAFE_RAW );
+    $enddate = filter_var( $_POST['enddate'] , FILTER_UNSAFE_RAW );
     if( empty( $_POST['address'] ) ) {
         $address = 0;
     } else {
@@ -41,7 +41,7 @@ if( isset( $_POST['submitHeader'] ) ) {
 
 // Submit new category
 if( isset( $_POST['submitNewCat'] ) ) {
-    $cat = filter_var( $_POST['cat'] , FILTER_SANITIZE_STRING );
+    $cat = filter_var( $_POST['cat'] , FILTER_UNSAFE_RAW );
     $insert = $db->prepare( "INSERT INTO `jobs_cat` (`job`,`cat`) VALUES(:job,:cat)" );
     $insert->execute( [ ':job' => $id , ':cat' => $cat ] );
 }
@@ -69,8 +69,8 @@ if( isset( $_POST['submitLineEdit'] ) ) {
     } else {
         $price = filter_var( $_POST['price'] , FILTER_VALIDATE_FLOAT );
     }
-    $notes = filter_var( $_POST['notes'] , FILTER_SANITIZE_STRING );
-    $lineType = filter_var( $_POST['lineType'] , FILTER_SANITIZE_STRING );
+    $notes = filter_var( $_POST['notes'] , FILTER_UNSAFE_RAW );
+    $lineType = filter_var( $_POST['lineType'] , FILTER_UNSAFE_RAW );
     if( ! empty( $_POST['qty'] ) ) {
         $qty = filter_var( $_POST['qty'] , FILTER_SANITIZE_NUMBER_INT );
     } else {
@@ -143,7 +143,7 @@ if( isset( $_GET['deleteline'] ) ) {
 
 // Submit line new
 if( isset( $_POST['submitNewItem'] ) ) {
-    $new = filter_var( $_POST['newitem'] , FILTER_SANITIZE_STRING );
+    $new = filter_var( $_POST['newitem'] , FILTER_UNSAFE_RAW );
     $qty = filter_var( $_POST['qty'] , FILTER_SANITIZE_NUMBER_INT );
 
     function newLine( $new , $qty , $ignoreStock = FALSE , $parent = 0 , $mandatory = 0, $accType = NULL , $price = NULL ) {
@@ -292,7 +292,7 @@ if( isset( $_POST['cancelJob'] ) ) {
 // Change order type
 if( isset( $_POST['submitChangeType'] ) ) {
     $order = filter_var( $_POST['submitChangeType'] , FILTER_SANITIZE_NUMBER_INT );
-    $type = filter_var( $_POST['changeType'] , FILTER_SANITIZE_STRING );
+    $type = filter_var( $_POST['changeType'] , FILTER_UNSAFE_RAW );
     $changeType = $db->prepare( "UPDATE `jobs` SET `jobType` =:jobType WHERE `id` =:jobID" );
     $changeType->execute( [ ':jobType' => $type , ':jobID' => $order ] );
 }
@@ -338,7 +338,7 @@ if( isset( $_POST['submitShipping'] ) ) {
 }
 // Submit undo
 if( isset( $_POST['submitUndo'] ) ) {
-    $action = filter_var( $_POST['action'] , FILTER_SANITIZE_STRING );
+    $action = filter_var( $_POST['action'] , FILTER_UNSAFE_RAW );
     $id = filter_var( $_GET['id'] , FILTER_SANITIZE_NUMBER_INT );
     if( $action == "return" ) {
         $processReturn = $db->prepare( "UPDATE `jobs_lines` SET `return` =0 , `return_date` =NULL , `complete` =0 WHERE `job` =:jobID" );
@@ -354,7 +354,7 @@ if( isset( $_POST['submitUndo'] ) ) {
 // Dispatch all
 if( isset( $_POST['dispatchDate'] ) ) {
     $id = filter_var( $_GET['id'] , FILTER_SANITIZE_NUMBER_INT );
-    $today = filter_var( $_POST['dispatchDate'] , FILTER_SANITIZE_STRING );
+    $today = filter_var( $_POST['dispatchDate'] , FILTER_UNSAFE_RAW );
     $dispatch = $db->prepare( "UPDATE `jobs_lines` SET `dispatch` =1 , `dispatch_date` =:today , `return` =0 , `return_date` =NULL WHERE `job` =:jobID" );
     $dispatch->execute( [ ':today' => $today , ':jobID' => $id ] );
     go( "index.php?l=job_shipping&id=$id" );
@@ -362,7 +362,7 @@ if( isset( $_POST['dispatchDate'] ) ) {
 // Return All
 if( isset( $_POST['returnDate'] ) ) {
     $id = filter_var( $_GET['id'] , FILTER_SANITIZE_NUMBER_INT );
-    $today = filter_var( $_POST['returnDate'] , FILTER_SANITIZE_STRING );
+    $today = filter_var( $_POST['returnDate'] , FILTER_UNSAFE_RAW );
     $return = $db->prepare( "UPDATE `jobs_lines` SET `return` =1 , `return_date` =:today WHERE `job` =:jobID" );
     $return->execute( [ ':today' => $today , ':jobID' => $id ] );
     go( "index.php?l=job_shipping&id=$id" );
@@ -375,7 +375,7 @@ if( isset( $_POST['completeJob'] ) ) {
 }
 // Document open
 if( isset( $_POST['submitOpenDoc'] ) ) {
-    $doc = filter_var( $_POST['doc'] , FILTER_SANITIZE_STRING );
+    $doc = filter_var( $_POST['doc'] , FILTER_UNSAFE_RAW );
     echo "<script>window.open('static/$doc.php?id=$id');</script>";
 }
 // Submit services
@@ -394,11 +394,11 @@ if( isset( $_POST['submitServices'] ) ) {
                 ':lineID' => $row['id'],
                 ':job' => $id,
                 
-                ':itemName' => filter_var( $_POST[$itemNameLine] , FILTER_SANITIZE_STRING ),
+                ':itemName' => filter_var( $_POST[$itemNameLine] , FILTER_UNSAFE_RAW ),
                 ':qty' => filter_var( $_POST[$qtyName] , FILTER_SANITIZE_NUMBER_INT ),
                 ':price' => filter_var( $_POST[$priceName] , FILTER_VALIDATE_FLOAT ),
-                ':startdate' => filter_var( $_POST[$startDate] , FILTER_SANITIZE_STRING ),
-                ':enddate' => filter_var( $_POST[$endDate] , FILTER_SANITIZE_STRING )
+                ':startdate' => filter_var( $_POST[$startDate] , FILTER_UNSAFE_RAW ),
+                ':enddate' => filter_var( $_POST[$endDate] , FILTER_UNSAFE_RAW )
             ]);
         } 
     }

@@ -11,7 +11,7 @@
  * @license    https://www.hiremonkey.app/licence.php
  */
 if( isset( $_POST['preview'] ) ) {
-    $format = filter_var( $_POST['format'] , FILTER_SANITIZE_STRING );
+    $format = filter_var( $_POST['format'] , FILTER_UNSAFE_RAW );
     $include = "inc/import_customer_" . $format . ".php";
 
     // Upload

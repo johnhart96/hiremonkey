@@ -11,15 +11,15 @@
  * @license    https://www.hiremonkey.app/licence.php
  */
 if( isset( $_POST['submit'] ) ) {
-    $name = filter_var( $_POST['name'] , FILTER_SANITIZE_STRING );
-    $address_line1 = filter_var( $_POST['address_line1'] , FILTER_SANITIZE_STRING );
-    $address_line2 = filter_var( $_POST['address_line2'] , FILTER_SANITIZE_STRING );
-    $town = filter_var( $_POST['town'] , FILTER_SANITIZE_STRING );
-    $postcode = filter_var( $_POST['postcode'] , FILTER_SANITIZE_STRING );
-    $telephone = filter_var( $_POST['telephone'] , FILTER_SANITIZE_STRING );
+    $name = filter_var( $_POST['name'] , FILTER_UNSAFE_RAW );
+    $address_line1 = filter_var( $_POST['address_line1'] , FILTER_UNSAFE_RAW );
+    $address_line2 = filter_var( $_POST['address_line2'] , FILTER_UNSAFE_RAW );
+    $town = filter_var( $_POST['town'] , FILTER_UNSAFE_RAW );
+    $postcode = filter_var( $_POST['postcode'] , FILTER_UNSAFE_RAW );
+    $telephone = filter_var( $_POST['telephone'] , FILTER_UNSAFE_RAW );
     $website = filter_var( $_POST['website'] , FILTER_VALIDATE_URL );
     $email = filter_var( $_POST['email'] , FILTER_VALIDATE_EMAIL );
-    $currencysymbol = filter_var( $_POST['currencysymbol'] , FILTER_SANITIZE_STRING );
+    $currencysymbol = filter_var( $_POST['currencysymbol'] , FILTER_UNSAFE_RAW );
     $logo = filter_var( $_POST['logo'] , FILTER_VALIDATE_URL );
 
     $update = $db->prepare("

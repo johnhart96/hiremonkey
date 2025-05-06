@@ -18,8 +18,8 @@ if( ! isset( $_GET['id'] ) ) {
 }
 // Details submit
 if( isset( $_POST['submit'] ) ) {
-    $name = filter_var( $_POST['name'] , FILTER_SANITIZE_STRING );
-    $company_number = filter_var( $_POST['company_number'] , FILTER_SANITIZE_STRING );
+    $name = filter_var( $_POST['name'] , FILTER_UNSAFE_RAW );
+    $company_number = filter_var( $_POST['company_number'] , FILTER_UNSAFE_RAW );
     $vat_number = filter_var( $_POST['vat_number'] , FILTER_SANITIZE_NUMBER_INT );
     $invoice_terms = filter_var( $_POST['invoice_terms'] , FILTER_SANITIZE_NUMBER_INT );
     $website = filter_var( $_POST['website'] , FILTER_VALIDATE_URL );
@@ -65,10 +65,10 @@ if( isset( $_POST['submit'] ) ) {
 // Submit address edit
 if( isset( $_POST['submitAddressEdit'] ) ) {
     $addressID = filter_var( $_POST['submitAddressEdit'] , FILTER_SANITIZE_NUMBER_INT );
-    $line1 = filter_var( $_POST['line1'] , FILTER_SANITIZE_STRING );
-    $line2 = filter_var( $_POST['line2'] , FILTER_SANITIZE_STRING );
-    $town = filter_var( $_POST['town'] , FILTER_SANITIZE_STRING );
-    $postcode = filter_var( $_POST['postcode'] , FILTER_SANITIZE_STRING );
+    $line1 = filter_var( $_POST['line1'] , FILTER_UNSAFE_RAW );
+    $line2 = filter_var( $_POST['line2'] , FILTER_UNSAFE_RAW );
+    $town = filter_var( $_POST['town'] , FILTER_UNSAFE_RAW );
+    $postcode = filter_var( $_POST['postcode'] , FILTER_UNSAFE_RAW );
 
     $update = $db->prepare( "UPDATE `customers_addresses` SET `line1` =:line1 , `line2` =:line2 , `town` =:town , `postcode` =:postcode WHERE `id` =:addressID" );
     $update->execute( [ ':line1' => $line1 , ':line2' => $line2 , ':town' => $town , ':postcode' => $postcode , ':addressID' => $addressID ] );
@@ -77,10 +77,10 @@ if( isset( $_POST['submitAddressEdit'] ) ) {
 
 // Submit address new
 if( isset( $_POST['submitAddressNew'] ) ) {
-    $line1 = filter_var( $_POST['line1'] , FILTER_SANITIZE_STRING );
-    $line2 = filter_var( $_POST['line2'] , FILTER_SANITIZE_STRING );
-    $town = filter_var( $_POST['town'] , FILTER_SANITIZE_STRING );
-    $postcode = filter_var( $_POST['postcode'] , FILTER_SANITIZE_STRING );
+    $line1 = filter_var( $_POST['line1'] , FILTER_UNSAFE_RAW );
+    $line2 = filter_var( $_POST['line2'] , FILTER_UNSAFE_RAW );
+    $town = filter_var( $_POST['town'] , FILTER_UNSAFE_RAW );
+    $postcode = filter_var( $_POST['postcode'] , FILTER_UNSAFE_RAW );
 
     $insert = $db->prepare( "INSERT INTO `customers_addresses` (`customer`,`line1`,`line2`,`town`,`postcode`) VALUES(:customer,:line1,:line2,:town,:postcode)" );
     $insert->execute( [ ':customer' => $id , ':line1' => $line1 , ':line2' => $line2 , ':town' => $town , ':postcode' => $postcode ] );
@@ -98,9 +98,9 @@ if( isset( $_POST['submitAddressDelete'] ) ) {
 // Submit contact edit
 if( isset( $_POST['submitContactEdit'] ) ) {
     $contact = filter_var( $_POST['submitContactEdit'] , FILTER_SANITIZE_NUMBER_INT );
-    $name = filter_var( $_POST['name'] , FILTER_SANITIZE_STRING );
+    $name = filter_var( $_POST['name'] , FILTER_UNSAFE_RAW );
     $email = filter_var( $_POST['email'] , FILTER_VALIDATE_EMAIL );
-    $telephone = filter_var( $_POST['telephone'] , FILTER_SANITIZE_STRING );
+    $telephone = filter_var( $_POST['telephone'] , FILTER_UNSAFE_RAW );
 
     $update = $db->prepare( "UPDATE `customers_contacts` SET `name` =:name , `email` =:email , `telephone` =:telephone WHERE `id` =:contactID AND `customer` =:customerID " );
     $update->execute( [ ':name' => $name , ':email' => $email , ':telephone' => $telephone , ':contactID' => $contact , ':customerID' => $id ] );
@@ -117,9 +117,9 @@ if( isset( $_POST['submitContactDelete'] ) ) {
 
 // Submit contact new
 if( isset( $_POST['submitContactNew'] ) ) {
-    $name = filter_var( $_POST['name'] , FILTER_SANITIZE_STRING );
+    $name = filter_var( $_POST['name'] , FILTER_UNSAFE_RAW );
     $email = filter_var( $_POST['email'] , FILTER_VALIDATE_EMAIL );
-    $telephone = filter_var( $_POST['telephone'] , FILTER_SANITIZE_STRING );
+    $telephone = filter_var( $_POST['telephone'] , FILTER_UNSAFE_RAW );
 
     $insert = $db->prepare( "INSERT INTO `customers_contacts` (`name`,`email`,`telephone`,`customer`) VALUES(:name,:email,:telephone,:customer)" );
     $insert->execute( [ ':name' => $name , ':email' => $email , ':telephone' => $telephone , ':customer' => $id ] );
