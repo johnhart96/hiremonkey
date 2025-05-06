@@ -17,7 +17,40 @@ const BrowserWindow = electron.BrowserWindow;
 const {shell} = require('electron')
 
 const httpPort = getRandomInt(30000);
+const { exec } = require("child_process");
 
+function checkCommandExists(command) {
+  return new Promise((resolve) => {
+    exec(`command -v ${command}`, (error, stdout) => {
+      resolve(Boolean(stdout.trim()));
+    });
+  });
+}
+
+function installPHP() {
+  console.log("Installing homebrew...");
+  exec("/bin/bash -c '$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)'");
+  console.log("Installing PHP using Homebrew...");
+  exec("brew install php", (error, stdout, stderr) => {
+    if (error) {
+      console.error("Failed to install PHP:", stderr);
+      return;
+    }
+    console.log("PHP installed successfully.");
+  });
+}
+
+// MacOS PHP install check
+if( process.platform == "darwin" ) {
+  console.log( "macOS detected" );
+  const hasPHP = checkCommandExists("php");
+  if (hasPHP) {
+    console.log("PHP is already installed.");
+    //return;
+  } else {
+    installPHP();
+  }
+}
 
 // Define App Menu
 app.on('ready', () => {
