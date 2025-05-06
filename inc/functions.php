@@ -256,4 +256,7 @@ function duration( $startDate , $endDate ) {
   $days ++;
   return $days;
 }
+function trial() {
+  return FALSE;
+}
 ?>
