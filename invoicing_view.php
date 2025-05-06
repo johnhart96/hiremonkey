@@ -10,11 +10,11 @@
  * @copyright  2021 John Hart
  * @license    https://www.hiremonkey.app/licence.php
  */
-$id = filter_var( $_GET['id'] , FILTER_SANITIZE_STRING );
+$id = filter_var( $_GET['id'] , FILTER_UNSAFE_RAW );
 // Submit
 if( isset( $_POST['submitInvoice'] ) ) {
     $invoiced = filter_var( $_POST['invoiced'] , FILTER_SANITIZE_NUMBER_INT );
-    $invoice_number = filter_var( $_POST['invoice_number'] , FILTER_SANITIZE_STRING );
+    $invoice_number = filter_var( $_POST['invoice_number'] , FILTER_UNSAFE_RAW );
     $update = $db->prepare( "UPDATE `jobs` SET `invoiced` =:invoiced , `invoice_number` =:invoiceNo WHERE `id` =:job" );
     $update->execute( [ ':invoiced' => $invoiced , ':invoiceNo' => $invoice_number , ':job' => $id ] );
 }

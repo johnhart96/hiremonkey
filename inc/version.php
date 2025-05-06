@@ -14,8 +14,8 @@ if( file_exists( "package.json" ) ) {
     define( "VERSION" , $package->version );
 }
 define( "BUILD_STATUS" , "beta" ); 
-define( "LICENCEVERSION" , 1 ); 
-define( "FULLBUILD" , "1.0.0.24" );
+define( "LICENCEVERSION" , 2 ); 
+define( "FULLBUILD" , "2.0.0.1" );
 
 // Important table list
 $tables = array(

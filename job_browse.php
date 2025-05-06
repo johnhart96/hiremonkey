@@ -22,12 +22,12 @@
         <form method="post" id="search">
             <div class="input-group">
                 <div class="input-group-prepend"><span class="input-group-text">Search:</span></div>
-                <input autofocus name="search" class="form-control" placeholder="Little shop of horrors" value="<?php if( isset( $_POST['search'] ) ) { echo filter_var( $_POST['search'] , FILTER_SANITIZE_STRING ); } ?>" >
+                <input autofocus name="search" class="form-control" placeholder="Little shop of horrors" value="<?php if( isset( $_POST['search'] ) ) { echo filter_var( $_POST['search'] , FILTER_UNSAFE_RAW ); } ?>" >
                 <select name="filter" class="form-control">
                     <?php
                     function checked( $ch ) {
                         if( isset( $_POST['filter'] ) ) {
-                            $filter = filter_var( $_POST['filter'] , FILTER_SANITIZE_STRING );
+                            $filter = filter_var( $_POST['filter'] , FILTER_UNSAFE_RAW );
                             if( $ch == $filter ) {
                                 return "selected";
                             }
@@ -54,8 +54,8 @@
     <div class="col">
         <?php
         if( isset( $_POST['search'] ) ) {
-            $filter = filter_var( $_POST['filter'] , FILTER_SANITIZE_STRING );
-            $search = filter_var( $_POST['search'] , FILTER_SANITIZE_STRING );
+            $filter = filter_var( $_POST['filter'] , FILTER_UNSAFE_RAW );
+            $search = filter_var( $_POST['search'] , FILTER_UNSAFE_RAW );
             if( $filter == "active" ) {
                 $getJobs = $db->prepare( "SELECT * FROM `jobs` WHERE `complete` =0 AND `lost` =0 AND instr(`name`,:searchTerm)" );
             } else if( $filter == "lost" ) {

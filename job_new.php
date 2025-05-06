@@ -11,9 +11,9 @@
  * @license    https://www.hiremonkey.app/licence.php
  */
 if( isset( $_POST['submit'] ) ) {
-    $name = filter_var( $_POST['name'] , FILTER_SANITIZE_STRING );
-    $startDate = filter_var( $_POST['startdate'] , FILTER_SANITIZE_STRING );
-    $endDate = filter_var( $_POST['enddate'] , FILTER_SANITIZE_STRING );
+    $name = filter_var( $_POST['name'] , FILTER_UNSAFE_RAW );
+    $startDate = filter_var( $_POST['startdate'] , FILTER_UNSAFE_RAW );
+    $endDate = filter_var( $_POST['enddate'] , FILTER_UNSAFE_RAW );
     $customer = filter_var( $_POST['customer'] , FILTER_SANITIZE_NUMBER_INT );
 
     $insert = $db->prepare( "INSERT INTO `jobs` (`name`,`startDate`,`endDate`,`customer`) VALUES(:jobName,:startDate,:endDate,:customerID)" );

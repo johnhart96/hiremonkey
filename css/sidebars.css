@@ -108,7 +108,7 @@ main div {
   color: #FFFFFF;
 }
 .link-dark {
-  color: #FFFFFF;
+  color: #FFFFFF !important;
 }
 .breadcrumb {
   background-color: #212020;

@@ -14,14 +14,14 @@ $id = filter_var( $_GET['id'] , FILTER_SANITIZE_NUMBER_INT );
 
 // save Details
 if( isset( $_POST['saveDetails'] ) ) {
-    $name = filter_var( $_POST['name'] , FILTER_SANITIZE_STRING );
-    $purchasevalue = filter_var( $_POST['purchasevalue'] , FILTER_SANITIZE_STRING );
-    $price = filter_var( $_POST['price'] , FILTER_SANITIZE_STRING );
+    $name = filter_var( $_POST['name'] , FILTER_UNSAFE_RAW );
+    $purchasevalue = filter_var( $_POST['purchasevalue'] , FILTER_UNSAFE_RAW );
+    $price = filter_var( $_POST['price'] , FILTER_UNSAFE_RAW );
     $width = filter_var( $_POST['width'] , FILTER_VALIDATE_FLOAT );
     $height = filter_var( $_POST['height'] , FILTER_VALIDATE_FLOAT );
     $length = filter_var( $_POST['length'] , FILTER_VALIDATE_FLOAT );
     $weight = filter_var( $_POST['weight'] , FILTER_VALIDATE_FLOAT );
-    $notes = filter_var( $_POST['notes'] , FILTER_SANITIZE_STRING );
+    $notes = filter_var( $_POST['notes'] , FILTER_UNSAFE_RAW );
     $active = filter_var( $_POST['active'] , FILTER_SANITIZE_NUMBER_INT );
     $toplevel = filter_var( $_POST['toplevel'] , FILTER_SANITIZE_NUMBER_INT );
     $sloc = filter_var( $_POST['sloc'] , FILTER_SANITIZE_NUMBER_INT );
@@ -74,7 +74,7 @@ if( isset( $_POST['deleteAccessory'] ) ) {
 // New accessory
 if( isset( $_POST['submitNewAccessory'] ) ) {
     $accessory = filter_var( $_POST['accessory'] , FILTER_SANITIZE_NUMBER_INT );
-    $type = filter_var( $_POST['type'] , FILTER_SANITIZE_STRING );
+    $type = filter_var( $_POST['type'] , FILTER_UNSAFE_RAW );
     $price = filter_var( $_POST['price'] , FILTER_VALIDATE_FLOAT );
     $mandatory = filter_var( $_POST['mandatory'] , FILTER_SANITIZE_NUMBER_INT );
     $qty = filter_var( $_POST['qty'] , FILTER_SANITIZE_NUMBER_INT );
@@ -86,11 +86,11 @@ if( isset( $_POST['submitNewAccessory'] ) ) {
 // New stock
 if( isset( $_POST['submitNewStock'] ) ) {
     $serialized = filter_var( $_POST['type'] , FILTER_SANITIZE_NUMBER_INT );
-    $purchasedate = filter_var( $_POST['purchasedate'] , FILTER_SANITIZE_STRING );
+    $purchasedate = filter_var( $_POST['purchasedate'] , FILTER_UNSAFE_RAW );
     $insert = $db->prepare( "INSERT INTO `kit_stock` (`kit`,`stock_count`,`serialnumber`,`purchasedate`,`serialized`) VALUES(:kit,:stock_count,:serialnumber,:purchasedate,:serialized)" );
     if( $serialized == 1 ) {
         // Serialized
-        $serial = filter_var( $_POST['serialnumber'] , FILTER_SANITIZE_STRING );
+        $serial = filter_var( $_POST['serialnumber'] , FILTER_UNSAFE_RAW );
         $insert->execute([
             ':kit' => $id,
             ':stock_count' => 1,
@@ -108,9 +108,9 @@ if( isset( $_POST['submitNewStock'] ) ) {
 
 // Edit stock
 if( isset( $_POST['editStock'] ) ) {
-    $purchasedate = filter_var( $_POST['purchasedate'] , FILTER_SANITIZE_STRING );
+    $purchasedate = filter_var( $_POST['purchasedate'] , FILTER_UNSAFE_RAW );
     $count = filter_var( $_POST['count'] , FILTER_SANITIZE_NUMBER_INT );
-    $serial = filter_var( $_POST['serialnumber'] , FILTER_SANITIZE_STRING );
+    $serial = filter_var( $_POST['serialnumber'] , FILTER_UNSAFE_RAW );
     $update = $db->prepare("
         UPDATE `kit_stock` SET
             `stock_count` =:stock_count,
@@ -194,7 +194,7 @@ if( isset( $_POST['duplicate'] ) ) {
 // Repair
 if( isset( $_POST['submitRepair'] ) ) {
     $qty = filter_var( $_POST['qty'] , FILTER_SANITIZE_NUMBER_INT );
-    $description = filter_var( $_POST['description'] , FILTER_SANITIZE_STRING );
+    $description = filter_var( $_POST['description'] , FILTER_UNSAFE_RAW );
     $newRepair = $db->prepare("
         INSERT INTO `kit_repairs` (`kit`,`description`,`startdate`,`stockeffect`)
         VALUES(:kit,:description,:startdate,:stockeffect)

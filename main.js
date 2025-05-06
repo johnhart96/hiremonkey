@@ -17,7 +17,40 @@ const BrowserWindow = electron.BrowserWindow;
 const {shell} = require('electron')
 
 const httpPort = getRandomInt(30000);
+const { exec } = require("child_process");
 
+function checkCommandExists(command) {
+  return new Promise((resolve) => {
+    exec(`command -v ${command}`, (error, stdout) => {
+      resolve(Boolean(stdout.trim()));
+    });
+  });
+}
+
+function installPHP() {
+  console.log("Installing homebrew...");
+  exec("/bin/bash -c '$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)'");
+  console.log("Installing PHP using Homebrew...");
+  exec("brew install php", (error, stdout, stderr) => {
+    if (error) {
+      console.error("Failed to install PHP:", stderr);
+      return;
+    }
+    console.log("PHP installed successfully.");
+  });
+}
+
+// MacOS PHP install check
+if( process.platform == "darwin" ) {
+  console.log( "macOS detected" );
+  const hasPHP = checkCommandExists("php");
+  if (hasPHP) {
+    console.log("PHP is already installed.");
+    //return;
+  } else {
+    installPHP();
+  }
+}
 
 // Define App Menu
 app.on('ready', () => {
@@ -120,15 +153,6 @@ app.on('ready', () => {
         {
           label: "About",
           click: function() { navigate( "index.php?l=about" ) }
-        },{
-          label: "Support",
-          click: function() { shell.openExternal( 'https://billing.jh96.co.uk/helpdesk.php' ) }
-        },{
-          label: "Recover Licence",
-          click: function() { shell.openExternal( 'https://hiremonkey.app/recover-licence.php' ) }
-        },{
-          label: "Purchase Licence",
-          click: function() { shell.openExternal( 'https://hiremonkey.app/pricing.php' ) }
         },{
           label: "Force data engine to start",
           click: function() { server.run(); }

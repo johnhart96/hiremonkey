@@ -22,7 +22,7 @@
         <form method="post" id="search">
             <div class="input-group">
                 <div class="input-group-prepend"><span class="input-group-text">Search:</span></div>
-                <input autofocus name="search" class="form-control" placeholder="Strand Patt. 23" value="<?php if( isset( $_POST['search'] ) ) { echo filter_var( $_POST['search'] , FILTER_SANITIZE_STRING ); } ?>" >
+                <input autofocus name="search" class="form-control" placeholder="Strand Patt. 23" value="<?php if( isset( $_POST['search'] ) ) { echo filter_var( $_POST['search'] , FILTER_UNSAFE_RAW ); } ?>" >
                 <div class="input-group-append">
                     <button type="submit" class="btn btn-primary">Search</button>
                 </div>
@@ -85,7 +85,7 @@
             </thead>
             <?php
             if( isset( $_POST['search'] ) ) {
-                $search = filter_var( $_POST['search'] , FILTER_SANITIZE_STRING );
+                $search = filter_var( $_POST['search'] , FILTER_UNSAFE_RAW );
                 $filter = filter_var( $_POST['filter'] , FILTER_SANITIZE_NUMBER_INT );
                 $toplevel = filter_var( $_POST['toplevel'] , FILTER_SANITIZE_NUMBER_INT );
 

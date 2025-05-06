@@ -11,14 +11,14 @@
  * @license    https://www.hiremonkey.app/licence.php
  */
 if( isset( $_POST['submit'] ) ) {
-    $name = filter_var( $_POST['name'] , FILTER_SANITIZE_STRING );
+    $name = filter_var( $_POST['name'] , FILTER_UNSAFE_RAW );
     $sloc = filter_var( $_POST['sloc'] , FILTER_SANITIZE_NUMBER_INT );
     $purchasevalue = filter_var( $_POST['purchasevalue'] , FILTER_VALIDATE_FLOAT );
     $height = filter_var( $_POST['height'] , FILTER_VALIDATE_FLOAT );
     $width = filter_var( $_POST['width'] , FILTER_VALIDATE_FLOAT );
     $length = filter_var( $_POST['length'] , FILTER_VALIDATE_FLOAT );
     $weight = filter_var( $_POST['weight'] , FILTER_VALIDATE_FLOAT );
-    $notes = filter_var( $_POST['notes'] , FILTER_SANITIZE_STRING );
+    $notes = filter_var( $_POST['notes'] , FILTER_UNSAFE_RAW );
     $price = filter_var( $_POST['price'] , FILTER_VALIDATE_FLOAT );
     $cat = filter_var( $_POST['cat'] , FILTER_SANITIZE_NUMBER_INT );
     $img = filter_var( $_POST['img'] , FILTER_VALIDATE_URL );

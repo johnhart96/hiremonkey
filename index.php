@@ -31,7 +31,7 @@ require_once 'inc/functions.php';
       if( ! isset( $_GET['l'] ) ) {
         $location = "dashboard.php";
       } else {
-        $location = filter_var( $_GET['l'] , FILTER_SANITIZE_STRING ) . ".php";
+        $location = filter_var( $_GET['l'] , FILTER_UNSAFE_RAW ) . ".php";
       }
       if( file_exists( $location ) ) {
         require $location;

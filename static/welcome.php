@@ -8,7 +8,7 @@
  * 
  * @package    HireMonkey
  * @author     John Hart
- * @copyright  2021 John Hart
+ * @copyright  2025 John Hart
  * @license    https://www.hiremonkey.app/licence.php
  */
 require '../inc/usrPath.php';
@@ -27,9 +27,9 @@ if( isset( $_POST['submit'] ) ) {
     $newDB = new SQLite3( $file );
     $newDB->query( $sql );
 
-    $name = filter_var( $_POST['name'] , FILTER_SANITIZE_STRING );
+    $name = filter_var( $_POST['name'] , FILTER_UNSAFE_RAW );
     $email = filter_var( $_POST['email'] , FILTER_VALIDATE_EMAIL );
-    $licencekey = filter_var( $_POST['licencekey'] , FILTER_SANITIZE_STRING );
+    $licencekey = NULL;
 
     $insertCompany = $db->prepare( "INSERT INTO `company` (`name`,`lastbackup`,`email`,`appversion`) VALUES(:comName,:lastbackup,:email,:appversion)" );
     $insertCompany->execute( [ ':comName' => $name , ':lastbackup' => date( "Y-m-d" ) , ':email' => $email , ':appversion' => FULLBUILD ] );
@@ -47,10 +47,10 @@ if( isset( $_POST['submit'] ) ) {
             // Activation fine!
             $addActivation = $db->prepare( "UPDATE `licence` SET `licenceto` =:licenceto , `purchasedate` =:purchasedate , `lastactivation` =:lastactivation , `nextactivation` =:nextactivation WHERE `id` > 0" );
             $addActivation->execute([
-                ':licenceto' => filter_var( $activation->customer , FILTER_SANITIZE_STRING ),
-                ':purchasedate' => filter_var( $activation->purchaseDate , FILTER_SANITIZE_STRING ),
-                ':lastactivation' => filter_var( $activation->activationDate , FILTER_SANITIZE_STRING ),
-                ':nextactivation' => filter_var( $activation->nextActivation , FILTER_SANITIZE_STRING )
+                ':licenceto' => filter_var( $activation->customer , FILTER_UNSAFE_RAW ),
+                ':purchasedate' => filter_var( $activation->purchaseDate , FILTER_UNSAFE_RAW ),
+                ':lastactivation' => filter_var( $activation->activationDate , FILTER_UNSAFE_RAW ),
+                ':nextactivation' => filter_var( $activation->nextActivation , FILTER_UNSAFE_RAW )
             ]);
         }
     }
@@ -94,10 +94,6 @@ if( isset( $_POST['submit'] ) ) {
                                 <div class="input-group">
                                     <div class="input-group-prepend"><span class='input-group-text'>Email:</span></div>
                                     <input class="form-control" name="email">
-                                </div>
-                                <div class="input-group">
-                                    <div class="input-group-prepend"><span class='input-group-text'>Licence Key:</span></div>
-                                    <input class="form-control" name="licencekey">
                                 </div>
                             </div>
                             <div class="card-footer">

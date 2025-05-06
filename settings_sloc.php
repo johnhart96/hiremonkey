@@ -12,11 +12,11 @@
  */
 // Submit edit sloc
 if( isset( $_POST['submitEditSloc'] ) ) {
-    $name = filter_var( $_POST['name'] , FILTER_SANITIZE_STRING );
-    $address_line1 = filter_var( $_POST['address_line1'] , FILTER_SANITIZE_STRING );
-    $address_line2 = filter_var( $_POST['address_line2'] , FILTER_SANITIZE_STRING );
-    $town = filter_var( $_POST['town'] , FILTER_SANITIZE_STRING );
-    $postcode = filter_var( $_POST['postcode'] , FILTER_SANITIZE_STRING );
+    $name = filter_var( $_POST['name'] , FILTER_UNSAFE_RAW );
+    $address_line1 = filter_var( $_POST['address_line1'] , FILTER_UNSAFE_RAW );
+    $address_line2 = filter_var( $_POST['address_line2'] , FILTER_UNSAFE_RAW );
+    $town = filter_var( $_POST['town'] , FILTER_UNSAFE_RAW );
+    $postcode = filter_var( $_POST['postcode'] , FILTER_UNSAFE_RAW );
 
     $slocID = filter_var( $_POST['submitEditSloc'] , FILTER_SANITIZE_NUMBER_INT );
 
@@ -26,11 +26,11 @@ if( isset( $_POST['submitEditSloc'] ) ) {
 }
 // Submit new sloc
 if( isset( $_POST['new'] ) ) {
-    $name = filter_var( $_POST['name'] , FILTER_SANITIZE_STRING );
-    $address_line1 = filter_var( $_POST['address_line1'] , FILTER_SANITIZE_STRING );
-    $address_line2 = filter_var( $_POST['address_line2'] , FILTER_SANITIZE_STRING );
-    $town = filter_var( $_POST['town'] , FILTER_SANITIZE_STRING );
-    $postcode = filter_var( $_POST['postcode'] , FILTER_SANITIZE_STRING );
+    $name = filter_var( $_POST['name'] , FILTER_UNSAFE_RAW );
+    $address_line1 = filter_var( $_POST['address_line1'] , FILTER_UNSAFE_RAW );
+    $address_line2 = filter_var( $_POST['address_line2'] , FILTER_UNSAFE_RAW );
+    $town = filter_var( $_POST['town'] , FILTER_UNSAFE_RAW );
+    $postcode = filter_var( $_POST['postcode'] , FILTER_UNSAFE_RAW );
 
     $new = $db->prepare( "INSERT INTO `sloc` (`name`,`address_line1`,`address_line2`,`town`,`postcode`) VALUES(:slocName,:address_line1,:address_line2,:town,:postcode)" );
     $new->execute( [ ':slocName' => $name , ':address_line1' => $address_line1 , ':address_line2' => $address_line2 , ':town' => $town , ':postcode' => $postcode ] );
@@ -59,7 +59,6 @@ if( isset( $_POST['submitDeleteSloc'] ) ) {
     <div class="col">
         <ul class="nav nav-tabs">
             <li class="nav-item"><a class="nav-link" aria-current="page" href="index.php?l=settings">Company</a></li>
-            <li class="nav-item"><a class="nav-link" aria-current="page" href="index.php?l=settings_licence">Licence</a></li>
             <li class="nav-item"><a class="nav-link active" aria-current="page" href="index.php?l=settings_sloc">Storage Locations</a></li>
             <li class="nav-item"><a class="nav-link" aria-current="page" href="index.php?l=settings_ftp">FTP</a></li>
         </ul>
