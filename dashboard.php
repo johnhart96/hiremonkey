@@ -37,18 +37,6 @@ if( isset( $_POST['dismissWelcome'] ) ) {
                     <div class="alert alert-info">Here is a list of a few tasks to help you get started with HireMonkey</div>
                     <table class="table table-bordered table-striped">
                         <tr>
-                            <th>Activate licence</th>
-                            <td width='30%' align='center'>
-                                <?php
-                                if( trial() ) {
-                                    echo "<a href='index.php?l=settings_licence' class='btn btn-info'>Action</a>";
-                                } else {
-                                    echo "Done";
-                                }
-                                ?>
-                            </td>
-                        </tr>
-                        <tr>
                             <th>Add company details</th>
                             <td width='30%' align='center'>
                                 <?php

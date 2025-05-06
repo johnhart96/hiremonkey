@@ -42,30 +42,6 @@ function modalButton( $id , $text ) {
     echo "</div>";
     echo "</form>";
   }
-function trial() {
-  global $db;
-  $checkForLicence = $db->query( "SELECT * FROM `licence` LIMIT 1" );
-  $fetch = $checkForLicence->fetch( PDO::FETCH_ASSOC );
-  if( isset( $fetch['licencekey'] ) ) {
-    if( $fetch['licencekey'] == "trial" ) {
-      return TRUE;
-    } else {
-      return FALSE;
-    }
-  } else {
-    return TRUE;
-  }
-}
-function licence( $info ) {
-  global $db;
-  $checkForLicence = $db->query( "SELECT * FROM `licence` ORDER BY `id` ASC LIMIT 1" );
-  $fetch = $checkForLicence->fetch( PDO::FETCH_ASSOC );
-  if( isset( $fetch['licencekey'] ) ) {
-    return $fetch[$info];
-  } else {
-    return "trial";
-  }
-}
 function entry_count( $object ) {
   global $db;
   switch( $object ) {

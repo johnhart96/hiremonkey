@@ -79,9 +79,6 @@
       </li>
     </ul>
     <?php
-    if( trial() ) {
-      echo "<div class='alert alert-warning'><center>Trial mode!</center></div>";
-    }
     if( strtotime( '-1 day' ) > strtotime( company( "lastbackup" ) ) ) {
       echo "<div class='alert alert-warning'><center>Time for a backup?</center></div>";
     }
