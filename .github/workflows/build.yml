@@ -1,9 +1,9 @@
-name: Build HireMonkey
+name: Build & Release HireMonkey
 
 on:
   push:
     tags:
-      - 'v2.0*' # e.g. v2.0.0
+      - 'v*' # e.g. v2.0.0
   workflow_dispatch:
 
 jobs:
@@ -30,11 +30,18 @@ jobs:
       - name: Create DMG
         run: npm run dmg-${{ matrix.arch }}
 
-      - name: Upload artifact
+      - name: Upload DMG to artifacts
         uses: actions/upload-artifact@v4
         with:
           name: hiremonkey-mac-${{ matrix.arch }}
-          path: builds/hiremonkey-darwin-${{ matrix.arch }}/
+          path: builds/hiremonkey-darwin-${{ matrix.arch }}/*.dmg
+
+      - name: Upload DMG to GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: builds/hiremonkey-darwin-${{ matrix.arch }}/*.dmg
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
   build-windows:
     runs-on: windows-latest
@@ -53,8 +60,18 @@ jobs:
       - name: Build for Windows
         run: npm run build-win
 
-      - name: Upload artifact
+      - name: Zip Windows build
+        run: Compress-Archive -Path builds\HireMonkey-win32-x64\* -DestinationPath builds\HireMonkey-win32-x64.zip
+
+      - name: Upload ZIP to artifacts
         uses: actions/upload-artifact@v4
         with:
           name: hiremonkey-win
-          path: builds/HireMonkey-win32-x64/
+          path: builds/HireMonkey-win32-x64.zip
+
+      - name: Upload ZIP to GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: builds/HireMonkey-win32-x64.zip
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
