@@ -127,3 +127,10 @@ main div {
 .nav-link {
   color: #000000 !important;
 }
+.card-hero {
+  font-size: 80px;
+}
+.card-hero a {
+  color: #FFFFFF;
+  text-decoration: none;
+}

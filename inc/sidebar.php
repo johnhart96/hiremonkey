@@ -36,6 +36,8 @@
           <ul class='btn-toggle-nav list-unstyled fw-normal pb-1 small'>
             <li><a href='index.php?l=job_new' class='link-dark rounded'>New</a></li>
             <li><a href='index.php?l=job_browse' class='link-dark rounded'>Browse</a></li>
+            <li><a href='index.php?l=job_dispatched' class='link-dark rounded'>Dispatched</a></li>
+            <li><a href='index.php?l=job_overdue' class='link-dark rounded'>Overdue returns</a></li>
           </ul>
         </div>
       </li>
@@ -61,6 +63,26 @@
             <li><a href='index.php?l=kit_browse' class='link-dark rounded'>Browse</a></li>
             <li><a href='index.php?l=cats' class='link-dark rounded'>Categories</a></li>
             <li><a href='index.php?l=catalog' class='link-dark rounded'>Catalog</a></li>
+            
+          </ul>
+        </div>
+      </li>
+      <li class='mb-1'>
+        <button class='btn btn-toggle align-items-center rounded collapsed' data-bs-toggle='collapse' data-bs-target='#invoice-collapse' aria-expanded='false'>
+          Invoicing
+        </button>
+        <div class='collapse' id='invoice-collapse'>
+          <ul class='btn-toggle-nav list-unstyled fw-normal pb-1 small'>
+            <li><a href='index.php?l=invoicing' class='link-dark rounded'>Invoice pile</a></li>
+          </ul>
+        </div>
+      </li>
+      <li class='mb-1'>
+        <button class='btn btn-toggle align-items-center rounded collapsed' data-bs-toggle='collapse' data-bs-target='#service-collapse' aria-expanded='false'>
+          Service
+        </button>
+        <div class='collapse' id='service-collapse'>
+          <ul class='btn-toggle-nav list-unstyled fw-normal pb-1 small'>
             <li><a href='index.php?l=repairs' class='link-dark rounded'>Repairs</a></li>
           </ul>
         </div>
