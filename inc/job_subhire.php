@@ -1,6 +1,6 @@
 <form method="post">
     <p>
-        <button type="submit" name="submitSubhire" class="btn btn-success">Save</button>
+        <button type="submit" name="submitSubhire" class="btn btn-success">Save subhire</button>
     </p>
     <table class="table table-bordered table-dark">
         <thead>

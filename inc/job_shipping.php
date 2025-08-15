@@ -1,7 +1,7 @@
 <br />
 <form method="post">
     <div class="btn-group" style="margin-bottom: 5px;">
-        <button type="submit" name="submitShipping" class="btn btn-success">Save</button>
+        <button type="submit" name="submitShipping" class="btn btn-success">Save shipping</button>
         <?php
         if( $job['jobType'] !== "quote" ) {
             modalButton( "dispatchAll" , "Dispatch All" );
@@ -26,10 +26,6 @@
             modal( "returnAll" , "Process Return" , $return , "Save Cancel" );
         }
         ?>
-        <!--
-            <a href="index.php?l=job_shipping&dispatch&id=<?php echo $id; ?>" class="btn btn-primary">Dispatch All</a>
-            <a href="index.php?l=job_shipping&return&id=<?php echo $id; ?>" class="btn btn-primary">Return All</a>
-        -->
     </div>
     <?php
     $getJobCats = $db->prepare( "SELECT * FROM `jobs_cat` WHERE `job` =:jobID" );

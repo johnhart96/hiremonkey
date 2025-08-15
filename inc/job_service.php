@@ -1,6 +1,6 @@
 <form method="post">
     <p>
-        <button type="submit" name="submitServices" class="btn btn-success">Save</button>
+        <button type="submit" name="submitServices" class="btn btn-success">Save services</button>
     </p>
     <table class="table table-bordered table-striped table-dark">
         <thead>
