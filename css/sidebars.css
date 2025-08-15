@@ -134,3 +134,12 @@ main div {
   color: #FFFFFF;
   text-decoration: none;
 }
+label {
+  color: white;
+}
+.nav-tabs .nav-item .nav-link {
+  color: white !important;
+}
+.nav-tabs .nav-item .active {
+  color: black !important;
+}
