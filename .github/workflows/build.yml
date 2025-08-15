@@ -2,8 +2,8 @@ name: Build & Release HireMonkey
 
 on:
   push:
-    tags:
-      - 'v*' # e.g. v2.0.0
+    branches:
+      - main
   workflow_dispatch:
 
 jobs:
@@ -39,6 +39,7 @@ jobs:
       - name: Upload DMG to GitHub Release
         uses: softprops/action-gh-release@v2
         with:
+          tag_name: latest
           files: builds/hiremonkey-darwin-${{ matrix.arch }}/*.dmg
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -72,6 +73,7 @@ jobs:
       - name: Upload ZIP to GitHub Release
         uses: softprops/action-gh-release@v2
         with:
+          tag_name: latest
           files: builds/HireMonkey-win32-x64.zip
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
