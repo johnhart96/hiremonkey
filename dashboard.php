@@ -132,7 +132,10 @@ if( isset( $_POST['dismissWelcome'] ) ) {
                 <h3 class="text-center">Quotes</h3>
                 <?php
                 $getQuotes = $db->query( "SELECT * FROM `jobs` WHERE `jobType` ='quote'" );
-                $count = $getQuotes->rowCount();
+                $count = 0;
+                while( $row = $getQuotes->fetch( PDO::FETCH_ASSOC ) ) {
+                    $count ++;
+                }
                 echo "<p class='card-hero text-center'><a href='?l=job_quotes'>" . $count . "</a></p>";
                 ?>
             </div>
@@ -161,7 +164,10 @@ if( isset( $_POST['dismissWelcome'] ) ) {
                 <?php
                 $getOverdue = $db->prepare( "SELECT * FROM `jobs` WHERE `complete` =0 AND `enddate` < :today AND `jobType` ='order'" );
                 $getOverdue->execute( [ ':today' => date( "Y-m-d" ) ] );
-                $count = $getOverdue->rowCount();
+                $count = 0;
+                while( $row = $getOverdue->fetch( PDO::FETCH_ASSOC ) ) {
+                    $count ++;
+                }
                 echo "<p class='text-center card-hero'><a href='?l=job_overdue'>" . $count . "</a></p>";
                 ?>
             </div>
@@ -173,7 +179,10 @@ if( isset( $_POST['dismissWelcome'] ) ) {
                 <h3 class="text-center">Invoice pile</h3>
                 <?php
                 $getToBeInvoiced = $db->query( "SELECT * FROM `jobs` WHERE `invoiced` =0 AND `jobType` ='order' AND `complete` =1" );
-                $count = $getToBeInvoiced->rowCount();
+                $count = 0;
+                while( $row = $getToBeInvoiced->fetch( PDO::FETCH_ASSOC ) ) {
+                    $count ++;
+                }
                 echo "<p class='card-hero text-center'><a href='?l=invoicing'>" . $count . "</a></p>";
                 ?>
             </div>
@@ -188,7 +197,10 @@ if( isset( $_POST['dismissWelcome'] ) ) {
                 <h3 class="text-center">Repairs</h3>
                 <?php
                 $getRepairs = $db->query( "SELECT * FROM `kit_repairs` WHERE `complete` =0" );
-                $count = $getRepairs->rowCount();
+                $count = 0;
+                while( $row = $getRepairs->fetch( PDO::FETCH_ASSOC ) ) {
+                    $count ++;
+                }
                 echo "<p class='card-hero text-center'><a href='?l=repairs'>" . $count . "</a></p>";
                 ?>
             </div>
@@ -200,7 +212,10 @@ if( isset( $_POST['dismissWelcome'] ) ) {
                 <h3 class="text-center">Contacts</h3>
                 <?php
                 $getContacts = $db->query( "SELECT * FROM `customers`" );
-                $count = $getContacts->rowCount();
+                $count = 0;
+                while( $row = $getContacts->fetch( PDO::FETCH_ASSOC ) ) {
+                    $count ++;
+                }
                 echo "<p class='card-hero text-center'><a href='?l=customer_browse'>" . $count . "</a></p>";
                 ?>
             </div>
