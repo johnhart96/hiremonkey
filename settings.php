@@ -79,44 +79,44 @@ if( isset( $_POST['submit'] ) ) {
             $getCompany = $db->query( "SELECT * FROM `company` WHERE `id` =1 LIMIT 1" );
             $company = $getCompany->fetch( PDO::FETCH_ASSOC );
             ?>
-            <div class="input-group">
-                <div class="input-group-prepend"><span class="input-group-text">Name:</span></div>
+            <div class="form-group">
+                <label for="name">Name:</label>
                 <input type="text" name="name" value="<?php echo $company['name']; ?>" class="form-control">
             </div>
-            <div class="input-group">
-                <div class="input-group-prepend"><span class="input-group-text">Address Line 1:</span></div>
+            <div class="form-group">
+                <label for="address_line1">Address Line 1:</label>
                 <input type="text" name="address_line1" value="<?php echo $company['address_line1']; ?>" class="form-control">
             </div>
-            <div class="input-group">
-                <div class="input-group-prepend"><span class="input-group-text">Address Line 2:</span></div>
+            <div class="form-group">
+                <label for="address_line2">Address Line 2:</label>
                 <input type="text" name="address_line2" value="<?php echo $company['address_line2']; ?>" class="form-control">
             </div>
-            <div class="input-group">
-                <div class="input-group-prepend"><span class="input-group-text">Town:</span></div>
+            <div class="form-group">
+                <label for="town">Town:</label>
                 <input type="text" name="town" value="<?php echo $company['town']; ?>" class="form-control">
             </div>
-            <div class="input-group">
-                <div class="input-group-prepend"><span class="input-group-text">Postcode:</span></div>
+            <div class="form-group">
+                <label for="postcode">Postcode:</label>
                 <input type="text" name="postcode" value="<?php echo $company['postcode']; ?>" class="form-control">
             </div>
-            <div class="input-group">
-                <div class="input-group-prepend"><span class="input-group-text">Telephone:</span></div>
+            <div class="form-group">
+                <label for="telephone">Telephone:</label>
                 <input type="text" name="telephone" value="<?php echo $company['telephone']; ?>" class="form-control">
             </div>
-            <div class="input-group">
-                <div class="input-group-prepend"><span class="input-group-text">Website:</span></div>
+            <div class="form-group">
+                <label for="website">Website:</label>
                 <input type="text" name="website" value="<?php echo $company['website']; ?>" class="form-control">
             </div>
-            <div class="input-group">
-                <div class="input-group-prepend"><span class="input-group-text">Email:</span></div>
+            <div class="form-group">
+                <label for="email">Email:</label>
                 <input type="text" name="email" value="<?php echo $company['email']; ?>" class="form-control">
             </div>
-            <div class="input-group">
-                <div class="input-group-prepend"><span class="input-group-text">Currency:</span></div>
+            <div class="form-group">
+                <label for="currencysymbol">Currency:</label>
                 <input type="text" name="currencysymbol" value="<?php echo $company['currencysymbol']; ?>" class="form-control">
             </div>
-            <div class="input-group">
-                <div class="input-group-prepend"><span class="input-group-text">Logo:</span></div>
+            <div class="form-group">
+                <label for="logo">Logo:</label>
                 <input type="text" name="logo" value="<?php echo $company['logo']; ?>" class="form-control">
             </div>
             <p>&nbsp;</p>

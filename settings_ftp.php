@@ -52,24 +52,24 @@ if( isset( $_POST['submitFTP'] ) ) {
 <div class="row">
     <div class="col">
         <form method="post">
-            <div class="input-group">
-                <div class="input-group-prepend"><span class="input-group-text">Host:</div>
+            <div class="form-group">
+                <label for="ftp_host">Host:</label>
                 <input class="form-control" name="ftp_host" value="<?php echo company( "ftp_host" ); ?>">
-                <span class="input-group-text">:</span>
-                <div class="input-group-append">
+                <span class="form-group-text">:</span>
+                <div class="form-group-append">
                     <input class="form-control" name="ftp_port" value="<?php echo company( "ftp_port"); ?>" placeholder="21">
                 </div>
             </div>
-            <div class="input-group">
-                <div class="input-group-prepend"><span class="input-group-text">Username:</div>
+            <div class="form-group">
+                <label for="ftp_username">Username:</label>
                 <input class="form-control" name="ftp_username" value="<?php echo company( "ftp_username" ); ?>">
             </div>
-            <div class="input-group">
-                <div class="input-group-prepend"><span class="input-group-text">Password:</div>
+            <div class="form-group">
+                <label for="ftp_password">Password:</label>
                 <input class="form-control" name="ftp_password" type="password" value="<?php echo company( "ftp_password" ); ?>">
             </div>
-            <div class="input-group">
-                <div class="input-group-prepend"><span class="input-group-text">Directory:</div>
+            <div class="form-group">
+                <label for="ftp_dir">Directory:</label>
                 <input class="form-control" name="ftp_dir" value="<?php echo company( "ftp_dir" ); ?>" placeholder="/">
             </div>
             <?php
