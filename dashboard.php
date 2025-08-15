@@ -209,7 +209,7 @@ if( isset( $_POST['dismissWelcome'] ) ) {
     <div class="col">
         <div class="card" style="background-color: #00adad; height: 220px;">
             <div class="card-body">
-                <h3 class="text-center">Contacts</h3>
+                <h3 class="text-center">People</h3>
                 <?php
                 $getContacts = $db->query( "SELECT * FROM `customers`" );
                 $count = 0;
