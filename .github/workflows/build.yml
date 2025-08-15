@@ -1,0 +1,60 @@
+name: Build HireMonkey
+
+on:
+  push:
+    tags:
+      - 'v2.0*' # e.g. v2.0.0
+  workflow_dispatch:
+
+jobs:
+  build-mac:
+    runs-on: macos-latest
+    strategy:
+      matrix:
+        arch: [arm64, x64]
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Build for macOS ${{ matrix.arch }}
+        run: npm run build-mac-${{ matrix.arch }}
+
+      - name: Create DMG
+        run: npm run dmg-${{ matrix.arch }}
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: hiremonkey-mac-${{ matrix.arch }}
+          path: builds/hiremonkey-darwin-${{ matrix.arch }}/
+
+  build-windows:
+    runs-on: windows-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Build for Windows
+        run: npm run build-win
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: hiremonkey-win
+          path: builds/HireMonkey-win32-x64/
