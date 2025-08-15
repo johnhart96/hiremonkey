@@ -143,3 +143,6 @@ label {
 .nav-tabs .nav-item .active {
   color: black !important;
 }
+a {
+  color: white;
+}
