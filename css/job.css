@@ -39,6 +39,7 @@ a.line_select:hover{
     list-style: none;
     padding: 5px;
     margin: 5px;
+    background: #eeeeee;
 }
 .costbox {
     width: 100%;

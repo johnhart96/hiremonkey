@@ -38,7 +38,7 @@
           <ul class='btn-toggle-nav list-unstyled fw-normal pb-1 small'>
             <li><a href='index.php?l=customer_new' class='link-dark rounded'>New</a></li>
             <li><a href='index.php?l=customer_import' class='link-dark rounded'>Import</a></li>
-            <li><a href='index.php?l=customer_browse' class='link-dark rounded'>Browse</a></li>
+            <li><a href='index.php?l=customer_browse' class='link-dark rounded'>Contacts</a></li>
           </ul>
         </div>
       </li>
