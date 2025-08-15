@@ -15,11 +15,10 @@ require_once 'inc/functions.php';
 ?>
 <html>
   <head>
-    <title>HireMonkey</title>
-    
     <?php
     require_once 'inc/header.php';
     ?>
+    <title>HireMonkey - Freelance Edition (v<?php echo FULLBUILD; ?>)</title>
   </head>
   <body>
     <?php
