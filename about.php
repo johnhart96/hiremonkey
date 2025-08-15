@@ -17,8 +17,9 @@
         <center>
             <img src="icons/logo.png" height="100"> <br />
             <h1>HireMonkey</h1>
+            <h3>Freelance Edition</h3>
             <p><em>"The rental management system for freelancers"</em></p>
-            <p>&copy;Copyright John Hart (2021).<br />All rights reserved!</p>
+            <p>&copy;Copyright John Hart (2025).<br />All rights reserved!</p>
 
             <p>&nbsp;</p>
             <p>
