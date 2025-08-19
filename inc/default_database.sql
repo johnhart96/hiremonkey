@@ -60,6 +60,14 @@ CREATE TABLE kit_repairs (
     cost        DOUBLE  DEFAULT (0.0)
 );
 
+-- Table pins
+CREATE TABLE pins (
+    id    INTEGER PRIMARY KEY AUTOINCREMENT,
+    link   VARCHAR,
+    label VARCHAR
+);
+
+
 
 COMMIT TRANSACTION;
 PRAGMA foreign_keys = on;

@@ -15,7 +15,7 @@ if( file_exists( "package.json" ) ) {
 }
 define( "BUILD_STATUS" , "dev" ); 
 define( "LICENCEVERSION" , 2 ); 
-define( "FULLBUILD" , "2.0.0.2" );
+define( "FULLBUILD" , "2.0.0.3" );
 
 // Important table list
 $tables = array(
@@ -32,6 +32,7 @@ $tables = array(
     'kit_stock',
     'sloc',
     'licence',
-    'kit_repairs'
+    'kit_repairs',
+    'pins'
 );
 ?>

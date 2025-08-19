@@ -1,5 +1,4 @@
 # Todo list
-* Add the option for pinned items at top of the application.
 
 ## Jobs
 * Ad the ability to change a job to a service line and only service lines should show in the services tab.

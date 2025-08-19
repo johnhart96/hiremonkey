@@ -259,4 +259,12 @@ function duration( $startDate , $endDate ) {
 function trial() {
   return FALSE;
 }
+
+function url() {
+  $link = "index.php?";
+  foreach( $_GET as $var => $val ) {
+          $link .= $var . "=" . $val . "&";
+  }
+  return $link;
+}
 ?>

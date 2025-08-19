@@ -304,4 +304,9 @@ foreach( $upgrade['repairs'] as $repair ) {
         ':cost' => $repair['cost']
     ]);
 }
+
+$pins = $newDB->prepare( "INSERT INTO pins (link,label) VALUES(:link,:lab)" );
+foreach( $upgrade['pins'] as $pin ) {
+    $pins->execute( [ ':link' => $pin['link'] , ':lab' => $pin['label'] ] );
+}
 ?>
