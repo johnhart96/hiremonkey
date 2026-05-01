@@ -1,16 +1,3 @@
-<?php
-/**
- *
- * This source code is subject to copyright.
- * Viewing, distributing, editing or extracting this source code will result in licence violation and/or legal action
- *
- * 
- * @package    HireMonkey
- * @author     John Hart
- * @copyright  2021 John Hart
- * @license    https://www.hiremonkey.app/licence.php
- */
-?>
 <div class='flex-shrink-0 p-3 bg-white' id="sidebar">
     <a href='/' class='d-flex align-items-center pb-3 mb-3 link-dark text-decoration-none border-bottom'>
     <img src="icons/logo.png" height="30">
@@ -93,8 +80,7 @@
     if( strtotime( '-1 day' ) > strtotime( company( "lastbackup" ) ) ) {
       echo "<div class='alert alert-warning'><center>Time for a backup?</center></div>";
     }
-    if( isset( $licenceError ) ) {
-      echo "<div class='alert alert-danger'><center>Licence error! Everything is read only!</center></div>";
-    }
+    
     ?>
+    <a href="https://www.buymeacoffee.com/johnhart96" target="_blank"><img src="https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png" alt="Buy Me a Coffee" style="height: 40px !important;width: 160px !important;" ></a>
   </div>
