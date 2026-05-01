@@ -65,6 +65,12 @@ jobs:
       - name: Build for Windows
         run: npm run build-win
 
+      - name: Install NSIS
+        run: choco install nsis --no-progress -y
+
+      - name: Build Windows installer
+        run: makensis WindowsInstaller.nsi
+
       - name: Zip Windows build
         run: Compress-Archive -Path builds\HireMonkey-win32-x64\* -DestinationPath builds\HireMonkey-win32-x64.zip
 
@@ -74,10 +80,10 @@ jobs:
           name: hiremonkey-win
           path: builds/HireMonkey-win32-x64.zip
 
-      - name: Upload ZIP to GitHub Release
+      - name: Upload installer to GitHub Release
         uses: softprops/action-gh-release@v2
         with:
           tag_name: latest
-          files: builds/HireMonkey-win32-x64.zip
+          files: builds/HireMonkey-amd64-1.0.0.13.exe
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
