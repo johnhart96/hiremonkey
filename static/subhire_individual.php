@@ -1,16 +1,4 @@
 <?php
-/**
- * company_select.php
- *
- * This source code is subject to copyright.
- * Viewing, distributing, editing or extracting this source code will result in licence violation and/or legal action
- *
- * 
- * @package    HireMonkey
- * @author     John Hart
- * @copyright  2021 John Hart
- * @license    https://www.hiremonkey.app/licence.php
- */
 ?>
 <div class="container">
     <div class="row">
@@ -134,13 +122,15 @@
             <table class="table table-bordered table-striped">
                 <tr>
                     <th>Item</th>
+                    <th>Type</th>
+                    <th>Date(s)</th>
                     <th>Qty</th>
                     <th>Unit Price</th>
                     <th>Line Total</th>
                 </tr>
                 <?php
                 $grandTotal = 0.0;
-                $getLines = $db->prepare( "SELECT * FROM `jobs_lines` WHERE `linetype` ='subhire' AND `job` =:jobID AND `supplier` =:supplierID ORDER BY `id` ASC" );
+                $getLines = $db->prepare( "SELECT * FROM `jobs_lines` WHERE `job` =:jobID AND `supplier` =:supplierID ORDER BY `id` ASC" );
                 $getLines->execute( [ ':jobID' => $id , ':supplierID' => $supplier ] );
                 while( $line = $getLines->fetch( PDO::FETCH_ASSOC ) ) {
                     echo "<tr>";
@@ -150,6 +140,28 @@
                     } else {
                         echo $line['itemName'];
                     }
+                    // Type
+                    echo "<td>";
+                    switch( $line['linetype'] ) {
+                        case "subhire":
+                            echo "Sub hire";
+                            break;
+                        case "text":
+                            echo "Service";
+                            break;
+                    }
+                    echo "</td>";
+                    // Dates
+                    echo "<td>";
+                    if( $line['linetype'] == "text" ) {
+                        echo print_date( $line['service_startdate'] ) . " - " . print_date( $line['service_enddate'] );
+                    } else {
+                        echo print_date( $job['startdate'] ) .  " - " . print_date( $job['enddate'] );
+                    }
+                    echo "</td>";
+
+
+                    // Qty
                     echo "<td>" . $line['qty'] . "</td>";
                     $each = $line['cost'] / $line['qty'];
                     echo "<td>" . company( 'currencysymbol') . price( $each ) . "</td>";
@@ -160,7 +172,7 @@
                 }
                 ?>
                 <tr>
-                    <td colspan='3'>&nbsp;</td>
+                    <td colspan='5'>&nbsp;</td>
                     <th><?php echo company( 'currencysymbol') .  price( $grandTotal ); ?></th> 
                 </tr>
             </table>

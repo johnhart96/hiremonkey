@@ -10,6 +10,7 @@
                 <th>Price (<?php echo company( 'currencysymbol' ); ?>)</th>
                 <th>Start date</th>
                 <th>End date</th>
+                <th>Supplier</th>
             </tr>
         </thead>
         <tbody>
@@ -38,7 +39,21 @@
                 // End date
                 $endDateName = $service['id'] . "_enddate";
                 echo "<td><input type='text' name='$endDateName' value='" . print_date( $service['service_enddate'] ) . "' class='form-control' placeholder='YYYY-MM-DD HH:MM'></td>";
-                
+
+                // Supplier
+                echo "<td>";
+                $supplierName = $service['id'] . "_supplier";
+                echo "<select name='" . $supplierName . "' class='form-control'>";
+                $getSuppliers = $db->query( "SELECT * FROM `customers` WHERE `supplier` =1 AND `hold` =0" );
+                while( $sup = $getSuppliers->fetch( PDO::FETCH_ASSOC ) ) {
+                    if( $sup['id'] == $service['supplier'] ) {
+                        echo "<option value='" . $sup['id'] . "' selected>" . $sup['name'] . "</option>";
+                    } else {
+                        echo "<option value='" . $sup['id'] . "'>" . $sup['name'] . "</option>";
+                    }
+                }
+                echo "</select>";
+                echo "</td>";
                 echo "</tr>";
             }
             ?>

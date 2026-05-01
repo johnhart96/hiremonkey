@@ -101,13 +101,13 @@
                     <select name='doc' class='form-control'>
                         <option selected disabled></option>
                         <option value='quote'>Quotation</option>
-                        <option value='subhire'>Subhire PO</option>
-                        <option value='insurance'>Insurance Values</option>
-                        <option value='order'>Order Confirmation</option>
+                        <option value='subhire'>Purchase order</option>
+                        <option value='insurance'>Insurance values</option>
+                        <option value='order'>Order confirmation</option>
                         <option value='prep'>Picking list</option>
-                        <option value='dispatch'>Dispatch Note</option>
-                        <option value='return'>Return Note</option>
-                        <option value='invoice'>Customer Invoice</option>
+                        <option value='dispatch'>Dispatch note</option>
+                        <option value='return'>Return note</option>
+                        <option value='invoice'>Customer invoice</option>
                     </select>
                 </div>
                 <input type='hidden' name='submitOpenDoc'>
