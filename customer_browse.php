@@ -36,7 +36,6 @@
             <thead>
                 <tr>
                     <th>Customers</th>
-                    <th></th>
                 </tr>
             </thead>
             <tbody>
@@ -50,8 +49,7 @@
                 }
                 while( $row = $getCustomers->fetch( PDO::FETCH_ASSOC ) ) {
                     echo "<tr>";
-                    echo "<td>" . $row['name'] . "</td>";
-                    echo "<td width='1'><a href='index.php?l=customer_view&id=" . $row['id'] . "' class='btn btn-primary'>View</a></td>";
+                    echo "<td><a href='index.php?l=customer_view&id=" . $row['id'] . "'>" . $row['name'] . "</a></td>";
                     echo "</tr>";
                 }
                 ?>
