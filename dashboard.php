@@ -222,3 +222,54 @@ if( isset( $_POST['dismissWelcome'] ) ) {
         </div>
     </div>
 </div>
+
+<hr />
+
+<div class="row">
+    <div class="col">
+        <div class="card">
+            <div class="card-header text-center"><strong>Going out today</strong></div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-bordered table-striped">
+                        <?php
+                        $goingOutToday = $db->query("
+                            SELECT id, name
+                            FROM jobs
+                            WHERE startdate = date('now');
+                        ");
+                        while( $job = $goingOutToday->fetch( PDO::FETCH_ASSOC ) ) {
+                            echo "<tr>";
+                            echo "<td>" . "<a style='color: #000' href='index.php?l=job_view&id=" . $job['id'] . "'>" . $job['name'] . "</a></td>";
+                            echo "</tr>";
+                        }
+                        ?>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col">
+        <div class="card">
+            <div class="card-header text-center"><strong>Coming back today</strong></div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-bordered table-striped">
+                        <?php
+                        $goingOutToday = $db->query("
+                            SELECT id, name
+                            FROM jobs
+                            WHERE enddate = date('now');
+                        ");
+                        while( $job = $goingOutToday->fetch( PDO::FETCH_ASSOC ) ) {
+                            echo "<tr>";
+                            echo "<td>" . "<a style='color: #000' href='index.php?l=job_view&id=" . $job['id'] . "'>" . $job['name'] . "</a></td>";
+                            echo "</tr>";
+                        }
+                        ?>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
