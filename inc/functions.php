@@ -203,7 +203,7 @@ function avlb( $product , $date1 , $date2 ) {
       $checkForStockOnJob = $db->prepare( "SELECT * FROM `jobs_lines` WHERE `kit` =:kitID AND `job` =:jobID" );
       $checkForStockOnJob->execute( [ ':kitID' => $product , ':jobID' => $jobID ] );
       while( $line = $checkForStockOnJob->fetch( PDO::FETCH_ASSOC ) ) {
-        if( $line['linetype'] == "hire" ) {
+        if( $line['linetype'] == "hire" && $line['stockEffect'] < 0 ) {
           $d = $line['stockEffect'];
           echo "<script>console.log('$d');</script>";
           $balence = $balence + (int)$line['stockEffect'];

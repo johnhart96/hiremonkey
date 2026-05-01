@@ -160,6 +160,9 @@ if( isset( $_POST['submitNewItem'] ) ) {
             $kitID = $fetch['id'];
             require 'inc/job_select.php';
             $avlb = avlb( $kitID , $job['startdate'] , $job['enddate'] );
+            if( $fetch['stock_control'] == 0 ) {
+                $ignoreStock = TRUE;
+            }
 
             echo "<script>console.log('Avlb: $avlb')</script>";
             if( $avlb < $qty && ! $ignoreStock ) {
@@ -193,8 +196,11 @@ if( isset( $_POST['submitNewItem'] ) ) {
                     }
                 }
                 $stockEffect = (int)$qty * -1;
-                if( $stockEffect == 0 ) {
+                /*if( $stockEffect == 0 ) {
                     die( "Stock effect cannot be 0" );
+                }*/
+                if( $fetch['stock_control'] == 0 ) {
+                    $stockEffect = 0;
                 }
 
                 // Price handel
