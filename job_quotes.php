@@ -11,18 +11,14 @@
                 <th>Job#</th>
                 <th>Name</th>
                 <th>Customer</th>
-                <th width='1'></th>
             </tr>
             <?php
             $getQuotes = $db->query( "SELECT * FROM `jobs` WHERE `jobType` ='quote'" );
             while( $quote = $getQuotes->fetch( PDO::FETCH_ASSOC ) ) {
                 echo "<tr>";
-                echo "<td>" . $quote['id'] . "</td>";
-                echo "<td>" . $quote['name'] . "</td>";
+                echo "<td><a style='color: #000;' href='index.php?l=job_view&id=" . $quote['id'] . "'>" . $quote['id'] . "</a></td>";
+                echo "<td><a style='color: #000;'href='index.php?l=job_view&id=" . $quote['id'] . "'>" . $quote['name'] . "</a></td>";
                 echo "<td>" . customer( $quote['customer'] ) . "</td>";
-                echo "<td>";
-                echo "<a href='index.php?l=job_view&id=" . $quote['id'] . "' class='btn btn-primary'>View</a>";
-                echo "</td>";
                 echo "</tr>";
             }
             ?>
