@@ -16,6 +16,7 @@
             <?php
             $getServices = $db->prepare( "SELECT * FROM `jobs_lines` WHERE `linetype` ='text' AND `job` =:jobID" );
             $getServices->execute( [ ':jobID' => $id ] );
+            
             while( $service = $getServices->fetch( PDO::FETCH_ASSOC ) ) {
                 echo "<tr>";
                 // Name
@@ -32,11 +33,11 @@
 
                 // Start date
                 $startDateName = $service['id'] . "_startdate";
-                echo "<td><input type='text' name='$startDateName' value='" . date( "Y-m-d H:i" , strtotime( $service['service_startdate']  ) ) . "' class='form-control' placeholder='YYYY-MM-DD HH:MM'></td>";
+                echo "<td><input type='text' name='$startDateName' value='" . print_date( $service['service_startdate'] ) . "' class='form-control' placeholder='YYYY-MM-DD HH:MM'></td>";
 
                 // End date
                 $endDateName = $service['id'] . "_enddate";
-                echo "<td><input type='text' name='$endDateName' value='" . date( "Y-m-d H:i" , strtotime( $service['service_enddate']  ) ) . "' class='form-control' placeholder='YYYY-MM-DD HH:MM'></td>";
+                echo "<td><input type='text' name='$endDateName' value='" . print_date( $service['service_enddate'] ) . "' class='form-control' placeholder='YYYY-MM-DD HH:MM'></td>";
                 
                 echo "</tr>";
             }

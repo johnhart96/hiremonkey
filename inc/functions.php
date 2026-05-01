@@ -267,4 +267,13 @@ function url() {
   }
   return $link;
 }
+
+function print_date( $date ) {
+  if( ! empty( $date ) ) {
+    $obj = new DateTime( $date );
+    return $obj->format( "Y-m-d H:i" );
+  } else {
+    return NULL;
+  }
+}
 ?>
