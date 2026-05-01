@@ -29,10 +29,10 @@ jobs:
         run: npm install
 
       - name: Build for macOS ${{ matrix.label }}
-        run: npm run build-mac-${{ matrix.arch }}
+        run: npm run build-mac-${{ matrix.label }}
 
       - name: Create DMG
-        run: npm run dmg-${{ matrix.arch }}
+        run: npm run dmg-${{ matrix.label }}
 
       - name: Upload DMG to artifacts
         uses: actions/upload-artifact@v4
