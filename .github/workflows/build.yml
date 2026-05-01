@@ -11,7 +11,11 @@ jobs:
     runs-on: macos-latest
     strategy:
       matrix:
-        arch: [intel, arm64]
+        include:
+          - arch: x64
+            label: intel
+          - arch: arm64
+            label: arm64
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -24,7 +28,7 @@ jobs:
       - name: Install dependencies
         run: npm install
 
-      - name: Build for macOS ${{ matrix.arch }}
+      - name: Build for macOS ${{ matrix.label }}
         run: npm run build-mac-${{ matrix.arch }}
 
       - name: Create DMG
@@ -33,7 +37,7 @@ jobs:
       - name: Upload DMG to artifacts
         uses: actions/upload-artifact@v4
         with:
-          name: hiremonkey-mac-${{ matrix.arch }}
+          name: hiremonkey-mac-${{ matrix.label }}
           path: builds/hiremonkey-darwin-${{ matrix.arch }}/*.dmg
 
       - name: Upload DMG to GitHub Release
