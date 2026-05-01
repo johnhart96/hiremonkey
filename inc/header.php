@@ -38,5 +38,5 @@ require_once 'inc/version.php';
 <script src="./js/job.js" type="text/javascript"></script>
 <script src="./js/repairs.js" type="text/javascript"></script>
 <script src="./js/tables.js" type="text/javascript"></script>
-<script src="ckeditor/ckeditor.js"></script>
-<script src="js/ckeditor.init.js"></script>
+<!--<script src="ckeditor/ckeditor.js"></script>
+<script src="js/ckeditor.init.js"></script>-->

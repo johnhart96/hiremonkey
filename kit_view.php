@@ -27,6 +27,7 @@ if( isset( $_POST['saveDetails'] ) ) {
     $sloc = filter_var( $_POST['sloc'] , FILTER_SANITIZE_NUMBER_INT );
     $cat = filter_var( $_POST['cat'] , FILTER_SANITIZE_NUMBER_INT );
     $img = filter_var( $_POST['img'] , FILTER_VALIDATE_URL );
+    $stock_control = filter_var( $_POST['stock_control'] , FILTER_VALIDATE_INT );
     
     $update = $db->prepare("
         UPDATE `kit` SET
@@ -42,7 +43,8 @@ if( isset( $_POST['saveDetails'] ) ) {
             `toplevel` =:toplevel,
             `sloc` =:sloc,
             `cat` =:cat,
-            `img` =:img
+            `img` =:img,
+            `stock_control` =:stock_control
         WHERE `id` =:id
     ");
     $update->execute([
@@ -59,7 +61,8 @@ if( isset( $_POST['saveDetails'] ) ) {
         ':sloc' => $sloc,
         ':cat' => $cat,
         ':img' => $img,
-        ':id' => $id
+        ':id' => $id,
+        ':stock_control' => $stock_control
     ]);
     $saved = true;
 }
@@ -396,6 +399,23 @@ if( isset( $_POST['submitRepair'] ) ) {
                         </select>
                     </div>
                     <div class="input-group">
+                        <div class="input-group-prepend"><span class="input-group-text">Stock Control:</span></div>
+                        <select name="stock_control" class="form-control">
+                            <?php
+                            switch( $kit['stock_control'] ) {
+                                case 1:
+                                    echo "<option selected value='1'>Yes</option>";
+                                    echo "<option value='0'>No</option>";
+                                    break;
+                                case 0:
+                                    echo "<option value='1'>Yes</option>";
+                                    echo "<option selected value='0'>No</option>";
+                                    break; 
+                            }
+                            ?>
+                        </select>
+                    </div>
+                    <div class="input-group">
                         <div class="input-group-prepend"><span class="input-group-text">Image URL:</span></div>
                         <input type="text" name="img" class="form-control" value="<?php echo $kit['img']; ?>">
                     </div>
@@ -412,162 +432,119 @@ if( isset( $_POST['submitRepair'] ) ) {
 </form>
 <div class="row">&nbsp;</div>
 <div class="row">
-    <div class="col">
-        <div class="card">
-            <div class="card-header"><strong>Repairs</strong></div>
-            <div class="card-body">
-                <table class="table table-bordered table-striped">
-                    <thead>
+    <?php if( $kit['stock_control'] == 1 ) { ?>
+        <div class="col">
+            <div class="card">
+                <div class="card-header"><strong>Stock (<?php echo totalStockCount( $id ); ?>) :</strong></div>
+                <div class="card-body">
+                    
+                    <table class="table table-bordered table-stripe">
                         <tr>
-                            <th>ID</td>
-                            <th>Description</th>
-                            <th>Start date</th>
-                            <th>End date</th>
-                            <th>Qty</th>
-                            <th>Cost</th>
+                            <th>Count/Serial number</th>
+                            <th>Stock type</th>
+                            <th>Purchase date</th>
+                            <th colspan="2"></td>
                         </tr>
-                    </thead>
-                    <tbody>
                         <?php
-                        $getRepairs = $db->prepare( "SELECT * FROM `kit_repairs` WHERE `kit` =:kitID" );
-                        $getRepairs->execute( [ ':kitID' => $id ] );
-                        $repairBill = 0.0;
-                        while( $repair = $getRepairs->fetch( PDO::FETCH_ASSOC ) ) {
+                        $getStock = $db->prepare( "SELECT * FROM `kit_stock` WHERE `kit` =:id" );
+                        $getStock->execute( [ ':id' => $id ] );
+                        while( $row = $getStock->fetch( PDO::FETCH_ASSOC ) ) {
                             echo "<tr>";
-                            echo "<td>" . $repair['id'] . "</td>";
-                            echo "<td><a href='index.php?l=repairbench&id=" . $repair['id'] . "'>" . $repair['description'] . "</a></td>";
-                            echo "<td>" . $repair['startdate'] . "</td>";
-                            echo "<td>" . $repair['enddate'] . "</td>";
-                            echo "<td>" . str_replace( "-" , "" , $repair['stockeffect'] ). "</td>";
-                            echo "<td>" . company( "currencysymbol") . price( $repair['cost'] ) . "</td>";
-                            echo "</tr>";
-                            $repairBill = $repairBill + $repair['cost'];
-                        }
-                        ?>
-                    </tbody>
-                    <tfoot>
-                        <tr>
-                            <th style="text-align: right" colspan="5">Total repair bill:</th>
-                            <td><?php echo company( "currencysymbol") . price( $repairBill ); ?></td>
-                        </tr>
-                    </tfoot>
-                </table>
-            </div>
-        </div>
-    </div>
-</div>
-<div class="row">&nbsp;</div>
-<div class="row">
-    <div class="col">
-        <div class="card">
-            <div class="card-header"><strong>Stock (<?php echo totalStockCount( $id ); ?>) :</strong></div>
-            <div class="card-body">
-                <table class="table table-bordered table-stripe">
-                    <tr>
-                        <th>Count/Serial number</th>
-                        <th>Stock type</th>
-                        <th>Purchase date</th>
-                        <th colspan="2"></td>
-                    </tr>
-                    <?php
-                    $getStock = $db->prepare( "SELECT * FROM `kit_stock` WHERE `kit` =:id" );
-                    $getStock->execute( [ ':id' => $id ] );
-                    while( $row = $getStock->fetch( PDO::FETCH_ASSOC ) ) {
-                        echo "<tr>";
-                        if( (int)$row['serialized'] == 1 ) {
-                            echo "<td>" . $row['serialnumber'] . "</td>";
-                            echo "<td>Serialized</td>";
-                        } else {
-                            echo "<td>" . $row['stock_count'] . "</td>";
-                            echo "<td>Bulk</td>";
-                        }
-                        echo "<td>" . $row['purchasedate'] . "</td>";
-                        // Edit
-                        echo "<td width='1'>";
-                        $modal = "editstock_"  . $row['id'];
-                        $dialog = "
-                            <div class='alert alert-info'>
-                                <strong>Note:</strong> If this entry is a serialized, the count is ignored.<br />
-                                    If bulk stock, the serial number is ignored.
-                            </div>
-                            <div class='input-group'>
-                                <div class='input-group-prepend'><span class='input-group-text'>Serial number:</span></div>
-                                <input type='text' name='serialnumber' class='form-control' value='" . $row['serialnumber'] . "'>
-                            </div>
-                            <div class='input-group'>
-                                <div class='input-group-prepend'><span class='input-group-text'>Purchase date:</span></div>
-                                <input type='text' name='purchasedate' class='form-control' value='" . $row['purchasedate']. "' placeholder='YYYY-MM-DD'>
-                            </div>
-                            <div class='input-group'>
-                                <div class='input-group-prepend'><span class='input-group-text'>Count:</span></div>
-                                <input type='text' name='count' class='form-control' value='" . $row['stock_count']  . "'>
-                            </div>
-                            <input type='hidden' name='editStock' value='"  .$row['id'] . "'> 
-                        ";
-                        modal( $modal , "Edit stock entry" , $dialog , "Save Cancel" );
-                        modalButton( $modal , "Edit" );
-                        echo "</td>";
-                        // Delete
-                        echo "<td width='1'>";
-                        $modal = "deletestock_" . $row['id'];
-                        modalButton_red( $modal , "Delete" );
-                        $dialog = "
-                            Are you sure you want to delete this stock entry?
-                            <input type='hidden' name='deleteStock' value='" . $row['id'] . "'>
-                        ";
-                        modal( $modal , "Delete?" , $dialog , "Yes No" );
-                        echo "</td>";
-                        echo "</tr>";
-                    }
-                    ?>
-                    <tr>
-                        <th colspan="3">
-                            Current Stock:
-                            <?php
-                            echo avlb( $id , date( "Y-m-d" ) , date( "Y-m-d" ) );
-                            ?>
-                        </th>
-                        <td colspan="2">
-                        </td>
-                    </tr>
-                    <tr>
-                        <td colspan="5" align="center">
-                            <?php
-                            modalButton_green( "newstock" , "New" );
+                            if( (int)$row['serialized'] == 1 ) {
+                                echo "<td>" . $row['serialnumber'] . "</td>";
+                                echo "<td>Serialized</td>";
+                            } else {
+                                echo "<td>" . $row['stock_count'] . "</td>";
+                                echo "<td>Bulk</td>";
+                            }
+                            echo "<td>" . $row['purchasedate'] . "</td>";
+                            // Edit
+                            echo "<td width='1'>";
+                            $modal = "editstock_"  . $row['id'];
                             $dialog = "
                                 <div class='alert alert-info'>
                                     <strong>Note:</strong> If this entry is a serialized, the count is ignored.<br />
-                                    If bulk stock, the serial number is ignored.
-                                </div>
-                                <div class='input-group'>
-                                    <div class='input-group-prepend'><span class='input-group-text'>Type:</span></div>
-                                    <select name='type' class='form-control'>
-                                        <option selected value='0'>Bulk</option>
-                                        <option value='1'>Serialized</option>
-                                    </select>
+                                        If bulk stock, the serial number is ignored.
                                 </div>
                                 <div class='input-group'>
                                     <div class='input-group-prepend'><span class='input-group-text'>Serial number:</span></div>
-                                    <input type='text' name='serialnumber' class='form-control'>
+                                    <input type='text' name='serialnumber' class='form-control' value='" . $row['serialnumber'] . "'>
                                 </div>
                                 <div class='input-group'>
                                     <div class='input-group-prepend'><span class='input-group-text'>Purchase date:</span></div>
-                                    <input type='text' name='purchasedate' class='form-control' value='" . date( "Y-m-d" ) . "' placeholder='YYYY-MM-DD'>
+                                    <input type='text' name='purchasedate' class='form-control' value='" . $row['purchasedate']. "' placeholder='YYYY-MM-DD'>
                                 </div>
                                 <div class='input-group'>
                                     <div class='input-group-prepend'><span class='input-group-text'>Count:</span></div>
-                                    <input type='text' name='count' class='form-control' value='1'>
+                                    <input type='text' name='count' class='form-control' value='" . $row['stock_count']  . "'>
                                 </div>
-                                <input type='hidden' name='submitNewStock'> 
+                                <input type='hidden' name='editStock' value='"  .$row['id'] . "'> 
                             ";
-                            modal( "newstock" , "New stock entry" , $dialog , "Save Cancel" );
-                            ?>
-                        </td>
-                    </tr>
-                </table>
+                            modal( $modal , "Edit stock entry" , $dialog , "Save Cancel" );
+                            modalButton( $modal , "Edit" );
+                            echo "</td>";
+                            // Delete
+                            echo "<td width='1'>";
+                            $modal = "deletestock_" . $row['id'];
+                            modalButton_red( $modal , "Delete" );
+                            $dialog = "
+                                Are you sure you want to delete this stock entry?
+                                <input type='hidden' name='deleteStock' value='" . $row['id'] . "'>
+                            ";
+                            modal( $modal , "Delete?" , $dialog , "Yes No" );
+                            echo "</td>";
+                            echo "</tr>";
+                        }
+                        ?>
+                        <tr>
+                            <th colspan="3">
+                                Current Stock:
+                                <?php
+                                echo avlb( $id , date( "Y-m-d" ) , date( "Y-m-d" ) );
+                                ?>
+                            </th>
+                            <td colspan="2">
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="5" align="center">
+                                <?php
+                                modalButton_green( "newstock" , "New" );
+                                $dialog = "
+                                    <div class='alert alert-info'>
+                                        <strong>Note:</strong> If this entry is a serialized, the count is ignored.<br />
+                                        If bulk stock, the serial number is ignored.
+                                    </div>
+                                    <div class='input-group'>
+                                        <div class='input-group-prepend'><span class='input-group-text'>Type:</span></div>
+                                        <select name='type' class='form-control'>
+                                            <option selected value='0'>Bulk</option>
+                                            <option value='1'>Serialized</option>
+                                        </select>
+                                    </div>
+                                    <div class='input-group'>
+                                        <div class='input-group-prepend'><span class='input-group-text'>Serial number:</span></div>
+                                        <input type='text' name='serialnumber' class='form-control'>
+                                    </div>
+                                    <div class='input-group'>
+                                        <div class='input-group-prepend'><span class='input-group-text'>Purchase date:</span></div>
+                                        <input type='text' name='purchasedate' class='form-control' value='" . date( "Y-m-d" ) . "' placeholder='YYYY-MM-DD'>
+                                    </div>
+                                    <div class='input-group'>
+                                        <div class='input-group-prepend'><span class='input-group-text'>Count:</span></div>
+                                        <input type='text' name='count' class='form-control' value='1'>
+                                    </div>
+                                    <input type='hidden' name='submitNewStock'> 
+                                ";
+                                modal( "newstock" , "New stock entry" , $dialog , "Save Cancel" );
+                                ?>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
             </div>
         </div>
-    </div>
+    <?php } ?>
     <div class="col">
         <div class="card">
             <div class="card-header"><strong>Accessories:</strong></div>
@@ -592,7 +569,7 @@ if( isset( $_POST['submitRepair'] ) ) {
                             $getDetails->execute( [ ':id' => $accessoryID ] );
                             $detail = $getDetails->fetch( PDO::FETCH_ASSOC );
                             echo "<tr>";
-                            echo "<td>" . $prefix . "<a href='index.php?l=kit_view&id=" . $accessoryID . "'>" . $detail['name'] . "</a></td>";
+                            echo "<td>" . $prefix . "<a style='color: black;'' href='index.php?l=kit_view&id=" . $accessoryID . "'>" . $detail['name'] . "</a></td>";
                             // Type
                             echo "<td>";
                             switch( $accessory['type'] ) {
@@ -708,6 +685,51 @@ if( isset( $_POST['submitRepair'] ) ) {
     </div>
 </div>
 <div class="row">&nbsp;</div>
+<div class="row">
+    <div class="col">
+        <div class="card">
+            <div class="card-header"><strong>Repairs</strong></div>
+            <div class="card-body">
+                <table class="table table-bordered table-striped">
+                    <thead>
+                        <tr>
+                            <th>ID</td>
+                            <th>Description</th>
+                            <th>Start date</th>
+                            <th>End date</th>
+                            <th>Qty</th>
+                            <th>Cost</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php
+                        $getRepairs = $db->prepare( "SELECT * FROM `kit_repairs` WHERE `kit` =:kitID" );
+                        $getRepairs->execute( [ ':kitID' => $id ] );
+                        $repairBill = 0.0;
+                        while( $repair = $getRepairs->fetch( PDO::FETCH_ASSOC ) ) {
+                            echo "<tr>";
+                            echo "<td>" . $repair['id'] . "</td>";
+                            echo "<td><a href='index.php?l=repairbench&id=" . $repair['id'] . "'>" . $repair['description'] . "</a></td>";
+                            echo "<td>" . $repair['startdate'] . "</td>";
+                            echo "<td>" . $repair['enddate'] . "</td>";
+                            echo "<td>" . str_replace( "-" , "" , $repair['stockeffect'] ). "</td>";
+                            echo "<td>" . company( "currencysymbol") . price( $repair['cost'] ) . "</td>";
+                            echo "</tr>";
+                            $repairBill = $repairBill + $repair['cost'];
+                        }
+                        ?>
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <th style="text-align: right" colspan="5">Total repair bill:</th>
+                            <td><?php echo company( "currencysymbol") . price( $repairBill ); ?></td>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
 <div class="row">
     <div class="col">
         <?php

@@ -15,11 +15,10 @@ require_once 'inc/functions.php';
 ?>
 <html>
   <head>
-    <title>HireMonkey</title>
-    
     <?php
     require_once 'inc/header.php';
     ?>
+    <title>HireMonkey - Freelance Edition (v<?php echo FULLBUILD; ?>)</title>
   </head>
   <body>
     <?php
@@ -27,6 +26,28 @@ require_once 'inc/functions.php';
     require 'inc/sidebar.php';
     ?>
     <div class="container-fluid">
+      <div class="pins btn-group">
+        <?php
+        if( isset( $_POST['label'] ) ) {
+          $url = url();
+          $label = filter_var( $_POST['label'] , FILTER_UNSAFE_RAW );
+          $add = $db->prepare( "INSERT INTO pins (link,label) VALUES(:u,:l)" );
+          $add->execute( [ ':u' => $url , ':l' => $label ] );
+        }
+        $getPins = $db->query( "SELECT * FROM pins" );
+        while( $pin = $getPins->fetch( PDO::FETCH_ASSOC ) ) {
+          echo "<a href='" . $pin['link'] . "' class='btn btn-secondary'>" . $pin['label'] . "</a>";
+        }
+        modalButton( "newPin" , "+" , "Add a pin" );
+        $form = "
+          <div class='form-group'>
+            <label for='label'>Label:</label>
+            <input type='text' name='label' class='form-control'>
+          </div>
+        ";
+        modal( "newPin" , "Add a new pin" , $form , "Save Cancel" );
+        ?>
+      </div>
       <?php
       if( ! isset( $_GET['l'] ) ) {
         $location = "dashboard.php";

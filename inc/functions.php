@@ -203,7 +203,7 @@ function avlb( $product , $date1 , $date2 ) {
       $checkForStockOnJob = $db->prepare( "SELECT * FROM `jobs_lines` WHERE `kit` =:kitID AND `job` =:jobID" );
       $checkForStockOnJob->execute( [ ':kitID' => $product , ':jobID' => $jobID ] );
       while( $line = $checkForStockOnJob->fetch( PDO::FETCH_ASSOC ) ) {
-        if( $line['linetype'] == "hire" ) {
+        if( $line['linetype'] == "hire" && $line['stockEffect'] < 0 ) {
           $d = $line['stockEffect'];
           echo "<script>console.log('$d');</script>";
           $balence = $balence + (int)$line['stockEffect'];
@@ -258,5 +258,22 @@ function duration( $startDate , $endDate ) {
 }
 function trial() {
   return FALSE;
+}
+
+function url() {
+  $link = "index.php?";
+  foreach( $_GET as $var => $val ) {
+          $link .= $var . "=" . $val . "&";
+  }
+  return $link;
+}
+
+function print_date( $date ) {
+  if( ! empty( $date ) ) {
+    $obj = new DateTime( $date );
+    return $obj->format( "Y-m-d H:i" );
+  } else {
+    return NULL;
+  }
 }
 ?>

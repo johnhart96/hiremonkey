@@ -1,16 +1,3 @@
-<?php
-/**
- *
- * This source code is subject to copyright.
- * Viewing, distributing, editing or extracting this source code will result in licence violation and/or legal action
- *
- * 
- * @package    HireMonkey
- * @author     John Hart
- * @copyright  2021 John Hart
- * @license    https://www.hiremonkey.app/licence.php
- */
-?>
 <div class="row">
     <div class="col">
         <h1>Browse Jobs:</h1>
@@ -77,20 +64,18 @@
                     <th>Start Date</th>
                     <th>End Date</th>
                     <th>Type</th>
-                    <th></th>
                 </tr>
             </thead>
             <tbody>
                 <?php
                 while( $job = $getJobs->fetch( PDO::FETCH_ASSOC ) ) {
                     echo "<tr>";
-                    echo "<td>" . $job['id'] . "</td>";
-                    echo "<td>" . $job['name'] . "</td>";
+                    echo "<td><a href='index.php?l=job_view&id=" . $job['id'] . "'>" . $job['id'] . "</a></td>";
+                    echo "<td><a href='index.php?l=job_view&id=" . $job['id'] . "'>" . $job['name'] . "</a></td>";
                     echo "<td><a href='index.php?l=customer_view&id=" . $job['customer'] . "'>" . customer( $job['customer'] ) . "</a></td>";
                     echo "<td>" . $job['startdate'] . "</td>";
                     echo "<td>" . $job['enddate'] . "</td>";
                     echo "<td>" . ucfirst( $job['jobType'] ) . "</td>";
-                    echo "<td width='1'><a href='index.php?l=job_view&id=" . $job['id'] . "' class='btn btn-primary'>View</a></td>";
                     echo "</tr>";
                 }
                 ?>

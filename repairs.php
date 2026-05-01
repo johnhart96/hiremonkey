@@ -1,16 +1,3 @@
-<?php
-/**
- *
- * This source code is subject to copyright.
- * Viewing, distributing, editing or extracting this source code will result in licence violation and/or legal action
- *
- * 
- * @package    HireMonkey
- * @author     John Hart
- * @copyright  2021 John Hart
- * @license    https://www.hiremonkey.app/licence.php
- */
-?>
 <div class="row">
     <div class="col">
         <h1>Repairs</h1>
@@ -67,7 +54,6 @@
                     <th>Description</th>
                     <th>Equipment</th>
                     <th>Start Date</th>
-                    <th width='1'>&nbsp;</th>
                 </tr>
             </thead>
             <tbody>
@@ -77,9 +63,9 @@
                 while( $repair = $search->fetch( PDO::FETCH_ASSOC ) ) {
                     echo "<tr>";
                     // ID
-                    echo "<td>" . $repair['id'] . "</td>";
+                    echo "<td><a href='index.php?l=" . $repair['id'] . "'>" . $repair['id'] . "</a></td>";
                     // Description
-                    echo "<td>" . $repair['description'] . "</td>";
+                    echo "<td><a href='index.php?l=" . $repair['id'] . "'>" . $repair['description'] . "</a></td>";
                     // Equipment
                     echo "<td>";
                     $kitID = $repair['kit'];
@@ -100,10 +86,6 @@
                     // Start Date
                     echo "<td>" . date( "d/m/Y" , strtotime( $repair['startdate']  ) ). "</td>";
 
-                    // Open
-                    echo "<td>";
-                    echo "<a href='index.php?l=repairbench&id=" . $repair['id'] . "' class='btn btn-primary'>Open</a>";
-                    echo "</td>";
                     echo "</tr>";
                 }
                 ?>

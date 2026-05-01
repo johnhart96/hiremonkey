@@ -51,12 +51,12 @@ if( isset( $_POST['submit'] ) ) {
 <form method="post">
     <div class="row">
         <div class="col">
-            <div class="input-group">
-                <div class="input-group-prepend"><span class="input-group-text">Name:</span></div>
+            <div class="form-group">
+                <label for="name">Name:</label>
                 <input type="text" required autofocus class="form-control" name="name">
             </div>
-            <div class="input-group">
-                <div class="input-group-prepend"><span class="input-group-text">Customer:</span></div>
+            <div class="form-group">
+                <label for="customer">Customer:</label>
                 <select name="customer" required class="form-control">
                     <option selected disabled></option>
                     <?php
@@ -67,12 +67,12 @@ if( isset( $_POST['submit'] ) ) {
                     ?>
                 </select>   
             </div>
-            <div class="input-group">
-                <div class="input-group-prepend"><span class="input-group-text">Start date:</span></div>
+            <div class="form-group">
+                <label for="startdate">Start date:</label>
                 <input type="text" class="form-control" name="startdate" placeholder="YYYY-MM-YYYY" value="<?php echo date( "Y-m-d"); ?>">
             </div>
-            <div class="input-group">
-                <div class="input-group-prepend"><span class="input-group-text">End date:</span></div>
+            <div class="form-group">
+                <label for="enddate">End date:</label>
                 <input type="text" class="form-control" name="enddate" placeholder="YYYY-MM-YYYY" value="<?php echo date( "Y-m-d"); ?>">
             </div>
             <p>&nbsp;</p>

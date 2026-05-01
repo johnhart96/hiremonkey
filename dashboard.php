@@ -127,124 +127,64 @@ if( isset( $_POST['dismissWelcome'] ) ) {
 <?php } ?>
 <div class="row">
     <div class="col">
-        <div class="card">
-            <div class="card-header"><strong>Quotes:</strong></div>
+        <div class="card" style="background-color:#13ba00; height: 220px;">
             <div class="card-body">
-                <table class="table table-bordered table-striped">
-                    <tr>
-                        <th>Job#</th>
-                        <th>Name</th>
-                        <th>Customer</th>
-                        <th width='1'></th>
-                    </tr>
-                    <?php
-                    $getQuotes = $db->query( "SELECT * FROM `jobs` WHERE `jobType` ='quote'" );
-                    while( $quote = $getQuotes->fetch( PDO::FETCH_ASSOC ) ) {
-                        echo "<tr>";
-                        echo "<td>" . $quote['id'] . "</td>";
-                        echo "<td>" . $quote['name'] . "</td>";
-                        echo "<td>" . customer( $quote['customer'] ) . "</td>";
-                        echo "<td>";
-                        echo "<a href='index.php?l=job_view&id=" . $quote['id'] . "' class='btn btn-primary'>View</a>";
-                        echo "</td>";
-                        echo "</tr>";
-                    }
-                    ?>
-                </table>
+                <h3 class="text-center">Quotes</h3>
+                <?php
+                $getQuotes = $db->query( "SELECT * FROM `jobs` WHERE `jobType` ='quote'" );
+                $count = 0;
+                while( $row = $getQuotes->fetch( PDO::FETCH_ASSOC ) ) {
+                    $count ++;
+                }
+                echo "<p class='card-hero text-center'><a href='?l=job_quotes'>" . $count . "</a></p>";
+                ?>
             </div>
         </div>
     </div>
     <div class="col">
-        <div class="card">
-            <div class="card-header"><strong>Dispatched Jobs:</strong></div>
+        <div class="card" style="background-color: #f5b907; height: 220px;">
             <div class="card-body">
-                <table class="table table-bordered table-striped">
-                    <tr>
-                        <th>Job#</th>
-                        <th>Name</th>
-                        <th>Customer</th>
-                        <th>Due back</th>
-                        <th width='1'></th>
-                    </tr>
-                    <?php
-                    $getDispatchedJobs = $db->query( "SELECT * FROM `jobs_lines` WHERE `dispatch` =1 AND `return` =0" );
-                    $jobs = array();
-                    while( $line = $getDispatchedJobs->fetch( PDO::FETCH_ASSOC ) ) {
-                        array_push( $jobs , $line['job'] );
-                    }
-                    $jobs = array_unique( $jobs );
-                    $getJob = $db->prepare( "SELECT * FROM `jobs` WHERE `id` =:jobID" );
-                    foreach( $jobs as $job ) {
-                        echo "<tr>";
-                        $getJob->execute( [ ':jobID' => $job ] );
-                        $fetch = $getJob->fetch( PDO::FETCH_ASSOC );
-                        echo "<td>" . $job . "</td>";
-                        echo "<td>" . $fetch['name'] . "</td>";
-                        echo "<td>" . customer( $fetch['customer'] ) . "</td>";
-                        echo "<td>" . date( "d/m/Y" , strtotime( $fetch['enddate'] ) ) . "</td>";
-                        echo "<td><a href='index.php?l=job_view&id=" . $job . "' class='btn btn-primary'>View</a></td>";
-                        echo "</tr>";
-                    }
-                    ?>
-                </table>
-            </div>
-        </div>
-    </div>
-</div>
-<div class="row">&nbsp;</div>
-<div class="row">
-    <div class="col">
-        <div class="card">
-            <div class="card-header"><strong>Overdue returns:</strong></div>
-            <div class="card-body">
-                <table class="table table-bordered table-striped">
-                    <tr>
-                        <th>Job#</th>
-                        <th>Name</th>
-                        <th>Customer</th>
-                        <th>Due back</th>
-                        <th width='1'></th>
-                    </tr>
-                    <?php
-                    $getOverdue = $db->prepare( "SELECT * FROM `jobs` WHERE `complete` =0 AND `enddate` < :today AND `jobType` ='order'" );
-                    $getOverdue->execute( [ ':today' => date( "Y-m-d" ) ] );
-                    while( $job = $getOverdue->fetch( PDO::FETCH_ASSOC ) ) {
-                        echo "<tr>";
-                        echo "<td>" . $job['id'] . "</td>";
-                        echo "<td>" . $job['name'] . "</td>";
-                        echo "<td>" . customer( $job['customer'] ) . "</td>";
-                        echo "<td>" . date( "d/m/Y" , strtotime( $job['enddate'] ) ) . "</td>";
-                        echo "<td><a href='index.php?l=job_view&id=" . $job['id'] . "' class='btn btn-danger'>View</a></td>";
-                        echo "</tr>";  
-                    }
-                    ?>
-                </table>
+                <h3 class="text-center">Dispatched jobs</h3>
+                <?php
+                $getDispatchedJobs = $db->query( "SELECT * FROM `jobs_lines` WHERE `dispatch` =1 AND `return` =0" );
+                $jobs = array();
+                while( $line = $getDispatchedJobs->fetch( PDO::FETCH_ASSOC ) ) {
+                    array_push( $jobs , $line['job'] );
+                }
+                $jobs = array_unique( $jobs );
+                echo "<p class='card-hero text-center'><a href='?l=job_dispatched'>" . count( $jobs ) . "</a></p>";
+                ?>
             </div>
         </div>
     </div>
     <div class="col">
-        <div class="card">
-            <div class="card-header"><strong>Jobs to be invoiced</strong></div>
+        <div class="card" style="background-color: #ff0000; height: 220px;">
             <div class="card-body">
-                <table class="table table-bordered table-striped">
-                    <tr>
-                        <th>Job#</th>
-                        <th>Name</th>
-                        <th>Customer</th>
-                        <th width='1'></th>
-                    </tr>
-                    <?php
-                    $getToBeInvoiced = $db->query( "SELECT * FROM `jobs` WHERE `invoiced` =0 AND `jobType` ='order' AND `complete` =1" );
-                    while( $job = $getToBeInvoiced->fetch( PDO::FETCH_ASSOC ) ) {
-                        echo "<tr>";
-                        echo "<td>" . $job['id'] . "</td>";
-                        echo "<td>" . $job['name'] . "</td>";
-                        echo "<td>" . customer( $job['customer'] ) . "</td>";
-                        echo "<td><a href='index.php?l=job_view&id=" . $job['id'] . "' class='btn btn-primary'>View</a></td>";
-                        echo "</tr>";
-                    }
-                    ?>
-                </table>
+                <h3 class="text-center">Overdue returns</p>
+                <?php
+                $getOverdue = $db->prepare( "SELECT * FROM `jobs` WHERE `complete` =0 AND `enddate` < :today AND `jobType` ='order'" );
+                $getOverdue->execute( [ ':today' => date( "Y-m-d" ) ] );
+                $count = 0;
+                while( $row = $getOverdue->fetch( PDO::FETCH_ASSOC ) ) {
+                    $count ++;
+                }
+                echo "<p class='text-center card-hero'><a href='?l=job_overdue'>" . $count . "</a></p>";
+                ?>
+            </div>
+        </div>
+    </div>
+    <div class="col">
+        <div class="card" style="background-color: #0077ff; height: 220px;">
+            <div class="card-body">
+                <h3 class="text-center">Invoice pile</h3>
+                <?php
+                $getToBeInvoiced = $db->query( "SELECT * FROM `jobs` WHERE `invoiced` =0 AND `jobType` ='order' AND `complete` =1" );
+                $count = 0;
+                while( $row = $getToBeInvoiced->fetch( PDO::FETCH_ASSOC ) ) {
+                    $count ++;
+                }
+                echo "<p class='card-hero text-center'><a href='?l=invoicing'>" . $count . "</a></p>";
+                ?>
             </div>
         </div>
     </div>
@@ -252,32 +192,83 @@ if( isset( $_POST['dismissWelcome'] ) ) {
 <div class="row">&nbsp;</div>
 <div class="row">
     <div class="col">
-        <div class="card">
-            <div class="card-header"><strong>Repairs:</strong></div>
+        <div class="card" style="background-color: #9d00ff; height: 220px;">
             <div class="card-body">
-                <table class="table table-bordered table-stripped">
-                    <thead>
-                        <tr>
-                            <th>Repair#</th>
-                            <th>Description</th>
-                            <th>Start date</th>
-                            <th>&nbsp;</th>
-                        </tr>
-                    </thead>
-                    <tbody>
+                <h3 class="text-center">Repairs</h3>
+                <?php
+                $getRepairs = $db->query( "SELECT * FROM `kit_repairs` WHERE `complete` =0" );
+                $count = 0;
+                while( $row = $getRepairs->fetch( PDO::FETCH_ASSOC ) ) {
+                    $count ++;
+                }
+                echo "<p class='card-hero text-center'><a href='?l=repairs'>" . $count . "</a></p>";
+                ?>
+            </div>
+        </div>
+    </div>
+    <div class="col">
+        <div class="card" style="background-color: #00adad; height: 220px;">
+            <div class="card-body">
+                <h3 class="text-center">People</h3>
+                <?php
+                $getContacts = $db->query( "SELECT * FROM `customers`" );
+                $count = 0;
+                while( $row = $getContacts->fetch( PDO::FETCH_ASSOC ) ) {
+                    $count ++;
+                }
+                echo "<p class='card-hero text-center'><a href='?l=customer_browse'>" . $count . "</a></p>";
+                ?>
+            </div>
+        </div>
+    </div>
+</div>
+
+<hr />
+
+<div class="row">
+    <div class="col">
+        <div class="card">
+            <div class="card-header text-center"><strong>Going out today</strong></div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-bordered table-striped">
                         <?php
-                        $getRepairs = $db->query( "SELECT * FROM `kit_repairs` WHERE `complete` =0" );
-                        while( $repair = $getRepairs->fetch( PDO::FETCH_ASSOC ) ) {
+                        $goingOutToday = $db->query("
+                            SELECT id, name
+                            FROM jobs
+                            WHERE startdate = date('now');
+                        ");
+                        while( $job = $goingOutToday->fetch( PDO::FETCH_ASSOC ) ) {
                             echo "<tr>";
-                            echo "<td>" . $repair['id'] . "</td>";
-                            echo "<td>" . $repair['description'] . "</td>";
-                            echo "<td>" . date( "Y-m-d" , strtotime( $repair['startdate'] ) ) . "</td>";
-                            echo "<td><a href='index.php?l=repairbench&id=" . $repair['id'] . "' class='btn btn-primary'>Open</a></td>";
+                            echo "<td>" . "<a style='color: #000' href='index.php?l=job_view&id=" . $job['id'] . "'>" . $job['name'] . "</a></td>";
                             echo "</tr>";
                         }
                         ?>
-                    </tbody>
-                </table>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col">
+        <div class="card">
+            <div class="card-header text-center"><strong>Coming back today</strong></div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-bordered table-striped">
+                        <?php
+                        $goingOutToday = $db->query("
+                            SELECT id, name
+                            FROM jobs
+                            WHERE enddate = date('now');
+                        ");
+                        while( $job = $goingOutToday->fetch( PDO::FETCH_ASSOC ) ) {
+                            echo "<tr>";
+                            echo "<td>" . "<a style='color: #000' href='index.php?l=job_view&id=" . $job['id'] . "'>" . $job['name'] . "</a></td>";
+                            echo "</tr>";
+                        }
+                        ?>
+                    </table>
+                </div>
             </div>
         </div>
     </div>

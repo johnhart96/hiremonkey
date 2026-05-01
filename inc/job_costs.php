@@ -3,7 +3,7 @@
     <p>
         <?php
         if( (int)$job['price_lock'] == 0 ) {
-            echo "<button type='submit' name='submitCosts' class='btn btn-success'>Save</button>";
+            echo "<button type='submit' name='submitCosts' class='btn btn-success'>Save costs</button>";
         } else {
             echo "<div class='alert alert-warning'>Pricing is locked!</div>";
         }

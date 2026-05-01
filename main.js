@@ -107,6 +107,10 @@ app.on('ready', () => {
       label: "Edit",
       submenu: [
         {
+          label: 'Pins',
+          click: function() { navigate( "index.php?l=pins" ) }
+        },
+        {
           label: 'Undo',
           accelerator: 'CmdOrCtrl+Z',
           selector: 'undo:'

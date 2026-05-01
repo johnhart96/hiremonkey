@@ -80,7 +80,6 @@
                     <th>Storage Location</th>
                     <th>Hire Price</th>
                     <th>Stock</th>
-                    <th></th>
                 </tr>
             </thead>
             <?php
@@ -96,12 +95,11 @@
             }
             while( $kit = $getKit->fetch( PDO::FETCH_ASSOC ) ) {
                 echo "<tr>";
-                echo "<td>" . $kit['name'] . "</td>";
+                echo "<td><a href='index.php?l=kit_view&id=" . $kit['id'] . "'>" . $kit['name'] . "</a></td>";
                 echo "<td>" . cat( $kit['cat'] ) . "</td>";
                 echo "<td>" . sloc( $kit['sloc'] ) . "</td>";
                 echo "<td>" . company( "currencysymbol") .  price( $kit['price'] ) . "</td>";
                 echo "<td>" . totalStockCount( $kit['id'] ) . "</td>";
-                echo "<td width='1'><a href='index.php?l=kit_view&id=" . $kit['id'] . "' class='btn btn-primary'>Open</a>";
                 echo "</tr>";
             }
             ?>

@@ -160,6 +160,9 @@ if( isset( $_POST['submitNewItem'] ) ) {
             $kitID = $fetch['id'];
             require 'inc/job_select.php';
             $avlb = avlb( $kitID , $job['startdate'] , $job['enddate'] );
+            if( $fetch['stock_control'] == 0 ) {
+                $ignoreStock = TRUE;
+            }
 
             echo "<script>console.log('Avlb: $avlb')</script>";
             if( $avlb < $qty && ! $ignoreStock ) {
@@ -193,8 +196,11 @@ if( isset( $_POST['submitNewItem'] ) ) {
                     }
                 }
                 $stockEffect = (int)$qty * -1;
-                if( $stockEffect == 0 ) {
+                /*if( $stockEffect == 0 ) {
                     die( "Stock effect cannot be 0" );
+                }*/
+                if( $fetch['stock_control'] == 0 ) {
+                    $stockEffect = 0;
                 }
 
                 // Price handel
@@ -382,13 +388,14 @@ if( isset( $_POST['submitOpenDoc'] ) ) {
 if( isset( $_POST['submitServices'] ) ) {
     $getServices = $db->prepare( "SELECT * FROM `jobs_lines` WHERE `linetype` ='text' AND `job` =:jobID" );
     $getServices->execute( [ ':jobID' => $id ] );
-    $updateLine = $db->prepare( "UPDATE `jobs_lines` SET `itemName` =:itemName, `qty` =:qty, `price` =:price, `service_startdate` =:startdate, `service_enddate` =:enddate WHERE `job` =:job AND `id` =:lineID" );
+    $updateLine = $db->prepare( "UPDATE `jobs_lines` SET `itemName` =:itemName, `qty` =:qty, `price` =:price, `service_startdate` =:startdate, `service_enddate` =:enddate, `supplier` =:supplier WHERE `job` =:job AND `id` =:lineID" );
     while( $row = $getServices->fetch( PDO::FETCH_ASSOC ) ) {
         $itemNameLine = $row['id'] . "_name";
         $priceName = $row['id'] . "_price";
         $qtyName = $row['id'] . "_qty";
         $startDate = $row['id'] . "_startdate";
         $endDate = $row['id'] . "_enddate";
+        $offset_supplier = $row['id'] . "_supplier";
         if( isset( $_POST[$itemNameLine] ) ) {
             $updateLine->execute([
                 ':lineID' => $row['id'],
@@ -398,7 +405,8 @@ if( isset( $_POST['submitServices'] ) ) {
                 ':qty' => filter_var( $_POST[$qtyName] , FILTER_SANITIZE_NUMBER_INT ),
                 ':price' => filter_var( $_POST[$priceName] , FILTER_VALIDATE_FLOAT ),
                 ':startdate' => filter_var( $_POST[$startDate] , FILTER_UNSAFE_RAW ),
-                ':enddate' => filter_var( $_POST[$endDate] , FILTER_UNSAFE_RAW )
+                ':enddate' => filter_var( $_POST[$endDate] , FILTER_UNSAFE_RAW ),
+                ':supplier' => filter_var( $_POST[$offset_supplier] , FILTER_VALIDATE_INT )
             ]);
         } 
     }

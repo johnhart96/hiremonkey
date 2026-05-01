@@ -127,3 +127,31 @@ main div {
 .nav-link {
   color: #000000 !important;
 }
+.card-hero {
+  font-size: 80px;
+}
+.card-hero a {
+  color: #FFFFFF;
+  text-decoration: none;
+}
+label {
+  color: white;
+}
+.nav-tabs .nav-item .nav-link {
+  color: white !important;
+}
+.nav-tabs .nav-item .active {
+  color: black !important;
+}
+a {
+  color: white;
+}
+.black {
+  color: black;
+}
+.white {
+  color: white;
+}
+.pins {
+  width: 100%;
+}

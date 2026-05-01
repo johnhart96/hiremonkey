@@ -83,16 +83,16 @@ if( isset( $_POST['submit'] ) ) {
 <form method="post">
     <div class="row">
         <div class="col">
-            <div class="input-group">
-                <div class="input-group-prepend"><span class="input-group-text">Name:</span></div>
+            <div class="form-group">
+                <label>Name:</label>
                 <input type="text" name="name" autofocus required class="form-control">
             </div>
-            <div class="input-group">
-                <div class="input-group-prepend"><span class="input-group-text">Purchase value: <?php echo company( "currencysymbol" ); ?></span></div>
+            <div class="form-group">
+                <label>Purchase value: <?php echo company( "currencysymbol" ); ?></label>
                 <input type="text" name="purchasevalue" class="form-control" value="0.00" required>
             </div>
-            <div class="input-group">
-                <div class="input-group-prepend"><span class="input-group-text">Storage Location:</span></div>
+            <div class="form-group">
+                <label>Storage Location:</label>
                 <select required name="sloc" class="form-control">
                     <?php
                     $getSloc = $db->query( "SELECT * FROM `sloc`" );
@@ -102,33 +102,44 @@ if( isset( $_POST['submit'] ) ) {
                     ?>
                 </select>
             </div>
-            <div class="input-group">
-                <div class="input-group-prepend"><span class="input-group-text">Height:</span></div>
+            
+            <div class="btn-group" role="group" aria-label="">
+                <input type="checkbox" class="btn-check" name="accessory" id="accessory" autocomplete="on">
+                <label class="btn btn-outline-primary" for="accessory">Accessory only</label>
+                <input checked type="checkbox" class="btn-check" name="active" id="active" autocomplete="on">
+                <label class="btn btn-outline-primary" for="active">Active</label>
+            </div>
+            <p>&nbsp;</p>
+            <button type="submit" name="submit" class="btn btn-success">Save</button>
+        </div>
+        <div class="col">
+            <div class="form-group">
+                <label>Height:</label>
                 <input type="text" name="height" class="form-control">
-                <div class="input-group-append"><span class="input-group-text">MM</span></div>
+                <div class="form-group-append"><span class="form-group-text">MM</label>
             </div>
-            <div class="input-group">
-                <div class="input-group-prepend"><span class="input-group-text">Width:</span></div>
+            <div class="form-group">
+                <label>Width:</label>
                 <input type="text" name="width" class="form-control">
-                <div class="input-group-append"><span class="input-group-text">MM</span></div>
+                <div class="form-group-append"><span class="form-group-text">MM</label>
             </div>
-            <div class="input-group">
-                <div class="input-group-prepend"><span class="input-group-text">Length:</span></div>
+            <div class="form-group">
+                <label>Length:</label>
                 <input type="text" name="length" class="form-control">
-                <div class="input-group-append"><span class="input-group-text">MM</span></div>
+                <div class="form-group-append"><span class="form-group-text">MM</label>
             </div>
-            <div class="input-group">
-                <div class="input-group-prepend"><span class="input-group-text">Weight:</span></div>
+            <div class="form-group">
+                <label>Weight:</label>
                 <input type="text" name="weight" class="form-control">
-                <div class="input-group-append"><span class="input-group-text">KG</span></div>
+                <div class="form-group-append"><span class="form-group-text">KG</label>
             </div>
-            <div class="input-group">
-                <div class="input-group-prepend"><span class="input-group-text">Hire Price: <?php echo company( "currencysymbol" ); ?> </span></div>
+            <div class="form-group">
+                <label>Hire Price: <?php echo company( "currencysymbol" ); ?> </label>
                 <input type="text" name="price" class="form-control" value="0.00" required>
-                <div class="input-group-append"><span class="input-group-text">/day</span></div>
+                <div class="form-group-append"><span class="form-group-text">/day</label>
             </div>
-            <div class="input-group">
-                <div class="input-group-prepend"><span class="input-group-text">Category:</span></div>
+            <div class="form-group">
+                <label>Category:</label>
                 <select name="cat" class="form-control" required>
                     <option selected disabled></option>
                     <?php
@@ -139,22 +150,18 @@ if( isset( $_POST['submit'] ) ) {
                     ?>
                 </select>
             </div>
-            <div class="input-group">
-                <div class="input-group-prepend"><span class="input-group-text">Image URL:</span></div>
+            <div class="form-group">
+                <label>Image URL:</label>
                 <input type="text" name="img" class="form-control" value="">
             </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
             <div class="form-floating">
                 <textarea class="form-control" name="notes" placeholder="Notes:" id="notes" style="height: 100px"></textarea>
                 <label for="notes">Notes:</label>
             </div>
-            <div class="btn-group" role="group" aria-label="">
-                <input type="checkbox" class="btn-check" name="accessory" id="accessory" autocomplete="on">
-                <label class="btn btn-outline-primary" for="accessory">Accessory only</label>
-                <input checked type="checkbox" class="btn-check" name="active" id="active" autocomplete="on">
-                <label class="btn btn-outline-primary" for="active">Active</label>
-            </div>
-            <p>&nbsp;</p>
-            <button type="submit" name="submit" class="btn btn-success">Save</button>
         </div>
     </div>
 </form>

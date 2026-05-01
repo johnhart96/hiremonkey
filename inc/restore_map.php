@@ -203,8 +203,8 @@ foreach( $upgrade['jobs_lines'] as $line ) {
 }
 
 $kit = $newDB->prepare("
-    INSERT INTO `kit` (`id`,`name`,`purchasevalue`,`sloc`,`price`,`height`,`width`,`length`,`weight`,`notes`,`active`,`toplevel`,`cat`,`img`)
-    VALUES(:id,:kit,:purchasevalue,:sloc,:price,:height,:width,:length,:weight,:notes,:active,:toplevel,:cat,:img)
+    INSERT INTO `kit` (`id`,`name`,`purchasevalue`,`sloc`,`price`,`height`,`width`,`length`,`weight`,`notes`,`active`,`toplevel`,`cat`,`img`,`stock_control`)
+    VALUES(:id,:kit,:purchasevalue,:sloc,:price,:height,:width,:length,:weight,:notes,:active,:toplevel,:cat,:img,:stock_control)
 ");
 foreach( $upgrade['kit'] as $k ) {
     if( isset( $k['img'] ) ) {
@@ -226,6 +226,7 @@ foreach( $upgrade['kit'] as $k ) {
         ':active' => $k['active'],
         ':toplevel' => $k['toplevel'],
         ':cat' => $k['cat'],
+        ':stock_control' => $k['stock_control'],
         ':img' => $img
     ]);
 }
@@ -303,5 +304,10 @@ foreach( $upgrade['repairs'] as $repair ) {
         ':description'=> $repair['description'],
         ':cost' => $repair['cost']
     ]);
+}
+
+$pins = $newDB->prepare( "INSERT INTO pins (link,label) VALUES(:link,:lab)" );
+foreach( $upgrade['pins'] as $pin ) {
+    $pins->execute( [ ':link' => $pin['link'] , ':lab' => $pin['label'] ] );
 }
 ?>

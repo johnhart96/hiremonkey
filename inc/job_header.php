@@ -27,9 +27,9 @@
             if( (int)$job['complete'] == 0 ) {
                 modalButton_green( "newcat" , "New category" );
                 $newcat = "
-                    <div class='input-group'>
-                        <div class='input-group-prepend'>
-                            <span class='input-group-text'>Category:</span>
+                    <div class='form-group'>
+                        <div class='form-group-prepend'>
+                            <span class='form-group-text'>Category:</span>
                         </div>
                         <select name='cat' class='form-control'>
                 ";
@@ -44,8 +44,8 @@
             if( $job['complete'] == 0 ) {
                 modalButton( "changetype" , "Job type" );
                 $dialog = "
-                    <div class='input-group'>
-                        <div class='input-group-prepend'><span class='input-group-text'>Type:</span></div>
+                    <div class='form-group'>
+                        <div class='form-group-prepend'><span class='form-group-text'>Type:</span></div>
                         <select class='form-control' name='changeType'>
                             <option selected disabled</option>
                             <option value='quote'>Quote</option>
@@ -69,8 +69,8 @@
 
             // Undo
             $dialog = "
-                <div class='input-group'>
-                    <div class='input-group-prepend'><span class='input-group-text'>Action:</span></div>
+                <div class='form-group'>
+                    <div class='form-group-prepend'><span class='form-group-text'>Action:</span></div>
                     <select name='action' class='form-control'>
                         <option value='0' selected disabled></option>
                         <option value='dispatch'>Dispatch</option>
@@ -97,17 +97,17 @@
             modalButton( "doc" , "Print/Export" );
             $dialog = "
                 <p>Please select the document you want to open</p>
-                <div class='input-group'>
+                <div class='form-group'>
                     <select name='doc' class='form-control'>
                         <option selected disabled></option>
                         <option value='quote'>Quotation</option>
-                        <option value='subhire'>Subhire PO</option>
-                        <option value='insurance'>Insurance Values</option>
-                        <option value='order'>Order Confirmation</option>
+                        <option value='subhire'>Purchase order</option>
+                        <option value='insurance'>Insurance values</option>
+                        <option value='order'>Order confirmation</option>
                         <option value='prep'>Picking list</option>
-                        <option value='dispatch'>Dispatch Note</option>
-                        <option value='return'>Return Note</option>
-                        <option value='invoice'>Customer Invoice</option>
+                        <option value='dispatch'>Dispatch note</option>
+                        <option value='return'>Return note</option>
+                        <option value='invoice'>Customer invoice</option>
                     </select>
                 </div>
                 <input type='hidden' name='submitOpenDoc'>
@@ -136,7 +136,7 @@
 
 <div class="row">
     <div class="col">
-        <div class="card">
+        <div class="card" style="background-color: #ededed;">
             <div class="card-header" id="header-head"><strong><?php echo ucfirst( $job['jobType'] ); ?> Header:</strong></div>
             <div class="card-body" id="header-body" style="display: none;">
                 <?php
@@ -148,20 +148,20 @@
                 }
                 ?>
                 <form method="post">
-                    <div class="input-group">
-                        <div class="input-group-prepend"><span class="input-group-text">Name:</span></div>
+                    <div class="form-group">
+                        <label for="name" class="black">Name:</lable>
                         <input type="text" name="name" class="form-control" value="<?php echo $job['name']; ?>">
                     </div>
-                    <div class="input-group">
-                        <div class="input-group-prepend"><span class="input-group-text">Start Date:</span></div>
+                    <div class="form-group">
+                        <label for="startdate" class="black">Start Date:</label>
                         <input type="text" name="startdate" placeholder="YYYY-MM-DD" class="form-control" value="<?php echo $job['startdate']; ?>">
                     </div>
-                    <div class="input-group">
-                        <div class="input-group-prepend"><span class="input-group-text">End Date:</span></div>
+                    <div class="form-group">
+                        <label for="enddate" class="black">End Date:</label>
                         <input type="text" name="enddate" placeholder="YYYY-MM-DD" class="form-control" value="<?php echo $job['enddate']; ?>">
                     </div>
-                    <div class="input-group">
-                        <div class="input-group-prepend"><span class="input-group-text">Address:</span></div>
+                    <div class="form-group">
+                        <label for="address" class="black">Address:</label>
                         <select required name="address" class="form-control">
                             <?php
                             $currentAddress = (int)$job['address'];
@@ -180,8 +180,8 @@
                             ?>
                         </select>
                     </div>
-                    <div class="input-group">
-                        <div class="input-group-prepend"><span class="input-group-text">Contact:</span></div>
+                    <div class="form-group">
+                        <label for="contact" class="black">Contact:</lable>
                         <select required name="contact" class="form-control">
                             <?php
                             $currentContact = (int)$job['contact'];
@@ -200,8 +200,8 @@
                             ?>
                         </select>
                     </div>
-                    <div class="input-group">
-                        <div class="input-group-prepend"><span class="input-group-text">Quote status:</span></div>
+                    <div class="form-group">
+                        <label for="quoteAdreed" class="black">Quote status:</label>
                         <select name="quoteAgreed" class="form-control">
                             <?php
                             if( (int)$job['quoteAgreed'] ==1 ) {
@@ -214,12 +214,12 @@
                             ?>
                         </select>
                     </div>
-                    <div class="input-group">
-                        <div class="input-group-prepend"><span class="input-group-text">Type:</span></div>
+                    <div class="form-group">
+                        <label for="jobType" class="black">Type:</label>
                         <input disabled type="text" name="jobType" class="form-control" value="<?php echo ucfirst( $job['jobType'] ); ?>">
                     </div>
-                    <div class="input-group">
-                        <div class="input-group-prepend"><span class="input-group-text">Total days:</span></div>
+                    <div class="form-group">
+                        <label for="totalDays" class="black">Total days:</label>
                         <?php
                         $startDate = strtotime( $job['startdate'] );
                         $endDate = strtotime( $job['enddate'] );
@@ -233,7 +233,7 @@
                         <input disabled type="text" name="totalDays" class="form-control" value="<?php echo $days; ?>">
                     </div>
                     <p>&nbsp;</p>
-                    <button type="submit" name="submitHeader" class="btn btn-success">Save</button>
+                    <button type="submit" name="submitHeader" class="btn btn-success">Save header</button>
                 </form>
             </div>
         </div>

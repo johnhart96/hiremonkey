@@ -13,9 +13,9 @@ if( file_exists( "package.json" ) ) {
     fclose( $packageFile );
     define( "VERSION" , $package->version );
 }
-define( "BUILD_STATUS" , "beta" ); 
+define( "BUILD_STATUS" , "dev" ); 
 define( "LICENCEVERSION" , 2 ); 
-define( "FULLBUILD" , "2.0.0.1" );
+define( "FULLBUILD" , "2.0.0.4" );
 
 // Important table list
 $tables = array(
@@ -32,6 +32,7 @@ $tables = array(
     'kit_stock',
     'sloc',
     'licence',
-    'kit_repairs'
+    'kit_repairs',
+    'pins'
 );
 ?>
