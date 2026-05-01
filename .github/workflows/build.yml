@@ -11,7 +11,7 @@ jobs:
     runs-on: macos-latest
     strategy:
       matrix:
-        arch: [arm64, x64]
+        arch: [intel, x64]
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
